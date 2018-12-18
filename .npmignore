@@ -1,0 +1,15 @@
+.circleci
+.DS_Store
+.editorconfig
+.eslintrc.json
+CONTRIBUTING.md
+.github
+node_modules
+package-lock.json
+PULL_REQUEST_TEMPLATE.md
+pixels-catcher-*.tgz
+demo/
+tmp/
+package
+.babelrc
+.flowconfig

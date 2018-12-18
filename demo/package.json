@@ -1,0 +1,38 @@
+{
+  "name": "testApp",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "test": "jest"
+  },
+  "dependencies": {
+    "react": "16.6.3",
+    "react-native": "0.57.8"
+  },
+  "devDependencies": {
+    "babel-eslint": "^10.0.1",
+    "babel-jest": "23.6.0",
+    "eslint": "^5.11.0",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-plugin-flowtype": "^3.2.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jsx-a11y": "^6.1.2",
+    "eslint-plugin-react": "^7.11.1",
+    "flow-bin": "^0.78.0",
+    "jest": "23.6.0",
+    "pixels-catcher": "0.1.0",
+    "metro-react-native-babel-preset": "0.51.0",
+    "react-test-renderer": "16.6.3"
+  },
+  "jest": {
+    "preset": "react-native"
+  },
+  "PixelsCatcher": {
+    "activityName": "MainActivity",
+    "apkFile": "./android/app/build/outputs/apk/release/app-release.apk",
+    "emulatorName": "test",
+    "packageName": "com.rumax.pixelscatcher.testapp",
+    "snapshotsPath": "./snapshotsImages"
+  }
+}
