@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`compareToReference Throws exception if HTTP status is not 200 1`] = `[Error: Invalid status 404]`;
+
+exports[`compareToReference Throws exception if result is not OK 1`] = `[Error: Files mistmatch with 1 pixels]`;
