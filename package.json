@@ -7,7 +7,8 @@
     "flow": "flow",
     "lint": "eslint server src cli.js",
     "test": "jest",
-    "test-coverage": "jest --coverage"
+    "test-coverage": "jest --coverage",
+    "test-coverage-report": "codecov"
   },
   "bin": "./cli.js",
   "keywords": [
