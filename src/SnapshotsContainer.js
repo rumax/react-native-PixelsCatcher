@@ -66,6 +66,21 @@ export default class SnapshotsContainer extends Component<*, *> {
 
       log.v(TAG, `snapshotName: [${snapshotName}]`);
 
+      if (!snapshotName) {
+        const errorMessage = 'Snapshot should has a proper name';
+
+        log.w(TAG, errorMessage);
+        reporter.report({
+          snapshotName: snapshotName || '',
+          executionTime: this._getTestExecutionTime(),
+          status: 'FAILED',
+          message: errorMessage,
+        });
+        this.nextSnapshot();
+
+        return;
+      }
+
       try {
         log.v(TAG, '++SaveView.save');
         const base64 = await SaveView.saveToPNGBase64(ref);

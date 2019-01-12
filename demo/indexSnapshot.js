@@ -1,4 +1,4 @@
-/** @format */
+/* @flow */
 import React from 'react';
 import { View, Text } from 'react-native';
 import {
@@ -10,16 +10,17 @@ import {
 import App from './src/App';
 import { name as appName } from './app.json';
 
-registerSnapshot(class SnapshotClass extends Snapshot<*, *> {
+registerSnapshot(class SnapshotClass extends Snapshot {
   static snapshotName = 'AppSnapshot';
 
-  render() {
+  renderContent() {
     return (
       <App />
     );
   }
 });
-registerSnapshot(class SnapshotClass extends Snapshot<*, *> {
+
+registerSnapshot(class SnapshotClass extends Snapshot {
   static snapshotName = 'AppSnapshotWithWrongRefImg';
 
   renderContent() {
@@ -28,7 +29,8 @@ registerSnapshot(class SnapshotClass extends Snapshot<*, *> {
     );
   }
 });
-registerSnapshot(class SnapshotClass extends Snapshot<*, *> {
+
+registerSnapshot(class SnapshotClass extends Snapshot {
   static snapshotName = 'someComponent';
 
   renderContent() {

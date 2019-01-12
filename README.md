@@ -115,7 +115,7 @@ project.ext.react = [
   And generate the apk as following:
 
 ```
-cd android && ./gradlew assembleRelease -DentryFile="indexSnapshot"
+cd android && ./gradlew assembleDebug -DentryFile="indexSnapshot.js"
 ```
 
   2) Using development mode and react native development server. In this case you need to run the `PixelsCatcher` in development mode:
