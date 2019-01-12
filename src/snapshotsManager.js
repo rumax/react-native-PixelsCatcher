@@ -4,6 +4,7 @@ import log from './utils/log';
 const snapshots = [];
 const TAG = 'APP::SNAPSHOTS_MANAGER';
 
+
 export function registerSnapshot(component: any) {
   log.i(TAG, `Registering snapshot [${component.snapshotName}]`);
   snapshots.push(component);
