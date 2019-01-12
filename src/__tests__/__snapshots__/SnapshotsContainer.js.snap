@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SnapshotsContainer Renders empty view and reports it to the server if no snapshots are registered 1`] = `null`;
+
+exports[`SnapshotsContainer Renders empty view and reports it to the server if no snapshots are registered: loggin error 1`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      "APP::SNAPSHOTS_CONTAINER",
+      "No snapshots registered",
+    ],
+  ],
+  "results": Array [
+    Object {
+      "isThrow": false,
+      "value": undefined,
+    },
+  ],
+}
+`;
+
+exports[`SnapshotsContainer Renders registered snapshot 1`] = `
+<SomeSnapshot
+  onReady={[Function]}
+/>
+`;
+
+exports[`SnapshotsContainer Renders registered snapshot: render snapshot reported 1`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      "APP::SNAPSHOTS_CONTAINER",
+      "render SnapshotsContainer",
+    ],
+  ],
+  "results": Array [
+    Object {
+      "isThrow": false,
+      "value": undefined,
+    },
+  ],
+}
+`;

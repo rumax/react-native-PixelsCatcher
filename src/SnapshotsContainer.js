@@ -17,12 +17,19 @@ export default class SnapshotsContainer extends Component<*, *> {
   _testStartedAt: number = (new Date()).getTime();
 
 
-  constructor(props: *) {
+  constructor(props: void) {
     super(props);
 
-    this.state = { ActiveSnapshot: getNextSnapshot() };
+    const ActiveSnapshot = getNextSnapshot();
+
+    if (!ActiveSnapshot) {
+      endOfTest();
+      log.e(TAG, 'No snapshots registered');
+    }
+
+    this.state = { ActiveSnapshot };
     // $FlowFixMe: ignore for bind
-    this.onSnapshotReady = this.onSnapshotReady.bind(this);
+    this._onSnapshotReady = this._onSnapshotReady.bind(this);
     // $FlowFixMe: ignore for bind
     this._onRef = this._onRef.bind(this);
   }
@@ -30,16 +37,16 @@ export default class SnapshotsContainer extends Component<*, *> {
 
   render() {
     const { ActiveSnapshot } = this.state;
-    log.v(TAG, 'render SnapshotsContainer');
 
     if (!ActiveSnapshot) {
-      const errorMessage = 'No snapshots registered, use "registerSnapshot"';
-      log.e(TAG, errorMessage);
-      throw new Error(errorMessage);
+      log.i(TAG, 'No active snapshot');
+      return null;
     }
 
+    log.v(TAG, 'render SnapshotsContainer');
+
     return (
-      <ActiveSnapshot ref={this._onRef} onReady={this.onSnapshotReady} />
+      <ActiveSnapshot ref={this._onRef} onReady={this._onSnapshotReady} />
     );
   }
 
@@ -49,7 +56,7 @@ export default class SnapshotsContainer extends Component<*, *> {
   }
 
 
-  async onSnapshotReady() {
+  _onSnapshotReady() {
     log.v(TAG, 'Snapshot ready');
 
     setTimeout(async () => {
@@ -120,7 +127,7 @@ export default class SnapshotsContainer extends Component<*, *> {
       }
 
       this.nextSnapshot();
-    }, 500);
+    }, 50);
   }
 
 
