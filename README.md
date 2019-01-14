@@ -7,7 +7,7 @@
 [![CircleCI](https://circleci.com/gh/rumax/react-native-PixelsCatcher.svg?style=shield)](https://circleci.com/gh/rumax/react-native-PixelsCatcher)
 [![codecov](https://codecov.io/gh/rumax/react-native-PixelsCatcher/branch/master/graph/badge.svg)](https://codecov.io/gh/rumax/react-native-PixelsCatcher)
 
- Library for testing React Native UI components and screens
+Library for testing React Native UI components and screens
 
 ## Getting started
 
@@ -52,16 +52,14 @@ import {
 } from 'pixels-catcher';
 ```
 
-After that create the snapshot component, which should extend `Snapshot` and implement `static snapshotName` and `renderContent` method. The implementation can be:
+After that create the snapshot component, which should extend `Snapshot` and implement `static snapshotName` and `renderContent` method. Be sure that your component can accept `collapsable` property, otherwise React can does optimization and drop the view. The implementation can be:
 
 ```
-class AppSnapshot extends Snapshot<*, *> {
+class AppSnapshot extends Snapshot {
   static snapshotName = 'AppSnapshot';
 
   renderContent() {
-    return (
-      <App />
-    );
+    return (<App />);
   }
 }
 ```
@@ -102,7 +100,7 @@ There are two options to run UI snapshots:
 
       `./node_modules/.bin/pixels-catcher`
 
-  This command will open android emulator, install apk file and execute all tests, providing report at the end.
+  This command will open android emulator, install `apk` file and execute all tests, providing report at the end.
 
   By default the `index.android.js` file is used which refer to your application. To fix it, in the `android/app/build.gradle` add the following config
 
@@ -113,7 +111,7 @@ project.ext.react = [
 ]
 ```
 
-  And generate the apk as following:
+  And generate the `apk` as following:
 
 ```
 cd android && ./gradlew assembleDebug -DentryFile="indexSnapshot.js"
