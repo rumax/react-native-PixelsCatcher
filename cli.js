@@ -6,23 +6,35 @@ const server = require('./server/server');
 const emulator = require('./utils/emulator');
 const log = require('./utils/log');
 
-const [,, mode] = process.argv;
-
 const TAG = 'EAGLE_EYE';
+const [,, platform, configuration] = process.argv;
 
-log.i(TAG, 'Starting snapshots');
+if (!platform || !(platform === 'ios' || platform === 'android')) {
+  log.e(TAG, `Valid platform is requred, specify "ios" or "android":
 
-if (mode === 'dev') {
-  log.v(TAG, 'Running in development mode');
-} else if (mode) {
-  log.e(TAG, `Only "dev" mode is allowed. Remove all arguments to \
-run in release, or provide "dev":
-  - pixels-catcher     // Run releases
-  - pixels-catcher dev // Run for development`);
+  $ pixels-catcher android debug
+
+  or
+
+  $ pixels-catcher ios debug
+  `);
+  process.exit(-1);
+}
+if (platform === 'ios') {
+  log.e(TAG, 'iOS platform is not supported yet');
   process.exit(-1);
 }
 
-const DEV_MODE = mode === 'dev';
+if (!configuration) {
+  log.e(TAG, `Configuration is required. Example:
+
+  $ pixels-catcher android debug
+`);
+  process.exit(-1);
+}
+
+log.i(TAG, `Starting snapshots with [${configuration}] configuration for [${platform}]`);
+
 const projectPackageFile = path.join(process.cwd(), 'package.json');
 
 if (!fs.existsSync(projectPackageFile)) {
@@ -32,21 +44,23 @@ you started the script from the root of your application`);
 }
 
 const projectPackage = JSON.parse(fs.readFileSync(projectPackageFile, 'utf8'));
-const config = projectPackage.PixelsCatcher;
+const config = (projectPackage.PixelsCatcher || {})[platform];
 
 if (!config) {
-  log.e(TAG, 'Cannot find "PixelsCatcher" property in package.json');
+  log.e(TAG, `Cannot find "PixelsCatcher.${platform}" in package.json`);
   process.exit(-1);
 }
 
-const {
-  activityName = 'MainActivity',
-  apkFile,
-  emulatorName,
-  emulatorParams,
-  packageName,
-  snapshotsPath,
-} = config;
+const activityName = config[configuration].activityName || config.activityName || 'MainActivity';
+const apkFile = config[configuration].apkFile || config.apkFile;
+const emulatorName = config[configuration].emulatorName || config.emulatorName;
+const emulatorParams = config[configuration].emulatorParams || config.emulatorParams;
+const packageName = config[configuration].packageName || config.packageName;
+const snapshotsPath = config[configuration].snapshotsPath || config.snapshotsPath;
+
+const DEV_MODE = !apkFile;
+
+log.i(TAG, 'Starting in development mode');
 
 log.i(TAG, `Using config:
   - activityName: [${activityName}]
@@ -68,17 +82,20 @@ ${emulator.getDevices().map(device => `  - ${device}`).join('\n')}`);
   process.exit(-1);
 }
 
-if (!apkFile) {
-  log.e(TAG, 'Valid apk file is required, check config');
-  process.exit(-1);
-}
+let apkFileFullPath;
+if (!DEV_MODE) {
+  if (!apkFile) {
+    log.e(TAG, 'Valid apk file is required, check config');
+    process.exit(-1);
+  }
 
-const apkFileFullPath = path.isAbsolute(apkFile)
-  ? apkFile : path.join(process.cwd(), apkFile);
+  apkFileFullPath = path.isAbsolute(apkFile)
+    ? apkFile : path.join(process.cwd(), apkFile);
 
-if (!fs.existsSync(apkFileFullPath)) {
-  log.e(TAG, `Valid apk file is required, cannot find [${apkFile}] file`);
-  process.exit(-1);
+  if (!fs.existsSync(apkFileFullPath)) {
+    log.e(TAG, `Valid apk file is required, cannot find [${apkFile}] file`);
+    process.exit(-1);
+  }
 }
 
 const timeToSec = (ms) => {

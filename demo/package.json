@@ -21,7 +21,7 @@
     "eslint-plugin-react": "^7.11.1",
     "flow-bin": "^0.78.0",
     "jest": "23.6.0",
-    "pixels-catcher": "0.1.1",
+    "pixels-catcher": "0.1.3",
     "metro-react-native-babel-preset": "0.51.0",
     "react-test-renderer": "16.6.3"
   },
@@ -29,11 +29,33 @@
     "preset": "react-native"
   },
   "PixelsCatcher": {
-    "activityName": "MainActivity",
-    "apkFile": "./android/app/build/outputs/apk/debug/app-debug.apk",
-    "emulatorName": "test",
-    "emulatorParams": ["-no-audio", "-no-snapshot", "-no-window"],
-    "packageName": "com.rumax.pixelscatcher.testapp",
-    "snapshotsPath": "./snapshotsImages"
+    "android": {
+      "activityName": "MainActivity",
+      "emulatorName": "test",
+      "packageName": "com.rumax.pixelscatcher.testapp",
+      "snapshotsPath": "./snapshotsImages",
+      "dev": {
+        "emulatorParams": [
+          "-no-audio",
+          "-no-snapshot"
+        ]
+      },
+      "debug": {
+        "emulatorParams": [
+          "-no-audio",
+          "-no-snapshot"
+        ],
+        "apkFile": "./android/app/build/outputs/apk/debug/app-debug.apk"
+      },
+      "release": {
+        "emulatorParams": [
+          "-no-audio",
+          "-no-snapshot",
+          "-no-window"
+        ],
+        "apkFile": "./android/app/build/outputs/apk/debug/app-debug.apk"
+      }
+    },
+    "ios": {}
   }
 }

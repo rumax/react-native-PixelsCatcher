@@ -80,30 +80,79 @@ Snapshots testing will be started as soon as the application is started.
 
 ### Configuration
 
-In `package.json` add the following section (change the values according to your project, or check [demo](https://github.com/rumax/PixelsCatcher/tree/master/demo) project):
+In `package.json` add the following the `PixelsCatcher` sections according to
+the following format:
 
-```json
-"PixelsCatcher": {
-  "activityName"  : "Activity name, example: MainActivity",
-  "apkFile"       : "Path to apk file, example: ./app/build/outputs/apk/debug/app-debug.apk",
-  "emulatorName"  : "Emulator name, example: test",
-  "emulatorParams": "[Optional] Array of emulator params like -no-audio, -no-snapshot, -no-window, etc.",
-  "packageName"   : "Android package name, example: com.rumax.pixelscatcher.testapp",
-  "snapshotsPath" : "Path to snapshots, example: ./snapshotsImages"
+```
+PixelsCatcher: {
+  PLATFORM: {
+    ...SHARED_CONFIGURATION,
+    CONFIGURATION: {
+      ...CONFIGURATION_SPECIFIC
+    }
+  }
 }
 ```
 
-### Run
+where
+
+  - `PLATFORM` can be `android` or `ios`
+  - `CONFIGURATION` is a configuration with the following properties:
+    - `activityName` - Activity name, example: MainActivity.
+    - `apkFile` - [Optional] Path to apk file, example: ./app/build/outputs/apk/debug/app-debug.apk
+    - `emulatorName` - Emulator name, example: test
+    - `emulatorParams` - [Optional] Array of emulator params like -no-audio, -no-snapshot, -no-window, etc.
+    - `packageName` - Android package name, example: com.rumax.pixelscatcher.testapp
+    - `snapshotsPath` - Path to snapshots, example: ./snapshotsImages
+  - `SHARED_CONFIGURATION`. In case more that one configurations exists, shared
+    parameters can be moved here.
+
+Example (or check [demo](https://github.com/rumax/PixelsCatcher/tree/master/demo) project):
+
+```
+"PixelsCatcher": {
+  "android": {
+    "activityName": "MainActivity",
+    "emulatorName": "test",
+    "packageName": "com.rumax.pixelscatcher.testapp",
+    "snapshotsPath": "./snapshotsImages",
+    "debug": {
+      "emulatorParams": ["-no-audio", "-no-snapshot"],
+      "apkFile": "./android/app/build/outputs/apk/debug/app-debug.apk"
+    },
+    "release": {
+      "emulatorParams": ["-no-audio", "-no-snapshot", "-no-window"],
+      "apkFile": "./android/app/build/outputs/apk/debug/app-debug.apk"
+    }
+  },
+  "ios": { ... }
+}
+```
+
+### Run android
 
 There are two options to run UI snapshots:
 
-  1) Using the generated api file, provided via `PixelsCatcher.packageName`. This case can be useful for CI, for example. To run the test all what you need is to execute the following command in the command line:
+  1) Using the generated apk file, provided via the `apkFile`. In this case
+     pixels-catcher will open android emulator, install `apk` file, execute all
+     the tests and will provide a report at the end. This scenario can be used
+     to integrate the screenshot testing with CI.
 
-      `./node_modules/.bin/pixels-catcher`
+  2) In cases `apkFile` is not defined, the development mode will be used. This
+     means that only the server will be started and the application should be
+     started manually. This scenario can be used to debug snapshots, create
+     new reference images, etc.
 
-  This command will open android emulator, install `apk` file and execute all tests, providing report at the end.
+To run tests execute the following command:
 
-  By default the `index.android.js` file is used which refer to your application. To fix it, in the `android/app/build.gradle` add the following config
+```
+$ ./node_modules/.bin/pixels-catcher android debug
+```
+
+#### Generating APK file
+
+By default the `index.android.js` file is used which refer to your application.
+To fix it, in `android/app/build.gradle` add the following config:
 
 ```
 project.ext.react = [
@@ -112,19 +161,15 @@ project.ext.react = [
 ]
 ```
 
-  And generate the `apk` as following:
+And generate the `apk`:
 
 ```
 cd android && ./gradlew assembleDebug -DentryFile="indexSnapshot.js"
 ```
 
-  2) Using development mode and react native development server. In this case you need to run the `PixelsCatcher` in development mode:
+### Run iOS
 
-      `./node_modules/.bin/pixels-catcher dev`
-
-  This will start only server and you can run the test as many times as you need, by reloading the app.
-
-  Also verify that you use `indexSnapshot` instead of your default entry point.
+iOS i not supported yet.
 
 ## Demo
 Check the [demo](https://github.com/rumax/PixelsCatcher/tree/master/demo) which includes an example how the snapshots can be done and also has some useful scripts that can be used to integrate with CI.
@@ -132,9 +177,6 @@ Check the [demo](https://github.com/rumax/PixelsCatcher/tree/master/demo) which 
 ## License
 
 [MIT](https://opensource.org/licenses/MIT)
-
-## TODO:
-  - iOS
 
 ## Author
 

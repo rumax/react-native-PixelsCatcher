@@ -87,7 +87,7 @@ ${getDevices().map(device => `  - ${device}`).join('\n')}`);
   }
 
   if (!deviceBooted) {
-    log.e(TAG, 'Failed to load emulator in 30 seconds. Check your emulator.');
+    log.e(TAG, 'Failed to load emulator in 30 seconds. Check your emulator. Or try to tun it with "-no-snapshot"');
     process.exit(-1);
   }
 };
