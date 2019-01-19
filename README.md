@@ -84,11 +84,12 @@ In `package.json` add the following section (change the values according to your
 
 ```json
 "PixelsCatcher": {
-  "activityName" : "ACTIVITY_NAME",
-  "apkFile"      : "PATH_TO_APK_FILE",
-  "emulatorName" : "EMULATOR_NAME",
-  "packageName"  : "ANDROID_PACKAGE_NAME",
-  "snapshotsPath": "PATH_TO_SNAPSHOTS_FILES"
+  "activityName"  : "Activity name, example: MainActivity",
+  "apkFile"       : "Path to apk file, example: ./app/build/outputs/apk/debug/app-debug.apk",
+  "emulatorName"  : "Emulator name, example: test",
+  "emulatorParams": "[Optional] Array of emulator params like -no-audio, -no-snapshot, -no-window, etc.",
+  "packageName"   : "Android package name, example: com.rumax.pixelscatcher.testapp",
+  "snapshotsPath" : "Path to snapshots, example: ./snapshotsImages"
 }
 ```
 

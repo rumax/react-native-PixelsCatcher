@@ -30,8 +30,9 @@
   },
   "PixelsCatcher": {
     "activityName": "MainActivity",
-    "apkFile": "./android/app/build/outputs/apk/release/app-release.apk",
+    "apkFile": "./android/app/build/outputs/apk/debug/app-debug.apk",
     "emulatorName": "test",
+    "emulatorParams": ["-no-audio", "-no-snapshot", "-no-window"],
     "packageName": "com.rumax.pixelscatcher.testapp",
     "snapshotsPath": "./snapshotsImages"
   }

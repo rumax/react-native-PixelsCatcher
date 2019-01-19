@@ -42,7 +42,7 @@ const stop = async () => {
   log.v(TAG, 'Active device stopped');
 };
 
-const start = async (name) => {
+const start = async (name, params) => {
   if (!isDeviceAvailable(name)) {
     log.e(TAG, `Invalid name provided [${name}], check that the name is \
 correct and device is available. Available devices:
@@ -56,61 +56,51 @@ ${getDevices().map(device => `  - ${device}`).join('\n')}`);
   }
 
   log.d(TAG, `Starting emulator [${name}]`);
-  const result = spawn(
-    EMULATOR_CMD,
-    ['-avd', name],
-  );
+  const result = spawn(EMULATOR_CMD, [
+    '-avd', name,
+    ...params,
+  ].filter(value => Boolean(value)));
+
+  let deviceBooted = false;
+
   result.stdout.on('data', (data) => {
     log.d(TAG, `stdout: ${data}`);
+    if (data.indexOf('boot completed') >= 0) {
+      deviceBooted = true;
+    }
   });
+
   result.stderr.on('data', (data) => {
-    log.e(`stderr: ${data}`);
+    log.e(TAG, `Failed to load emulator, stderr: ${data}`);
+    process.exit(-1);
   });
 
   result.on('close', (code) => {
-    log.v(`child process exited with code ${code}`);
+    log.v(TAG, `on close: child process exited with code ${code}`);
   });
 
-  await delay(5000);
-  log.d('Emulator started');
+  let tryCnt = 30;
 
-  let tryCnt = 10;
-  while (--tryCnt > 0) {
-    if (getActiveDevice()) {
-      return;
-    }
-    log.v('Waiting 1 sec');
+  while (--tryCnt >= 0 && !deviceBooted) {
+    log.v(TAG, 'availting when device is booted');
     await delay(1000);
   }
 
-  if (!getActiveDevice()) {
-    log.e(TAG, 'Failed to load device');
+  if (!deviceBooted) {
+    log.e(TAG, 'Failed to load emulator in 30 seconds. Check your emulator.');
     process.exit(-1);
   }
 };
 
 const isPackageInstalled = async (packageName) => {
   const cmd = 'adb shell pm list packages';
-  let tryCnt = 3;
-  let isInstalled = false;
 
   log.v(TAG, `Checking if [${packageName}] is installed`);
 
-  while (tryCnt-- >= 0) {
-    log.v(TAG, `Executing [${cmd}]`);
-    const allPackages = exec(cmd);
-    log.v(TAG, `Result [${allPackages}]`);
+  const allPackages = exec(cmd);
+  log.v(TAG, `Result [${allPackages}]`);
 
-    if (allPackages.indexOf('device offline') >= 0) {
-      log.v(TAG, 'Device is offline. Retrying in 1 sec');
-      await delay(5000);
-      continue;
-    }
-
-    if (allPackages.indexOf(packageName) >= 0) {
-      isInstalled = true;
-    }
-  }
+  const isInstalled = allPackages.indexOf(packageName) >= 0;
 
   log.v(TAG, `Package [${packageName}] is ${isInstalled ? 'Installed' : 'Not installed'}`);
 
@@ -140,7 +130,6 @@ const installApk = async (packageName, apkFile) => {
     const isOffline = res.indexOf('device offline') >= 0;
     if (isOffline) {
       await delay(1000);
-      continue;
     } else {
       const isSuccess = res.indexOf('Success') >= 0;
       if (isSuccess) {

@@ -43,6 +43,7 @@ const {
   activityName = 'MainActivity',
   apkFile,
   emulatorName,
+  emulatorParams,
   packageName,
   snapshotsPath,
 } = config;
@@ -51,6 +52,7 @@ log.i(TAG, `Using config:
   - activityName: [${activityName}]
   - apkFile: [${apkFile}]
   - emulatorName: [${emulatorName}]
+  - emulatorParams: [${emulatorParams}]
   - packageName: [${packageName}]
   - snapshotsPath: [${snapshotsPath}]`);
 
@@ -74,7 +76,7 @@ if (!apkFile) {
 const apkFileFullPath = path.isAbsolute(apkFile)
   ? apkFile : path.join(process.cwd(), apkFile);
 
-if (!apkFileFullPath) {
+if (!fs.existsSync(apkFileFullPath)) {
   log.e(TAG, `Valid apk file is required, cannot find [${apkFile}] file`);
   process.exit(-1);
 }
@@ -145,7 +147,7 @@ const start = async () => {
   }
 
   log.d(TAG, `Start emulator [${emulatorName}]`);
-  await emulator.start(emulatorName);
+  await emulator.start(emulatorName, emulatorParams);
   log.d(TAG, 'Emulator started');
 
   log.d(TAG, 'Installing APK');
