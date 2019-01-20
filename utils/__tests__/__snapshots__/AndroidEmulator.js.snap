@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AndroidEmulator initialise emulator 1`] = `
+AndroidEmulator {
+  "_name": "emulator_name",
+}
+`;

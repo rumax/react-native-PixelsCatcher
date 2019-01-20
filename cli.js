@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 const server = require('./server/server');
-const emulator = require('./utils/emulator');
+const AndroidEmulator = require('./utils/AndroidEmulator');
 const log = require('./utils/log');
 
 const TAG = 'EAGLE_EYE';
@@ -76,11 +76,11 @@ if (!packageName) {
 }
 
 if (!emulatorName) {
-  log.e(TAG, `emulator name is required. Check PixelsCatcher config in \
-package.json. Available emulators:
-${emulator.getDevices().map(device => `  - ${device}`).join('\n')}`);
+  log.e(TAG, 'Valid emulator name is required');
   process.exit(-1);
 }
+
+const emulator = new AndroidEmulator(emulatorName);
 
 let apkFileFullPath;
 if (!DEV_MODE) {
@@ -164,7 +164,7 @@ const start = async () => {
   }
 
   log.d(TAG, `Start emulator [${emulatorName}]`);
-  await emulator.start(emulatorName, emulatorParams);
+  await emulator.start(emulatorParams);
   log.d(TAG, 'Emulator started');
 
   log.d(TAG, 'Installing APK');
