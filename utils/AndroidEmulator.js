@@ -16,12 +16,23 @@ class AndroidEmulator {
     const cmd = 'emulator -avd -list-avds';
     const devices = exec(cmd).split('\n')
       .filter(line => Boolean(line));
+
     return devices;
   }
 
 
   _isDeviceAvailable() {
-    return name => this._getDevices().indexOf(name) >= 0;
+    const devices = this._getDevices();
+    let isAvailable = false;
+
+    for (let ind = devices.length - 1; ind >= 0; --ind) {
+      if (devices[ind].indexOf(this._name) >= 0) {
+        isAvailable = true;
+        break;
+      }
+    }
+
+    return isAvailable;
   }
 
 
@@ -46,7 +57,7 @@ class AndroidEmulator {
       log.e(TAG, `Invalid name provided [${this._name}], check that the name is \
   correct and device is available. Available devices:
   ${this._getDevices().map(device => `  - ${device}`).join('\n')}`);
-      process.exit(-1);
+      throw new Error(`Invalid emulator ${this._name}`);
     }
 
     if (this._getActiveDevice()) {
@@ -87,7 +98,7 @@ class AndroidEmulator {
 
     if (!deviceBooted) {
       log.e(TAG, 'Failed to load emulator in 30 seconds. Check your emulator. Or try to tun it with "-no-snapshot"');
-      process.exit(-1);
+      throw new Error('Device is not loaded in 30 seconds');
     }
   }
 

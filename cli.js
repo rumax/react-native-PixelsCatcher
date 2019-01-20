@@ -164,7 +164,11 @@ const start = async () => {
   }
 
   log.d(TAG, `Start emulator [${emulatorName}]`);
-  await emulator.start(emulatorParams);
+  try {
+    await emulator.start(emulatorParams);
+  } catch (err) {
+    process.exit(-1);
+  }
   log.d(TAG, 'Emulator started');
 
   log.d(TAG, 'Installing APK');

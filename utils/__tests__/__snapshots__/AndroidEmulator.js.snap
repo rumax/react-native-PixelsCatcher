@@ -5,3 +5,7 @@ AndroidEmulator {
   "_name": "emulator_name",
 }
 `;
+
+exports[`AndroidEmulator start emulator when it is available but not started throws error if not started 1`] = `[Error: Device is not loaded in 30 seconds]`;
+
+exports[`AndroidEmulator start emulator when it is not available should throw error 1`] = `[Error: Invalid emulator emulator_name]`;
