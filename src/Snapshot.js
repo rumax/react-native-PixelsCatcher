@@ -1,5 +1,6 @@
 /* @flow */
 import React, { Component } from 'react';
+import { InteractionManager } from 'react-native';
 
 import log from './utils/log';
 
@@ -16,7 +17,13 @@ export default class Snapshot extends Component<SnapshotProps, void> {
 
 
   componentDidMount() {
-    this.props.onReady();
+    log.e(TAG, 'Awaiting interaction');
+    const startTime = (new Date()).getTime();
+    InteractionManager.runAfterInteractions(() => {
+      const time = (new Date()).getTime() - startTime;
+      log.e(TAG, `Interaction completed in ${time} milliseconds`);
+      this.props.onReady();
+    });
   }
 
 

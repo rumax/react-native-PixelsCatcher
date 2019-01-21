@@ -3,6 +3,10 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
+    "snapshots:apk": "cd android && ./gradlew assembleDebug -DentryFile=\"indexSnapshot.js\" -DbundleInDebug=true",
+    "ui-snapshots:dev": "./node_modules/.bin/pixels-catcher android dev",
+    "ui-snapshots:debug": "./node_modules/.bin/pixels-catcher android debug",
+    "ui-snapshots:release": "./node_modules/.bin/pixels-catcher android release",
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest"
   },
@@ -21,7 +25,7 @@
     "eslint-plugin-react": "^7.11.1",
     "flow-bin": "^0.78.0",
     "jest": "23.6.0",
-    "pixels-catcher": "0.1.5",
+    "pixels-catcher": "0.1.7",
     "metro-react-native-babel-preset": "0.51.0",
     "react-test-renderer": "16.6.3"
   },

@@ -157,7 +157,7 @@ To fix it, in `android/app/build.gradle` add the following config:
 ```
 project.ext.react = [
     entryFile: System.getProperty("entryFile") ?: "index.js",
-    bundleInDebug: System.getProperty("bundleInDebug") ?: true
+    bundleInDebug: System.getProperty("bundleInDebug") ? System.getProperty("bundleInDebug").toBoolean() : false
 ]
 ```
 
