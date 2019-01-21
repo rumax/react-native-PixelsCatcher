@@ -92,7 +92,7 @@ class AndroidEmulator {
     let tryCnt = 30;
 
     while (--tryCnt >= 0 && !deviceBooted) {
-      log.v(TAG, 'availting when device is booted');
+      log.v(TAG, 'awaiting when device is booted');
       await delay(1000);
     }
 
