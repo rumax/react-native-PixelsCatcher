@@ -7,7 +7,7 @@ const compareImages = require('./compareImages');
 const log = require('../utils/log');
 
 const PORT = 3000;
-const TAG = 'EAGLE_EYE::SERVER';
+const TAG = 'PIXELS_CATCHER::SERVER';
 
 let server;
 let sockets = {};

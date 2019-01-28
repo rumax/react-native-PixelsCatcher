@@ -6,7 +6,7 @@ const server = require('./server/server');
 const AndroidEmulator = require('./utils/AndroidEmulator');
 const log = require('./utils/log');
 
-const TAG = 'EAGLE_EYE';
+const TAG = 'PIXELS_CATCHER';
 const [,, platform, configuration] = process.argv;
 
 if (!platform || !(platform === 'ios' || platform === 'android')) {

@@ -3,7 +3,7 @@ const exec = require('./exec');
 const delay = require('./delay');
 const log = require('./log');
 
-const TAG = 'EAGLE_EYE::UTIL_EMULATOR';
+const TAG = 'PIXELS_CATCHER::UTIL_EMULATOR';
 const EMULATOR_CMD = `${process.env.HOME}/Library/Android/sdk/emulator/emulator`;
 
 class AndroidEmulator {

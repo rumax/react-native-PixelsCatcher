@@ -2,7 +2,7 @@ const childProcess = require('child_process');
 
 const log = require('./log');
 
-const TAG = 'EAGLE_EYE::UTIL_EXEC';
+const TAG = 'PIXELS_CATCHER::UTIL_EXEC';
 
 module.exports = function exec(cmd) {
   let result = '';
