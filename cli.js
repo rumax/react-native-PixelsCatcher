@@ -105,7 +105,7 @@ const timeToSec = (ms) => {
 
 let stopByTimeoutID;
 
-const testingCompleted = async () => {
+const testingCompleted = async (isPassed = false) => {
   if (stopByTimeoutID) {
     clearTimeout(stopByTimeoutID);
   }
@@ -114,6 +114,13 @@ const testingCompleted = async () => {
     await server.stop();
     await emulator.stop();
     log.i(TAG, 'Server and emulator are stopped');
+
+    if (!isPassed) {
+      log.i(TAG, 'Some tests failed, exit with error');
+      process.exit(-1);
+    } else {
+      log.i(TAG, 'No errors, normal exit');
+    }
   }
 };
 
@@ -131,7 +138,7 @@ const onAppActivity = () => {
 const onTestsCompleted = async ({ message, results }) => {
   const totalTests = results.length;
   const passedTests = results
-    .filter(result => result.status !== 'PASSED')
+    .filter(result => result.status === 'PASSED')
     .length;
   log.i(TAG, `Tests completed with result:
 
@@ -150,7 +157,9 @@ Passed tests: ${passedTests}
 Failed tests: ${totalTests - passedTests}
 --------------------------------------------------------------------------------
 `);
-  testingCompleted();
+  const isPassed = totalTests === passedTests;
+  log.i(TAG, 'isPassed', isPassed);
+  testingCompleted(isPassed);
 };
 
 const start = async () => {
