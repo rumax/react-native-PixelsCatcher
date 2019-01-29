@@ -1,4 +1,5 @@
 /* @flow */
+/* global requestAnimationFrame */
 import React, { Component } from 'react';
 import { InteractionManager } from 'react-native';
 
@@ -22,7 +23,9 @@ export default class Snapshot extends Component<SnapshotProps, void> {
     InteractionManager.runAfterInteractions(() => {
       const time = (new Date()).getTime() - startTime;
       log.e(TAG, `Interaction completed in ${time} milliseconds`);
-      this.props.onReady();
+      requestAnimationFrame(() => {
+        this.props.onReady();
+      });
     });
   }
 
