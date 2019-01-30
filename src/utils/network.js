@@ -1,7 +1,11 @@
 /* @flow */
 /* global: fetch */
+import { Platform } from 'react-native';
 
-const baseUrl = 'http://10.0.2.2:3000';
+const baseUrl = Platform.select({
+  android: 'http://10.0.2.2:3000',
+  ios: 'http://127.0.0.1:3000',
+});
 
 const fetchRequest = async (url: string, body: Object): Promise<*> => {
   const response = await fetch(url, {
