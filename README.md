@@ -13,32 +13,13 @@ Library for testing React Native UI components and screens
 
 ### Install and link
 
-`$ npm install pixels-catcher --save`
+    $ npm install pixels-catcher --save
 
-For the application integration only [react-native-save-view](https://www.npmjs.com/package/react-native-save-view) is used which is required to convert `View` to base64 data and has native implementation. Therefore the linking is required and this can be easily done with the following steps:
+The library depend on [react-native-save-view](https://www.npmjs.com/package/react-native-save-view) which is used to convert `View` to base64 data and has native implementation. Therefore the linking is required and this can be easily done with the following step:
 
-  1) In `android/settings.gradle` file include the dependency:
-```
-include ':react-native-save-view'
-project(':react-native-save-view').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-save-view/android')
-```
-  2) In `android/app/build.gradle` file add:
-```
-dependencies {
-    compile project(':react-native-save-view') // <-- This
-    ...
-}
-```
-  3) And finally in `android/app/src/main/java/com/.../MainApplication.java` add it to packages list
-```
-@Override
-protected List<ReactPackage> getPackages() {
-  return Arrays.<ReactPackage>asList(
-      new MainReactPackage(),
-      new SaveViewPackage() // <-- This
-  );
-}
-```
+    $ react-native link react-native-save-view
+
+If for some reasons it doesn't work, check [official react native documentation](https://facebook.github.io/react-native/docs/linking-libraries-ios).
 
 ### Create test
 
