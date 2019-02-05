@@ -1,10 +1,11 @@
+/* @flow */
 const childProcess = require('child_process');
 
 const log = require('./log');
 
 const TAG = 'PIXELS_CATCHER::UTIL_EXEC';
 
-module.exports = function exec(cmd) {
+module.exports = function exec(cmd: string): string {
   let result = '';
 
   try {

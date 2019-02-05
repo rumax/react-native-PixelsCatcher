@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+/* @flow */
+
 const fs = require('fs');
 const path = require('path');
 
@@ -98,14 +100,14 @@ if (!DEV_MODE) {
   }
 }
 
-const timeToSec = (ms) => {
+const timeToSec = (ms: number): number => {
   const sec = ms / 1000;
   return Math.round(sec * 1000) / 1000;
 };
 
-let stopByTimeoutID;
+let stopByTimeoutID: TimeoutID | void;
 
-const testingCompleted = async (isPassed = false) => {
+const testingCompleted = async (isPassed: boolean = false) => {
   if (stopByTimeoutID) {
     clearTimeout(stopByTimeoutID);
   }
@@ -135,17 +137,17 @@ const onAppActivity = () => {
   stopByTimeout();
 };
 
-const onTestsCompleted = async ({ message, results }) => {
+const onTestsCompleted = async ({ message, results }: any) => {
   const totalTests = results.length;
   const passedTests = results
-    .filter(result => result.status === 'PASSED')
+    .filter((result: any): boolean => result.status === 'PASSED')
     .length;
   log.i(TAG, `Tests completed with result:
 
 --------------------------------------------------------------------------------
 ${message}
 
-${results.map(result => `
+${results.map((result: any): any => `
     Name: ${result.snapshotName}
     Time: ${timeToSec(result.executionTime)} sec
     Status: ${result.status}
