@@ -12,10 +12,11 @@
     "test-coverage": "jest --coverage",
     "test-coverage-report": "codecov"
   },
-  "bin": "./cli.js",
+  "bin": "./lib/cli.js",
   "files": [
     "/lib",
-    "/src"
+    "/src/*.js",
+    "/src/utils/*.js"
   ],
   "keywords": [
     "react-native view android UI screenshot testing"
