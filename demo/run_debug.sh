@@ -2,7 +2,6 @@
 
 cd android
 rm -rf build .gradle/ app/build
-./gradlew assembleRelease -DentryFile="indexSnapshot.js"
-adb install -r ./app/build/outputs/apk/release/app-release.apk
+./gradlew assembleDebug -DentryFile="indexSnapshot.js" -DbundleInDebug=true
 cd ..
-./node_modules/.bin/pixels-catcher dev
+./node_modules/.bin/pixels-catcher android debug

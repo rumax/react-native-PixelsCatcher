@@ -1,32 +1,35 @@
+/* @flow */
 const { spawn } = require('child_process');
 const exec = require('./exec');
 const delay = require('./delay');
 const log = require('./log');
 
 const TAG = 'PIXELS_CATCHER::UTIL_EMULATOR';
-const EMULATOR_CMD = `${process.env.HOME}/Library/Android/sdk/emulator/emulator`;
+const EMULATOR_CMD = `${process.env.HOME || ''}/Library/Android/sdk/emulator/emulator`;
 
 class AndroidEmulator {
-  constructor(emulatorName) {
+  _name: string;
+
+  constructor(emulatorName: string) {
     this._name = emulatorName;
   }
 
 
-  _getDevices() {
+  _getDevices(): Array<string> {
     const cmd = 'emulator -avd -list-avds';
     const devices = exec(cmd).split('\n')
-      .filter(line => Boolean(line));
+      .filter((line: string): boolean => Boolean(line));
 
     return devices;
   }
 
 
-  _isDeviceAvailable() {
+  _isDeviceAvailable(name: string): boolean {
     const devices = this._getDevices();
     let isAvailable = false;
 
     for (let ind = devices.length - 1; ind >= 0; --ind) {
-      if (devices[ind].indexOf(this._name) >= 0) {
+      if (devices[ind].indexOf(name) >= 0) {
         isAvailable = true;
         break;
       }
@@ -36,10 +39,10 @@ class AndroidEmulator {
   }
 
 
-  _getActiveDevice() {
+  _getActiveDevice(): any {
     log.v(TAG, 'Get active device');
     const device = exec('adb devices').split('\n')
-      .filter(line => line.indexOf('emulator') === 0)[0];
+      .filter((line: string): boolean => line.indexOf('emulator') === 0)[0];
 
     if (!device) {
       log.v(TAG, 'No active devices');
@@ -52,11 +55,11 @@ class AndroidEmulator {
   }
 
 
-  async start(params = []) {
+  async start(params: any = []) {
     if (!this._isDeviceAvailable(this._name)) {
       log.e(TAG, `Invalid name provided [${this._name}], check that the name is \
   correct and device is available. Available devices:
-  ${this._getDevices().map(device => `  - ${device}`).join('\n')}`);
+  ${this._getDevices().map((device: any): any => `  - ${device}`).join('\n')}`);
       throw new Error(`Invalid emulator ${this._name}`);
     }
 
@@ -69,23 +72,23 @@ class AndroidEmulator {
     const result = spawn(EMULATOR_CMD, [
       '-avd', this._name,
       ...params,
-    ].filter(value => Boolean(value)));
+    ].filter((value: any): any => Boolean(value)));
 
     let deviceBooted = false;
 
-    result.stdout.on('data', (data) => {
+    result.stdout.on('data', (data: any): any => {
       log.d(TAG, `stdout: ${data}`);
       if (data.indexOf('boot completed') >= 0) {
         deviceBooted = true;
       }
     });
 
-    result.stderr.on('data', (data) => {
+    result.stderr.on('data', (data: any): any => {
       log.e(TAG, `Failed to load emulator, stderr: ${data}`);
       process.exit(-1);
     });
 
-    result.on('close', (code) => {
+    result.on('close', (code: any): any => {
       log.v(TAG, `on close: child process exited with code ${code}`);
     });
 
@@ -115,7 +118,7 @@ class AndroidEmulator {
   }
 
 
-  isPackageInstalled(packageName) {
+  isPackageInstalled(packageName: string): boolean {
     const cmd = 'adb shell pm list packages';
 
     log.v(TAG, `Checking if [${packageName}] is installed`);
@@ -129,7 +132,7 @@ class AndroidEmulator {
   }
 
 
-  async uninstallApk(pakageName) {
+  async uninstallApk(pakageName: string) {
     log.v(TAG, `Uninstalling ${pakageName}`);
     const isInstalled = await this.isPackageInstalled(pakageName);
     if (isInstalled) {
@@ -140,7 +143,7 @@ class AndroidEmulator {
   }
 
 
-  async installApk(packageName, apkFile) {
+  async installApk(packageName: string, apkFile: string) {
     let tryCnt = 3;
 
     log.v(TAG, `Installing apk [${apkFile}]`);
@@ -167,7 +170,7 @@ class AndroidEmulator {
   }
 
 
-  startApp(packageName, activityName) {
+  startApp(packageName: string, activityName: string) {
     log.v(TAG, `Starting application [${packageName}]`);
 
     const cmd = `adb shell am start -n ${packageName}/${packageName}.${activityName}`;

@@ -1,3 +1,4 @@
+/* @flow */
 const formidable = require('formidable');
 const fs = require('fs');
 const http = require('http');
@@ -13,14 +14,14 @@ let server;
 let sockets = {};
 let nextSocketId = 0;
 
-const mkDir = (dirName) => {
+const mkDir = (dirName: string) => {
   if (!fs.existsSync(dirName)) {
     fs.mkdirSync(dirName);
   }
 };
 
 const postHandlers = {
-  '/base64': ({ res, fields, snapshotsPath }) => {
+  '/base64': ({ res, fields, snapshotsPath }: any) => {
     const { base64, fileName } = fields;
     log.i(TAG, `Processing base64 data for file [${fileName}]`);
     const snapshotsPathAbs = path.isAbsolute(snapshotsPath)
@@ -45,7 +46,7 @@ const postHandlers = {
     log.v(TAG, `Writing file to ${snapshotFile}`);
     log.v(`and comparing to ${expectedFile}`);
 
-    fs.writeFile(snapshotFile, base64, { encoding: 'base64' }, (writeError) => {
+    fs.writeFile(snapshotFile, base64, { encoding: 'base64' }, (writeError: any) => {
       if (!writeError) {
         log.v(TAG, 'File created, error:', writeError);
         const differentPixelsCount = compareImages(
@@ -76,7 +77,7 @@ const postHandlers = {
   },
   '/endOfTests': ({
     res, fields, onTestsCompleted,
-  }) => {
+  }: any) => {
     log.v(TAG, fields);
     res.write(JSON.stringify({ result: 'OK' }));
     res.end();
@@ -84,11 +85,11 @@ const postHandlers = {
       onTestsCompleted(fields);
     }, 300);
   },
-  '/registerTest': ({ res }) => {
+  '/registerTest': ({ res }: any) => {
     res.write(JSON.stringify({ result: 'OK' }));
     res.end();
   },
-  '/log': ({ res, fields }) => {
+  '/log': ({ res, fields }: any) => {
     const { tag, args } = fields;
     log.v(TAG, `=> ${tag}: `, ...args);
     res.write(JSON.stringify({ result: 'OK' }));
@@ -96,11 +97,15 @@ const postHandlers = {
   },
 };
 
-const startServer = (onTestsCompleted, snapshotsPath, onAppActivity) => {
+const startServer = (
+  onTestsCompleted: Function,
+  snapshotsPath: string,
+  onAppActivity: Function,
+) => {
   if (server) {
     throw new Error('Server already started');
   }
-  server = http.createServer((req, res) => {
+  server = http.createServer((req: any, res: any) => {
     log.v(TAG, `Processsing ${req.method} method to [${req.url}]`);
     if (req.method.toLowerCase() === 'post') {
       const handler = postHandlers[req.url];
@@ -116,7 +121,7 @@ const startServer = (onTestsCompleted, snapshotsPath, onAppActivity) => {
       }
 
       const form = new formidable.IncomingForm();
-      form.parse(req, (err, fields, files) => {
+      form.parse(req, (err: any, fields: any, files: any) => {
         handler({
           req,
           res,
@@ -141,7 +146,7 @@ const startServer = (onTestsCompleted, snapshotsPath, onAppActivity) => {
     onAppActivity();
   }).listen(PORT);
 
-  server.on('connection', (socket) => {
+  server.on('connection', (socket: any) => {
     // Add a newly connected socket
     const socketId = nextSocketId++;
     sockets[socketId] = socket;
@@ -164,7 +169,7 @@ const stopServer = () => {
   }
   server.close(() => { log.i(TAG, 'Server closed!'); });
   // Destroy all open sockets
-  Object.entries(sockets).forEach(([socketId, socket]) => {
+  Object.entries(sockets).forEach(([socketId, socket]: any) => {
     log.v(TAG, 'socket', socketId, 'destroyed');
     socket.destroy();
   });

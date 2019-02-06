@@ -1,16 +1,23 @@
 {
   "name": "pixels-catcher",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "description": "UI snpashot testing for React Native",
   "main": "src/index.js",
   "scripts": {
+    "demo": "cd demo && ../node_modules/.bin/flow-node ../cli.js android debug",
     "flow": "flow",
     "lint": "eslint server src cli.js",
+    "prepublish": "./mk_lib.sh",
     "test": "jest",
     "test-coverage": "jest --coverage",
     "test-coverage-report": "codecov"
   },
-  "bin": "./cli.js",
+  "bin": "./lib/cli.js",
+  "files": [
+    "/lib",
+    "/src/*.js",
+    "/src/utils/*.js"
+  ],
   "keywords": [
     "react-native view android UI screenshot testing"
   ],

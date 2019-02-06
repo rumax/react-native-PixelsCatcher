@@ -1,8 +1,9 @@
+/* @flow */
 const fs = require('fs');
 const { PNG } = require('pngjs');
 const pixelmatch = require('pixelmatch');
 
-module.exports = (actual, expected, diffFile) => {
+module.exports = (actual: any, expected: any, diffFile: any): number => {
   if (!actual || !fs.existsSync(actual)) {
     throw new Error(`Actual file is required, cannot get [${actual}] file`);
   }

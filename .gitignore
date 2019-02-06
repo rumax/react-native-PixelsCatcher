@@ -1,3 +1,6 @@
+# generated
+/lib/
+
 tmp/
 coverage/
 
@@ -11,7 +14,7 @@ node_modules/
 npm-debug.log
 yarn-error.log
 pixels-catcher-*.tgz
-package/
+package*/
 
 # Xcode
 #
