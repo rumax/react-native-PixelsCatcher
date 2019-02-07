@@ -5,14 +5,14 @@ import { InteractionManager } from 'react-native';
 
 import log from './utils/log';
 
-type SnapshotProps = { onReady: Function };
+type SnapshotPropsType = { onReady: Function };
 
 const TAG = 'APP::SNAPSHOT';
 const ERROR_NO_IMPLEMENTED = 'Not implemented. Should be implemented by actual snapshot';
 // React does optimisation and some views can be removed if they are redundant
 const PROPS_TO_KEEP_VIEW: any = { collapsable: false };
 
-export default class Snapshot extends Component<SnapshotProps, void> {
+export default class Snapshot extends Component<SnapshotPropsType, void> {
   // Should be implemented by actual snapshot
   static snapshotName: string = '';
 

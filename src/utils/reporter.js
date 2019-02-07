@@ -10,7 +10,7 @@ type TestResultType = {
 const results = [];
 
 
-const report = (testResult: TestResultType): void => {
+const report = (testResult: TestResultType) => {
   results.push(testResult);
 };
 

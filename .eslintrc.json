@@ -32,10 +32,7 @@
         "boolean"
       ],
       "flowtype/define-flow-type": 2,
-      "flowtype/delimiter-dangle": [
-        2,
-        "never"
-      ],
+      "flowtype/delimiter-dangle": 0,
       "flowtype/generic-spacing": [
         2,
         "never"
@@ -48,13 +45,7 @@
         "comma"
       ],
       "flowtype/require-parameter-type": 2,
-      "flowtype/require-return-type": [
-        2,
-        "always",
-        {
-          "annotateUndefined": "never"
-        }
-      ],
+      "flowtype/require-return-type": 0,
       "flowtype/require-valid-file-annotation": 2,
       "flowtype/semi": [
         2,
