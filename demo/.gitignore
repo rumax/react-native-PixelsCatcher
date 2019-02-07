@@ -1,5 +1,5 @@
-snapshotsImages/diffs/
-snapshotsImages/uploads/
+snapshots/*/diffs/
+snapshots/*/uploads/
 package-lock.json
 
 # OSX

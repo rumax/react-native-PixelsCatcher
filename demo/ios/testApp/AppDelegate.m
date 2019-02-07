@@ -10,6 +10,10 @@
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 
+#define STRINGIZE(x) #x
+#define STRINGIZE2(x) STRINGIZE(x)
+#define INDEX_FILE @ STRINGIZE2(ENTRY_FILE)
+
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -17,7 +21,7 @@
   NSURL *jsCodeLocation;
 
   #ifdef DEBUG
-    jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
+    jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:INDEX_FILE fallbackResource:nil];
   #else
     jsCodeLocation = [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
   #endif

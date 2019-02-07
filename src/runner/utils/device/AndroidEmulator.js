@@ -1,17 +1,20 @@
 /* @flow */
+import type { DeviceInterface } from './DeviceInterface';
+
 const { spawn } = require('child_process');
-const exec = require('./exec');
-const delay = require('./delay');
-const log = require('./log');
+
+const exec = require('../exec');
+const delay = require('../delay');
+const log = require('../log');
 
 const TAG = 'PIXELS_CATCHER::UTIL_EMULATOR';
 const EMULATOR_CMD = `${process.env.HOME || ''}/Library/Android/sdk/emulator/emulator`;
 
-class AndroidEmulator {
+class AndroidEmulator implements DeviceInterface {
   _name: string;
 
-  constructor(emulatorName: string) {
-    this._name = emulatorName;
+  constructor(name: string) {
+    this._name = name;
   }
 
 
@@ -118,7 +121,7 @@ class AndroidEmulator {
   }
 
 
-  isPackageInstalled(packageName: string): boolean {
+  isAppInstalled(packageName: string): boolean {
     const cmd = 'adb shell pm list packages';
 
     log.v(TAG, `Checking if [${packageName}] is installed`);
@@ -132,23 +135,23 @@ class AndroidEmulator {
   }
 
 
-  async uninstallApk(pakageName: string) {
-    log.v(TAG, `Uninstalling ${pakageName}`);
-    const isInstalled = await this.isPackageInstalled(pakageName);
+  async uninstallApp(name: string) {
+    log.v(TAG, `Uninstalling ${name}`);
+    const isInstalled = await this.isAppInstalled(name);
     if (isInstalled) {
-      const cmd = `adb uninstall ${pakageName}`;
+      const cmd = `adb uninstall ${name}`;
       exec(cmd);
     }
     log.v(TAG, 'Uninstalling completed');
   }
 
 
-  async installApk(packageName: string, apkFile: string) {
+  async installApp(name: string, apkFile: string) {
     let tryCnt = 3;
 
     log.v(TAG, `Installing apk [${apkFile}]`);
 
-    await this.uninstallApk(packageName);
+    await this.uninstallApp(name);
 
     while (tryCnt-- >= 0) {
       const cmd = `adb install -r ${apkFile}`;

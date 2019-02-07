@@ -5,8 +5,10 @@ const fs = require('fs');
 const path = require('path');
 
 const server = require('./server/server');
-const AndroidEmulator = require('./utils/AndroidEmulator');
 const log = require('./utils/log');
+const timeToSec = require('./utils/timeToSec');
+const AndroidEmulator = require('./utils/device/AndroidEmulator');
+const IOSEmulator = require('./utils/device/IOSSimulator');
 
 const TAG = 'PIXELS_CATCHER';
 const [,, platform, configuration] = process.argv;
@@ -22,15 +24,15 @@ if (!platform || !(platform === 'ios' || platform === 'android')) {
   `);
   process.exit(-1);
 }
-if (platform === 'ios') {
-  log.e(TAG, 'iOS platform is not supported yet');
-  process.exit(-1);
-}
 
 if (!configuration) {
   log.e(TAG, `Configuration is required. Example:
 
   $ pixels-catcher android debug
+
+  or
+
+  $ pixels-catcher ios debug
 `);
   process.exit(-1);
 }
@@ -53,22 +55,35 @@ if (!config) {
   process.exit(-1);
 }
 
+log.i(TAG, 'Using config\n' + JSON.stringify(config, null, 2));
+
+const deviceName = (config[configuration] || {}).deviceName || config.deviceName;
+const deviceParams = (config[configuration] || {}).deviceParams || config.deviceParams;
+
+if (!deviceName) {
+  log.e(TAG, 'Valid device name is required, check "PixelsCatcher.deviceName" '
+    + 'sproperty in package.json');
+  process.exit(-1);
+}
+
+const device = platform === 'ios' ?
+  new IOSEmulator(deviceName) :
+  new AndroidEmulator(deviceName);
+
 const activityName = config[configuration].activityName || config.activityName || 'MainActivity';
-const apkFile = config[configuration].apkFile || config.apkFile;
-const emulatorName = config[configuration].emulatorName || config.emulatorName;
-const emulatorParams = config[configuration].emulatorParams || config.emulatorParams;
+const appFile = config[configuration].appFile || config.appFile;
 const packageName = config[configuration].packageName || config.packageName;
 const snapshotsPath = config[configuration].snapshotsPath || config.snapshotsPath;
 
-const DEV_MODE = !apkFile;
+const DEV_MODE = !appFile;
 
-log.i(TAG, 'Starting in development mode');
+log.i(TAG, `Starting in ${DEV_MODE ? 'development' : 'ci'} mode`);
 
 log.i(TAG, `Using config:
   - activityName: [${activityName}]
-  - apkFile: [${apkFile}]
-  - emulatorName: [${emulatorName}]
-  - emulatorParams: [${emulatorParams}]
+  - appFile: [${appFile}]
+  - deviceName: [${deviceName}]
+  - deviceParams: [${deviceParams}]
   - packageName: [${packageName}]
   - snapshotsPath: [${snapshotsPath}]`);
 
@@ -77,33 +92,21 @@ if (!packageName) {
   process.exit(-1);
 }
 
-if (!emulatorName) {
-  log.e(TAG, 'Valid emulator name is required');
-  process.exit(-1);
-}
-
-const emulator = new AndroidEmulator(emulatorName);
-
-let apkFileFullPath;
+let appFileFullPath;
 if (!DEV_MODE) {
-  if (!apkFile) {
-    log.e(TAG, 'Valid apk file is required, check config');
+  if (!appFile) {
+    log.e(TAG, 'Valid ap file is required, check config');
     process.exit(-1);
   }
 
-  apkFileFullPath = path.isAbsolute(apkFile)
-    ? apkFile : path.join(process.cwd(), apkFile);
+  appFileFullPath = path.isAbsolute(appFile)
+    ? appFile : path.join(process.cwd(), appFile);
 
-  if (!fs.existsSync(apkFileFullPath)) {
-    log.e(TAG, `Valid apk file is required, cannot find [${apkFile}] file`);
+  if (!fs.existsSync(appFileFullPath)) {
+    log.e(TAG, `Valid app file is required, cannot find [${appFile}] file`);
     process.exit(-1);
   }
 }
-
-const timeToSec = (ms: number): number => {
-  const sec = ms / 1000;
-  return Math.round(sec * 1000) / 1000;
-};
 
 let stopByTimeoutID: TimeoutID | void;
 
@@ -114,7 +117,7 @@ const testingCompleted = async (isPassed: boolean = false) => {
   if (!DEV_MODE) {
     log.i(TAG, 'Stopping the server and emulator');
     await server.stop();
-    await emulator.stop();
+    await device.stop();
     log.i(TAG, 'Server and emulator are stopped');
 
     if (!isPassed) {
@@ -164,6 +167,45 @@ Failed tests: ${totalTests - passedTests}
   testingCompleted(isPassed);
 };
 
+const startAndroid = async () => {
+  log.d(TAG, `Start emulator [${deviceName}]`);
+  try {
+    await device.start(deviceParams);
+  } catch (err) {
+    process.exit(-1);
+  }
+  log.d(TAG, 'Emulator started');
+
+  log.d(TAG, 'Installing APK');
+  await device.installApp(packageName, appFileFullPath);
+  log.d(TAG, 'APK installed');
+
+  log.d(TAG, 'Starting application');
+  await device.startApp(packageName, activityName);
+  log.d(TAG, 'Application started');
+
+  stopByTimeout();
+};
+
+const startIOS = async () => {
+  log.d(TAG, `Start emulator [${deviceName}]`);
+  try {
+    await device.start(deviceParams);
+  } catch (err) {
+    log.e(TAG, `Failed to start device: [${err.mesage}]`);
+    process.exit(-1);
+  }
+  log.d(TAG, 'Emulator started');
+
+  log.d(TAG, 'Installing APP');
+  await device.installApp(packageName, appFileFullPath);
+  log.d(TAG, 'APP installed');
+
+  log.d(TAG, 'Starting application');
+  await device.startApp(packageName, activityName);
+  log.d(TAG, 'Application started');
+};
+
 const start = async () => {
   log.d(TAG, 'Starting server');
   await server.start(onTestsCompleted, snapshotsPath, onAppActivity);
@@ -174,23 +216,11 @@ const start = async () => {
     return;
   }
 
-  log.d(TAG, `Start emulator [${emulatorName}]`);
-  try {
-    await emulator.start(emulatorParams);
-  } catch (err) {
-    process.exit(-1);
+  if (platform === 'ios') {
+    startIOS();
+  } else {
+    startAndroid();
   }
-  log.d(TAG, 'Emulator started');
-
-  log.d(TAG, 'Installing APK');
-  await emulator.installApk(packageName, apkFileFullPath);
-  log.d(TAG, 'APK installed');
-
-  log.d(TAG, 'Starting application');
-  await emulator.startApp(packageName, activityName);
-  log.d(TAG, 'Application started');
-
-  stopByTimeout();
 };
 
 start();
