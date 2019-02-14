@@ -25,7 +25,7 @@
     "eslint-plugin-react": "^7.11.1",
     "flow-bin": "^0.78.0",
     "jest": "23.6.0",
-    "pixels-catcher": "0.1.10",
+    "pixels-catcher": "0.2.0",
     "metro-react-native-babel-preset": "0.51.0",
     "react-test-renderer": "16.6.3"
   },
@@ -35,31 +35,39 @@
   "PixelsCatcher": {
     "android": {
       "activityName": "MainActivity",
-      "emulatorName": "test",
+      "deviceName": "Nexus_5X",
       "packageName": "com.rumax.pixelscatcher.testapp",
-      "snapshotsPath": "./snapshotsImages",
+      "snapshotsPath": "./snapshots/android",
       "dev": {
-        "emulatorParams": [
+        "deviceParams": [
           "-no-audio",
           "-no-snapshot"
         ]
       },
       "debug": {
-        "emulatorParams": [
+        "deviceParams": [
           "-no-audio",
           "-no-snapshot"
         ],
-        "apkFile": "./android/app/build/outputs/apk/debug/app-debug.apk"
+        "appFile": "./android/app/build/outputs/apk/debug/app-debug.apk"
       },
       "release": {
-        "emulatorParams": [
+        "deviceParams": [
           "-no-audio",
           "-no-snapshot",
           "-no-window"
         ],
-        "apkFile": "./android/app/build/outputs/apk/release/app-release.apk"
+        "appFile": "./android/app/build/outputs/apk/release/app-release.apk"
       }
     },
-    "ios": {}
+    "ios": {
+      "deviceName": "iPhone 8 Plus",
+      "packageName": "org.reactjs.native.example.testApp",
+      "snapshotsPath": "./snapshots/ios",
+      "dev": {},
+      "debug": {
+        "appFile": "./ios/build/Build/Products/Debug-iphonesimulator/testApp.app"
+      }
+    }
   }
 }

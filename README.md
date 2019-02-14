@@ -1,4 +1,3 @@
-
 # pixels-catcher
 
 [![npm](https://img.shields.io/npm/l/express.svg)](https://github.com/rumax/react-native-PixelsCatcher)
@@ -15,15 +14,21 @@ Library for testing React Native UI components and screens
 
     $ npm install pixels-catcher --save
 
-The library depend on [react-native-save-view](https://www.npmjs.com/package/react-native-save-view) which is used to convert `View` to base64 data and has native implementation. Therefore the linking is required and this can be easily done with the following step:
+The library depend on
+[react-native-save-view](https://www.npmjs.com/package/react-native-save-view)
+which is used to convert `View` to base64 data and has native implementation.
+Therefore the linking is required and this can be easily done with the following
+step:
 
     $ react-native link react-native-save-view
 
-If for some reasons it doesn't work, check [official react native documentation](https://facebook.github.io/react-native/docs/linking-libraries-ios).
+If for some reasons it doesn't work, check
+[official react native documentation](https://facebook.github.io/react-native/docs/linking-libraries-ios).
 
 ### Create test
 
-Create new entry file, for example, `indexSnapshot` or check the [demo](https://github.com/rumax/PixelsCatcher/tree/master/demo) project. You will need to import `registerSnapshot`, `runSnapshots` and `Snapshot` from `pixels-catcher`:
+Create new entry file, for example, `indexSnapshot`, and import
+`registerSnapshot`, `runSnapshots` and `Snapshot` from `pixels-catcher`:
 
 ```
 import {
@@ -33,7 +38,10 @@ import {
 } from 'pixels-catcher';
 ```
 
-After that create the snapshot component, which should extend `Snapshot` and implement `static snapshotName` and `renderContent` method. Be sure that your component can accept `collapsable` property, otherwise React can does optimization and drop the view. The implementation can be:
+After that create the snapshot component, which should extend `Snapshot` and
+implement `static snapshotName` and `renderContent` method. Be sure that your
+component can accept `collapsable` property, otherwise React can make an
+optimization and drop the view. The implementation can be:
 
 ```
 class AppSnapshot extends Snapshot {
@@ -45,13 +53,14 @@ class AppSnapshot extends Snapshot {
 }
 ```
 
-after that register it:
+after that register `AppSnapshot` component:
 
 ```
 registerSnapshot(AppSnapshot);
 ```
 
-and run snapshots:
+and trigger `runSnapshots` which will register the application component and
+run all snapshots:
 
 ```
 runSnapshots(PUT_YOUR_APP_NAME_HERE);
@@ -80,33 +89,46 @@ where
   - `PLATFORM` can be `android` or `ios`
   - `CONFIGURATION` is a configuration with the following properties:
     - `activityName` - Activity name, example: MainActivity.
-    - `apkFile` - [Optional] Path to apk file, example: ./app/build/outputs/apk/debug/app-debug.apk
-    - `emulatorName` - Emulator name, example: test
-    - `emulatorParams` - [Optional] Array of emulator params like -no-audio, -no-snapshot, -no-window, etc.
-    - `packageName` - Android package name, example: com.rumax.pixelscatcher.testapp
+    - `appFile` - [Optional] Path to apk file on adroid or app folder on iOS,
+      example: ./app/build/outputs/apk/debug/app-debug.apk
+    - `deviceName` - Device name, for example emulator: Nexus_5X or iOS:
+      iPhone 8 Plus
+    - `deviceParams` - [Optional] Array of emulator params like -no-audio,
+      -no-snapshot, -no-window, etc.
+    - `packageName` - Android package name, example:
+      com.rumax.pixelscatcher.testapp
     - `snapshotsPath` - Path to snapshots, example: ./snapshotsImages
   - `SHARED_CONFIGURATION`. In case more that one configurations exists, shared
     parameters can be moved here.
 
-Example (or check [demo](https://github.com/rumax/PixelsCatcher/tree/master/demo) project):
+Example (or check
+[demo](https://github.com/rumax/PixelsCatcher/tree/master/demo) project):
 
 ```
 "PixelsCatcher": {
   "android": {
     "activityName": "MainActivity",
-    "emulatorName": "test",
+    "deviceName": "Nexus_5X",
     "packageName": "com.rumax.pixelscatcher.testapp",
     "snapshotsPath": "./snapshotsImages",
     "debug": {
-      "emulatorParams": ["-no-audio", "-no-snapshot"],
-      "apkFile": "./android/app/build/outputs/apk/debug/app-debug.apk"
+      "deviceParams": ["-no-audio", "-no-snapshot"],
+      "appFile": "./android/app/build/outputs/apk/debug/app-debug.apk"
     },
     "release": {
-      "emulatorParams": ["-no-audio", "-no-snapshot", "-no-window"],
-      "apkFile": "./android/app/build/outputs/apk/debug/app-debug.apk"
+      "deviceParams": ["-no-audio", "-no-snapshot", "-no-window"],
+      "appFile": "./android/app/build/outputs/apk/debug/app-debug.apk"
     }
   },
-  "ios": { ... }
+  "ios": {
+    "deviceName": "iPhone 8 Plus",
+    "packageName": "org.reactjs.native.example.testApp",
+    "snapshotsPath": "./snapshotsImagesIOS",
+    "dev": {},
+    "debug": {
+      "appFile": "./ios/build/Build/Products/Debug-iphonesimulator/testApp.app"
+    }
+  }
 }
 ```
 
@@ -114,12 +136,12 @@ Example (or check [demo](https://github.com/rumax/PixelsCatcher/tree/master/demo
 
 There are two options to run UI snapshots:
 
-  1) Using the generated apk file, provided via the `apkFile`. In this case
+  1) Using the generated `apk` file, provided via the `appFile`. In this case
      pixels-catcher will open android emulator, install `apk` file, execute all
      the tests and will provide a report at the end. This scenario can be used
      to integrate the screenshot testing with CI.
 
-  2) In cases `apkFile` is not defined, the development mode will be used. This
+  2) In cases `appFile` is not defined, the development mode will be used. This
      means that only the server will be started and the application should be
      started manually. This scenario can be used to debug snapshots, create
      new reference images, etc.
@@ -150,10 +172,40 @@ cd android && ./gradlew assembleDebug -DentryFile="indexSnapshot.js"
 
 ### Run iOS
 
-iOS i not supported yet.
+Same as android there are two options to run UI snapshots:
+
+  1) Using the generated app, provided via the `appFile`. In this case
+     pixels-catcher will open iOS simulator, install `app`, execute all
+     the tests and will provide a report at the end. This scenario can be used
+     to integrate the screenshot testing with CI.
+
+  2) In cases `appFile` is not defined, the development mode will be used. This
+     means that only the server will be started and the application should be
+     started manually. This scenario can be used to debug snapshots, create new
+     reference images, etc.
+
+To run tests execute the following command:
+
+```
+$ ./node_modules/.bin/pixels-catcher ios debug
+```
+
+#### Generating iOS app
+
+To make a valid app you will need to do the following actions:
+
+  - Set the `FORCE_BUNDLING` environment variable, which is required to generate
+    a bundle file
+  - Set `RCT_NO_LAUNCH_PACKAGER` to ignore the packager
+  - Use different entry file which includes only snapshots or some flag that
+    will switch your app to "testing" mode
+
+You can also check the `demo` project and check the required changes.
 
 ## Demo
-Check the [demo](https://github.com/rumax/PixelsCatcher/tree/master/demo) which includes an example how the snapshots can be done and also has some useful scripts that can be used to integrate with CI.
+Check the [demo](https://github.com/rumax/PixelsCatcher/tree/master/demo) which
+includes an example how the snapshots can be done and also has some useful
+scripts that can be used to integrate with CI.
 
 ## License
 
@@ -165,5 +217,7 @@ Check the [demo](https://github.com/rumax/PixelsCatcher/tree/master/demo) which 
 
 ### Other information
 
-  - If you think that something is missing or would like to propose new feature, please, discuss it with the author
-  - Please, ⭐️ the project. This gives the confidence that you like it and a great job was done by publishing and supporting it 🤩
+  - If you think that something is missing or would like to propose new feature,
+  please, discuss it with the author
+  - Please, ⭐️ the project. This gives the confidence that you like it and a
+  great job was done by publishing and supporting it 🤩

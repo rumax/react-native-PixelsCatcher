@@ -1,7 +1,8 @@
+/* @flow */
 jest.mock('child_process', () => ({ spawn: jest.fn() }));
-jest.mock('../exec', () => jest.fn());
-jest.mock('../delay', () => jest.fn());
-jest.mock('../log', () => ({
+jest.mock('../../exec', () => jest.fn());
+jest.mock('../../delay', () => jest.fn());
+jest.mock('../../log', () => ({
   v: jest.fn(),
   d: jest.fn(),
   e: jest.fn(),
@@ -10,8 +11,8 @@ jest.mock('../log', () => ({
 const { spawn } = require('child_process');
 
 const AndroidEmulator = require('../AndroidEmulator');
-const exec = require('../exec');
-const delay = require('../delay');
+const exec = require('../../exec');
+const delay = require('../../delay');
 
 describe('AndroidEmulator', () => {
   const name = 'emulator_name';
@@ -21,6 +22,7 @@ describe('AndroidEmulator', () => {
   });
 
   it('initialise emulator', () => {
+    // $FlowFixMe: ignore for mock
     exec.mockImplementationOnce(() => 'avd devices');
 
     const emularor = new AndroidEmulator(name);
@@ -28,6 +30,7 @@ describe('AndroidEmulator', () => {
   });
 
   it('start emulator when it is not available should throw error', async () => {
+    // $FlowFixMe: ignore for mocks
     exec.mockImplementation(() => 'avd devices');
 
     const emularor = new AndroidEmulator(name);
@@ -43,6 +46,7 @@ describe('AndroidEmulator', () => {
   });
 
   it('start emulator when it is available but not started throws error if not started', async () => {
+    // $FlowFixMe: ignore for mock
     exec.mockImplementation(() => `avd devices including ${name}`);
     const spawnMock = {
       stdout: { on: jest.fn() },
@@ -65,6 +69,7 @@ describe('AndroidEmulator', () => {
   });
 
   it('start emulator when it is available but not started', async () => {
+    // $FlowFixMe: ignore for mock
     exec.mockImplementation(() => `avd devices including ${name}`);
     const spawnMock = {
       stdout: { on: jest.fn() },
@@ -84,7 +89,8 @@ describe('AndroidEmulator', () => {
   });
 
   it('start emulator when it is available and already started should stop it before starting', async () => {
-    exec.mockImplementation((cmd) => {
+    // $FlowFixMe: ignore for mock
+    exec.mockImplementation((cmd: string): string => {
       if (cmd === 'emulator -avd -list-avds') {
         return `avd devices including ${name}`;
       }
@@ -95,7 +101,9 @@ describe('AndroidEmulator', () => {
       stderr: { on: jest.fn() },
       on: jest.fn(),
     };
+
     spawn.mockImplementationOnce(() => spawnMock);
+    // $FlowFixMe: ignore for mocks
     delay.mockImplementation(() => {
       const spawnMockCalls = spawnMock.stdout.on.mock.calls;
       if (spawnMockCalls && spawnMockCalls[0] && spawnMockCalls[0][1]) {

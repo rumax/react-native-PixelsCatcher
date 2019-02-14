@@ -1,18 +1,18 @@
 {
   "name": "pixels-catcher",
-  "version": "0.1.10",
+  "version": "0.2.0",
   "description": "UI snpashot testing for React Native",
-  "main": "src/index.js",
+  "main": "lib/client/index.js",
   "scripts": {
     "demo": "cd demo && ../node_modules/.bin/flow-node ../cli.js android debug",
     "flow": "flow",
-    "lint": "eslint server src cli.js",
+    "lint": "eslint src",
     "prepublish": "./mk_lib.sh",
     "test": "jest",
     "test-coverage": "jest --coverage",
     "test-coverage-report": "codecov"
   },
-  "bin": "./lib/cli.js",
+  "bin": "./lib/runner/cli.js",
   "files": [
     "/lib",
     "/src/*.js",
