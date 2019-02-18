@@ -19,7 +19,7 @@
     "/src/utils/*.js"
   ],
   "keywords": [
-    "react-native view android UI screenshot testing"
+    "react-native view android iOS UI screenshot snapshot testing"
   ],
   "author": "Maksym Rusynyk <m.rusynyk@gmail.com>",
   "license": "MIT",
