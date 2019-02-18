@@ -24,7 +24,6 @@
   "author": "Maksym Rusynyk <m.rusynyk@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.16.4",
     "formidable": "^1.2.1",
     "multer": "^1.4.1",
     "pixelmatch": "^4.0.2",
