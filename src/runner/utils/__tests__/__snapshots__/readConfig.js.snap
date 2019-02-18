@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`readConfig read config from package.json 1`] = `
+Object {
+  "_content": "platform config content from package.json",
+}
+`;
+
+exports[`readConfig read config from pixels-catcher.json 1`] = `
+Object {
+  "_content": "platform config content from pixels-catcher.json",
+}
+`;

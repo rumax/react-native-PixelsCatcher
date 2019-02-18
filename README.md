@@ -70,8 +70,13 @@ Snapshots testing will be started as soon as the application is started.
 
 ### Configuration
 
-In `package.json` add the following the `PixelsCatcher` sections according to
-the following format:
+There are two options to define config:
+
+  - Using `pixels-catcher.json` file in the root of the project
+  - Using `package.json` file with new property `PixelsCatcher`
+
+And both of these two options should describe the configuration according to the
+following format:
 
 ```
 PixelsCatcher: {
@@ -101,7 +106,7 @@ where
   - `SHARED_CONFIGURATION`. In case more that one configurations exists, shared
     parameters can be moved here.
 
-Example (or check
+Example for `package.json` configuration (or check
 [demo](https://github.com/rumax/PixelsCatcher/tree/master/demo) project):
 
 ```

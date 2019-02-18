@@ -1,0 +1,38 @@
+{
+  "android": {
+    "activityName": "MainActivity",
+    "deviceName": "Nexus_5X",
+    "packageName": "com.rumax.pixelscatcher.testapp",
+    "snapshotsPath": "./snapshots/android",
+    "dev": {
+      "deviceParams": [
+        "-no-audio",
+        "-no-snapshot"
+      ]
+    },
+    "debug": {
+      "deviceParams": [
+        "-no-audio",
+        "-no-snapshot"
+      ],
+      "appFile": "./android/app/build/outputs/apk/debug/app-debug.apk"
+    },
+    "release": {
+      "deviceParams": [
+        "-no-audio",
+        "-no-snapshot",
+        "-no-window"
+      ],
+      "appFile": "./android/app/build/outputs/apk/release/app-release.apk"
+    }
+  },
+  "ios": {
+    "deviceName": "iPhone 8 Plus",
+    "packageName": "org.reactjs.native.example.testApp",
+    "snapshotsPath": "./snapshots/ios",
+    "dev": {},
+    "debug": {
+      "appFile": "./ios/build/Build/Products/Debug-iphonesimulator/testApp.app"
+    }
+  }
+}
