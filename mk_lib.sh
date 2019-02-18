@@ -28,6 +28,7 @@ removeTypes "runner/utils/device/IOSSimulator.js"
 removeTypes "runner/utils/delay.js"
 removeTypes "runner/utils/exec.js"
 removeTypes "runner/utils/log.js"
+removeTypes "runner/utils/readConfig.js"
 removeTypes "runner/utils/timeToSec.js"
 
 removeTypes "runner/server/compareImages.js"
