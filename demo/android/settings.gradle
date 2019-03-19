@@ -1,4 +1,4 @@
-rootProject.name = 'testApp'
+rootProject.name = 'demo'
 include ':react-native-save-view'
 project(':react-native-save-view').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-save-view/android')
 
