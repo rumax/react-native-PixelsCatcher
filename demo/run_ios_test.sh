@@ -11,8 +11,8 @@ BUILD_PATH="./build"
 rm -rf $BUILD_PATH
 
 xcrun xcodebuild \
-  -scheme testApp \
-  -project testApp.xcodeproj/ \
+  -scheme demo \
+  -project demo.xcodeproj/ \
   -configuration Debug \
   -destination 'platform=iOS Simulator,name=iPhone 8 Plus,OS=12.1' \
   -derivedDataPath $BUILD_PATH \

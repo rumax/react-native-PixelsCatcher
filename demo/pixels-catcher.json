@@ -2,7 +2,7 @@
   "android": {
     "activityName": "MainActivity",
     "deviceName": "Nexus_5X",
-    "packageName": "com.rumax.pixelscatcher.testapp",
+    "packageName": "com.demo",
     "snapshotsPath": "./snapshots/android",
     "dev": {
       "deviceParams": [
@@ -28,11 +28,11 @@
   },
   "ios": {
     "deviceName": "iPhone 8 Plus",
-    "packageName": "org.reactjs.native.example.testApp",
+    "packageName": "org.reactjs.native.example.demo",
     "snapshotsPath": "./snapshots/ios",
     "dev": {},
     "debug": {
-      "appFile": "./ios/build/Build/Products/Debug-iphonesimulator/testApp.app"
+      "appFile": "./ios/build/Build/Products/Debug-iphonesimulator/demo.app"
     }
   }
 }
