@@ -207,6 +207,18 @@ To make a valid app you will need to do the following actions:
 
 You can also check the `demo` project and check the required changes.
 
+### Run device
+
+While android emulator or iOS simulator is able to work with localhost with default values `http://10.0.2.2:3000` for android and `http://127.0.0.1:3000` for iOS, using the real device will require connecting to the server by real IP. To make it possible, `pixels-catcher` allows to define it using the `baseUrl` property that is passed to the `runSnapshots` method:
+
+```
+const baseUrl = 'http://127.0.0.1:3000';
+
+// Snapshots implementation
+
+runSnapshots(appName, { baseUrl });
+```
+
 ## Demo
 Check the [demo](https://github.com/rumax/PixelsCatcher/tree/master/demo) which
 includes an example how the snapshots can be done and also has some useful

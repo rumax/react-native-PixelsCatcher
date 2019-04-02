@@ -45,8 +45,6 @@ module.exports = (platform: string) => {
   const pixelsCatcherConfig = readConfigFromPackageJSON() ||
     readConfigFromFile();
 
-  console.log('pixelsCatcherConfig', pixelsCatcherConfig);
-
   if (!pixelsCatcherConfig) {
     log.e(TAG, 'Cannot find "PixelsCatcher" in package.json or find '
       + 'pixels-catcher.json file');
