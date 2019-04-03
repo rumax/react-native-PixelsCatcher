@@ -8,6 +8,7 @@
 import { AppRegistry } from 'react-native';
 
 import log from './utils/log';
+import network from './utils/network';
 
 import SnapshotsContainer from './SnapshotsContainer';
 
@@ -17,7 +18,14 @@ export const registerSnapshot = require('./snapshotsManager').registerSnapshot;
 
 const TAG = 'APP::SNAPSHOT';
 
-export const runSnapshots = (appName: string) => {
+type ConfigType = { baseUrl?: string };
+
+export const runSnapshots = (appName: string, config: ConfigType = {}) => {
   log.i(TAG, `Run snapshots for ${appName}`);
+  log.i(TAG, `Config is:\n ${JSON.stringify(config, null, 2)}`);
+  const { baseUrl } = config;
+  if (baseUrl) {
+    network.setBaseUrl(baseUrl);
+  }
   AppRegistry.registerComponent(appName, () => SnapshotsContainer);
 };
