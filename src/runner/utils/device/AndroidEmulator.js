@@ -14,7 +14,7 @@ const delay = require('../delay');
 const log = require('../log');
 
 const TAG = 'PIXELS_CATCHER::UTIL_EMULATOR';
-const EMULATOR_CMD = `${process.env.HOME || ''}/Library/Android/sdk/emulator/emulator`;
+const EMULATOR_CMD = `emulator`;
 
 class AndroidEmulator implements DeviceInterface {
   _name: string;
