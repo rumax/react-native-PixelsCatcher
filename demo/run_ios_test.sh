@@ -14,7 +14,7 @@ xcrun xcodebuild \
   -scheme demo \
   -project demo.xcodeproj/ \
   -configuration Debug \
-  -destination 'platform=iOS Simulator,name=iPhone 8 Plus,OS=12.1' \
+  -destination 'platform=iOS Simulator,name=iPhone 8 Plus,OS=12.2' \
   -derivedDataPath $BUILD_PATH \
   ENTRY_FILE="indexSnapshot" \
   build

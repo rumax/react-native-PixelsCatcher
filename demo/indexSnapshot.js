@@ -1,6 +1,12 @@
 /* @flow */
 import React from 'react';
-import { View, Text, Platform } from 'react-native';
+import {
+  Platform,
+  Text,
+  View,
+  WebView,
+  YellowBox,
+} from 'react-native';
 import {
   registerSnapshot,
   runSnapshots,
@@ -41,6 +47,29 @@ registerSnapshot(class SnapshotClass extends Snapshot {
   renderContent() {
     return (
       <View><Text>Some component</Text></View>
+    );
+  }
+});
+
+// Disable warning fot the test
+YellowBox.ignoreWarnings(['Warning: WebView has been extracted']);
+
+registerSnapshot(class SnapshotClass extends Snapshot {
+  static snapshotName = 'WebViewTest';
+
+  componentDidMount() {
+    // override default componentDidMount from Snapshot to delay it
+    // until WebView is loaded. onLoad from WebView is used
+  }
+
+  renderContent() {
+    return (
+      <WebView
+        source={{uri: 'https://github.com/rumax/react-native-PixelsCatcher'}}
+        style={{ flex: 1, marginTop: 20 }}
+        onLoad={() => {
+          this.props.onReady();
+        }} />
     );
   }
 });
