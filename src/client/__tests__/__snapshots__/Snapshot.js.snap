@@ -3,7 +3,14 @@
 exports[`Snapshot component renders snpashot component 1`] = `
 <View
   collapsable={false}
-/>
+  style={
+    Object {
+      "flex": 1,
+    }
+  }
+>
+  <View />
+</View>
 `;
 
 exports[`Snapshot component throws exception if renderContent is not implemented 1`] = `[Error: Not implemented. Should be implemented by actual snapshot]`;

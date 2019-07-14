@@ -7,7 +7,7 @@
 /* @flow */
 /* global requestAnimationFrame */
 import React, { Component } from 'react';
-import { InteractionManager } from 'react-native';
+import { InteractionManager, View } from 'react-native';
 
 import log from './utils/log';
 
@@ -15,8 +15,6 @@ type SnapshotPropsType = { onReady: Function };
 
 const TAG = 'APP::SNAPSHOT';
 const ERROR_NO_IMPLEMENTED = 'Not implemented. Should be implemented by actual snapshot';
-// React does optimisation and some views can be removed if they are redundant
-const PROPS_TO_KEEP_VIEW: any = { collapsable: false };
 
 export default class Snapshot extends Component<SnapshotPropsType, void> {
   // Should be implemented by actual snapshot
@@ -24,11 +22,11 @@ export default class Snapshot extends Component<SnapshotPropsType, void> {
 
 
   componentDidMount() {
-    log.e(TAG, 'Awaiting interaction');
+    log.v(TAG, 'Awaiting interaction');
     const startTime = (new Date()).getTime();
     InteractionManager.runAfterInteractions(() => {
       const time = (new Date()).getTime() - startTime;
-      log.e(TAG, `Interaction completed in ${time} milliseconds`);
+      log.v(TAG, `Interaction completed in ${time} milliseconds`);
       requestAnimationFrame(() => {
         this.props.onReady();
       });
@@ -43,9 +41,10 @@ export default class Snapshot extends Component<SnapshotPropsType, void> {
 
 
   render() {
-    return React.cloneElement(
-      this.renderContent(),
-      PROPS_TO_KEEP_VIEW,
+    return (
+      <View style={{ flex: 1 }} collapsable={false}>
+        {this.renderContent()}
+      </View>
     );
   }
 }

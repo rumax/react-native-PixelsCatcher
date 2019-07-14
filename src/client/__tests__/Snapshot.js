@@ -5,7 +5,7 @@ import renderer from 'react-test-renderer';
 
 import Snapshot from '../Snapshot';
 
-jest.mock('../utils/log', () => ({ e: () => {} }));
+jest.mock('../utils/log', () => ({ e: () => {}, v: () => {} }));
 global.console.error = () => {};
 
 
