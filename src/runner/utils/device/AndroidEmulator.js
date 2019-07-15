@@ -98,6 +98,11 @@ class AndroidEmulator implements DeviceInterface {
     });
 
     result.stderr.on('data', (data: any): any => {
+      // Some data appears in stderr when running the emulator first time
+      const stringRepresentation = data.toString();
+      if (stringRepresentation.indexOf('.avd/snapshots/default_boot/ram.img') !== -1) {
+        return;
+      }
       log.e(TAG, `Failed to load emulator, stderr: ${data}`);
       process.exit(-1);
     });
