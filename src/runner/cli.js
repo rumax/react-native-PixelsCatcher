@@ -6,6 +6,7 @@
 * LICENSE file in the root directory of this source tree.
 */
 /* @flow */
+import type { DeviceInterface } from './utils/device/DeviceInterface';
 
 const fs = require('fs');
 const path = require('path');
@@ -14,14 +15,13 @@ const server = require('./server/server');
 const log = require('./utils/log');
 const timeToSec = require('./utils/timeToSec');
 const readConfig = require('./utils/readConfig');
-const AndroidEmulator = require('./utils/device/AndroidEmulator');
-const IOSEmulator = require('./utils/device/IOSSimulator');
+const getDevice = require('./utils/device/deviceProvider');
 
 const TAG = 'PIXELS_CATCHER';
 const [,, platform, configuration] = process.argv;
 
 if (!platform || !(platform === 'ios' || platform === 'android')) {
-  log.e(TAG, `Valid platform is requred, specify "ios" or "android":
+  log.e(TAG, `Valid platform is requred, specify "ios" or "android". Example:
 
   $ pixels-catcher android debug
 
@@ -52,6 +52,7 @@ log.i(TAG, 'Using config\n' + JSON.stringify(config, null, 2));
 
 const deviceName = (config[configuration] || {}).deviceName || config.deviceName;
 const deviceParams = (config[configuration] || {}).deviceParams || config.deviceParams;
+const isPhysicalDevice = (config[configuration] || {}).physicalDevice || config.physicalDevice;
 
 if (!deviceName) {
   log.e(TAG, 'Valid device name is required, check "PixelsCatcher.deviceName" '
@@ -59,10 +60,7 @@ if (!deviceName) {
   process.exit(-1);
 }
 
-const device = platform === 'ios' ?
-  new IOSEmulator(deviceName) :
-  new AndroidEmulator(deviceName);
-
+const device: DeviceInterface = getDevice(deviceName, platform, isPhysicalDevice);
 const activityName = config[configuration].activityName || config.activityName || 'MainActivity';
 const appFile = config[configuration].appFile || config.appFile;
 const packageName = config[configuration].packageName || config.packageName;
