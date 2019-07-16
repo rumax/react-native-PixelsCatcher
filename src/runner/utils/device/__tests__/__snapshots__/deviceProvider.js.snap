@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`deviceProvider provide Android Emulator 1`] = `
+_class {
+  "_name": "AndroidEmulator",
+  "deviceName": "test",
+}
+`;
+
+exports[`deviceProvider provide AndroidDevice 1`] = `
+_class2 {
+  "_name": "AndroidDevice",
+  "deviceName": "test",
+}
+`;
+
+exports[`deviceProvider provide iOS device throws error (not implemented) 1`] = `[Error: iOS devices are not supported yet]`;
+
+exports[`deviceProvider provide iOS simulator 1`] = `
+_class3 {
+  "_name": "IosSimulator",
+  "deviceName": "test",
+}
+`;
