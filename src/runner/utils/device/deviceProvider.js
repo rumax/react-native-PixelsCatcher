@@ -10,7 +10,7 @@ import type { DeviceInterface } from './DeviceInterface';
 const log = require('../../utils/log');
 const AndroidEmulator = require('./AndroidEmulator');
 const AndroidDevice = require('./AndroidDevice');
-const IosEmulator = require('./IOSSimulator');
+const IosSimulator = require('./IosSimulator');
 
 const TAG = 'PIXELS_CATCHER::DEVICE_PROVIDER';
 
@@ -26,7 +26,7 @@ module.exports = (
   }
 
   if (!isPhysicalDevice) {
-    return new IosEmulator(name);
+    return new IosSimulator(name);
   }
 
   log.e(TAG, 'iOS devices are not supported yet');
