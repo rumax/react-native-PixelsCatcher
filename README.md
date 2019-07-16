@@ -100,6 +100,7 @@ where
       iPhone 8 Plus
     - `deviceParams` - [Optional] Array of emulator params like -no-audio,
       -no-snapshot, -no-window, etc.
+    - `physicalDevice` - [Optional] Boolean value that indicates if real device should be used (*iOS devices are not supported yet*)
     - `packageName` - Android package name, example:
       com.rumax.pixelscatcher.testapp
     - `snapshotsPath` - Path to snapshots, example: ./snapshotsImages
