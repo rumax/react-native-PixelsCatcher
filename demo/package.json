@@ -20,7 +20,7 @@
     "babel-jest": "^24.5.0",
     "jest": "^24.5.0",
     "metro-react-native-babel-preset": "^0.53.1",
-    "pixels-catcher": "0.3.2",
+    "pixels-catcher": "0.3.3",
     "react-test-renderer": "16.8.3"
   },
   "jest": {
