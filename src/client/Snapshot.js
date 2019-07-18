@@ -7,7 +7,7 @@
 /* @flow */
 /* global requestAnimationFrame */
 import React, { Component } from 'react';
-import { InteractionManager, View } from 'react-native';
+import { InteractionManager, ScrollView } from 'react-native';
 
 import log from './utils/log';
 
@@ -42,9 +42,9 @@ export default class Snapshot extends Component<SnapshotPropsType, void> {
 
   render() {
     return (
-      <View style={{ flex: 1 }} collapsable={false}>
+      <ScrollView collapsable={false} contentContainerStyle={{ flexGrow: 1 }}>
         {this.renderContent()}
-      </View>
+      </ScrollView>
     );
   }
 }
