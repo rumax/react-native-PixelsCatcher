@@ -1,16 +1,18 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Snapshot component renders snpashot component 1`] = `
-<View
+<RCTScrollView
   collapsable={false}
-  style={
+  contentContainerStyle={
     Object {
-      "flex": 1,
+      "flexGrow": 1,
     }
   }
 >
-  <View />
-</View>
+  <View>
+    <View />
+  </View>
+</RCTScrollView>
 `;
 
 exports[`Snapshot component throws exception if renderContent is not implemented 1`] = `[Error: Not implemented. Should be implemented by actual snapshot]`;
