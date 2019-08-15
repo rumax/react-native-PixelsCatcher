@@ -46,7 +46,7 @@ registerSnapshot(class SnapshotClass extends Snapshot {
 
   renderContent() {
     return (
-      <View><Text>Some component</Text></View>
+      <View style={{ backgroundColor: 'yellow' }}><Text>Some component</Text></View>
     );
   }
 });
@@ -70,6 +70,22 @@ registerSnapshot(class SnapshotClass extends Snapshot {
         onLoad={() => {
           this.props.onReady();
         }} />
+    );
+  }
+});
+
+registerSnapshot(class SnapshotClass extends Snapshot {
+  static snapshotName = 'longContent';
+
+  renderContent() {
+    return (
+      <View style={{ flex: 1, flexDirection: 'column' }}>
+        <View style={{height: 200, backgroundColor: '#FFA07A'}} />
+        <View style={{height: 300, backgroundColor: '#E9967A'}} />
+        <View style={{height: 400, backgroundColor: '#FA8072'}} />
+        <View style={{height: 500, backgroundColor: '#F08080'}} />
+        <View style={{height: 600, backgroundColor: '#CD5C5C'}} />
+      </View>
     );
   }
 });
