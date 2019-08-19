@@ -26,6 +26,7 @@
       "prefer-destructuring": 0,
       "react/destructuring-assignment": 0,
       "react/jsx-filename-extension": 0,
+      "react/sort-comp": 0,
       "prefer-template": 0,
       "operator-linebreak": 0,
 
