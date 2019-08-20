@@ -1,6 +1,6 @@
 /* @flow */
 jest.mock('child_process', () => ({ spawn: jest.fn() }));
-jest.mock('../../exec', () => jest.fn());
+jest.mock('../../exec', () => jest.fn(() => ''));
 jest.mock('../../delay', () => jest.fn());
 jest.mock('../../log', () => ({
   v: jest.fn(),

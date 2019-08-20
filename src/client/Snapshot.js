@@ -5,7 +5,6 @@
 * LICENSE file in the root directory of this source tree.
 */
 /* @flow */
-/* global requestAnimationFrame */
 import React, { Component } from 'react';
 import { InteractionManager, ScrollView } from 'react-native';
 
@@ -27,9 +26,9 @@ export default class Snapshot extends Component<SnapshotPropsType, void> {
     InteractionManager.runAfterInteractions(() => {
       const time = (new Date()).getTime() - startTime;
       log.v(TAG, `Interaction completed in ${time} milliseconds`);
-      requestAnimationFrame(() => {
+      setTimeout(() => {
         this.props.onReady();
-      });
+      }, 150); // Some delay to wait untill images are loaded, etc.
     });
   }
 

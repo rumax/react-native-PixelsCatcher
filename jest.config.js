@@ -7,6 +7,5 @@ module.exports = {
     'cli.js',
     '!demo/**/*',
   ],
-  modulePathIgnorePatterns: ['demo'],
-  transform: { '^.+\\.js$': './preprocessor.js' },
+  modulePathIgnorePatterns: ['demo']
 };

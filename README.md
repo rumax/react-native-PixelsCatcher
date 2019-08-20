@@ -12,17 +12,12 @@ Library for testing React Native UI components and screens
 
 ### Install and link
 
-    $ npm install pixels-catcher --save
+    $ npm install pixels-catcher --save-dev
 
 The library depend on
 [react-native-save-view](https://www.npmjs.com/package/react-native-save-view)
 which is used to convert `View` to base64 data and has native implementation.
-Therefore the linking is required and this can be easily done with the following
-step:
-
-    $ react-native link react-native-save-view
-
-If for some reasons it doesn't work, check
+Starting from [RN 0.60](https://github.com/facebook/react-native/releases/tag/v0.60.0) there is no need to link - [Native Modules are now Autolinked](https://facebook.github.io/react-native/blog/2019/07/03/version-60), otherwise check
 [official react native documentation](https://facebook.github.io/react-native/docs/linking-libraries-ios).
 
 ### Create test

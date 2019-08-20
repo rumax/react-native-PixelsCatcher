@@ -4,16 +4,16 @@ import {
   Platform,
   Text,
   View,
-  WebView,
   YellowBox,
 } from 'react-native';
+import { WebView } from 'react-native-webview';
 import {
   registerSnapshot,
   runSnapshots,
   Snapshot,
 } from 'pixels-catcher';
 
-import App from './src/App';
+import App from './App';
 import { name as appName } from './app.json';
 
 const baseUrl = Platform.select({ // Put real IP of your server to run on real device

@@ -12,7 +12,7 @@ exports[`SnapshotsContainer Renders empty view and reports it to the server if n
   ],
   "results": Array [
     Object {
-      "isThrow": false,
+      "type": "return",
       "value": undefined,
     },
   ],
@@ -35,7 +35,7 @@ exports[`SnapshotsContainer Renders registered snapshot: render snapshot reporte
   ],
   "results": Array [
     Object {
-      "isThrow": false,
+      "type": "return",
       "value": undefined,
     },
   ],

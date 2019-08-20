@@ -12,11 +12,11 @@ rm -rf $BUILD_PATH
 
 xcrun xcodebuild \
   -scheme demo \
-  -project demo.xcodeproj/ \
+  -workspace demo.xcworkspace \
   -configuration Debug \
   -destination 'platform=iOS Simulator,name=iPhone 8 Plus,OS=12.2' \
   -derivedDataPath $BUILD_PATH \
-  ENTRY_FILE="indexSnapshot" \
+  ENTRY_FILE="indexSnapshot.js" \
   build
 
 cd ..
