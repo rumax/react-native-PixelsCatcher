@@ -50,9 +50,16 @@ const config = readConfig(platform);
 
 log.i(TAG, 'Using config\n' + JSON.stringify(config, null, 2));
 
-const deviceName = (config[configuration] || {}).deviceName || config.deviceName;
-const deviceParams = (config[configuration] || {}).deviceParams || config.deviceParams;
-const isPhysicalDevice = (config[configuration] || {}).physicalDevice || config.physicalDevice;
+const getParamFromConfig = (paramName: string) =>
+  (config[configuration] || {})[paramName] || config[paramName];
+
+const deviceName = getParamFromConfig('deviceName');
+const deviceParams = getParamFromConfig('deviceParams');
+const isPhysicalDevice = getParamFromConfig('physicalDevice');
+const activityName = getParamFromConfig('activityName') || 'MainActivity';
+const appFile = getParamFromConfig('appFile');
+const packageName = getParamFromConfig('packageName');
+const snapshotsPath = getParamFromConfig('snapshotsPath');
 
 if (!deviceName) {
   log.e(TAG, 'Valid device name is required, check "PixelsCatcher.deviceName" '
@@ -61,10 +68,6 @@ if (!deviceName) {
 }
 
 const device: DeviceInterface = getDevice(deviceName, platform, isPhysicalDevice);
-const activityName = config[configuration].activityName || config.activityName || 'MainActivity';
-const appFile = config[configuration].appFile || config.appFile;
-const packageName = config[configuration].packageName || config.packageName;
-const snapshotsPath = config[configuration].snapshotsPath || config.snapshotsPath;
 
 const DEV_MODE = !appFile;
 
