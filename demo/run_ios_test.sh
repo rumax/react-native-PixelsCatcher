@@ -16,9 +16,10 @@ xcrun xcodebuild \
   -configuration Debug \
   -destination 'platform=iOS Simulator,name=iPhone 8 Plus,OS=12.2' \
   -derivedDataPath $BUILD_PATH \
-  ENTRY_FILE="indexSnapsho.js" \
+  ENTRY_FILE="indexSnapshot.js" \
   build
 
 cd ..
 
-../node_modules/.bin/flow-node ../src/runner/cli.js ios debug
+../node_modules/.bin/flow-node ../src/runner/cli.js ios debug || true
+../node_modules/.bin/flow-node ../src/runner/cli.js ios debugIphone6 || true
