@@ -1,0 +1,250 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`logging Allows to log including d 1`] = `
+Array [
+  Array [
+    "i:",
+  ],
+  Array [
+    "w WARNING:",
+  ],
+  Array [
+    "e ERROR:",
+  ],
+  Array [
+    "v:",
+  ],
+  Array [
+    "d:",
+  ],
+  Array [
+    "i:",
+  ],
+  Array [
+    "w WARNING:",
+  ],
+  Array [
+    "e ERROR:",
+  ],
+  Array [
+    "d:",
+  ],
+  Array [
+    "i:",
+  ],
+  Array [
+    "w WARNING:",
+  ],
+  Array [
+    "e ERROR:",
+  ],
+]
+`;
+
+exports[`logging Allows to log including e 1`] = `
+Array [
+  Array [
+    "i:",
+  ],
+  Array [
+    "w WARNING:",
+  ],
+  Array [
+    "e ERROR:",
+  ],
+  Array [
+    "v:",
+  ],
+  Array [
+    "d:",
+  ],
+  Array [
+    "i:",
+  ],
+  Array [
+    "w WARNING:",
+  ],
+  Array [
+    "e ERROR:",
+  ],
+  Array [
+    "d:",
+  ],
+  Array [
+    "i:",
+  ],
+  Array [
+    "w WARNING:",
+  ],
+  Array [
+    "e ERROR:",
+  ],
+  Array [
+    "i:",
+  ],
+  Array [
+    "w WARNING:",
+  ],
+  Array [
+    "e ERROR:",
+  ],
+  Array [
+    "w WARNING:",
+  ],
+  Array [
+    "e ERROR:",
+  ],
+  Array [
+    "e ERROR:",
+  ],
+]
+`;
+
+exports[`logging Allows to log including i 1`] = `
+Array [
+  Array [
+    "i:",
+  ],
+  Array [
+    "w WARNING:",
+  ],
+  Array [
+    "e ERROR:",
+  ],
+  Array [
+    "v:",
+  ],
+  Array [
+    "d:",
+  ],
+  Array [
+    "i:",
+  ],
+  Array [
+    "w WARNING:",
+  ],
+  Array [
+    "e ERROR:",
+  ],
+  Array [
+    "d:",
+  ],
+  Array [
+    "i:",
+  ],
+  Array [
+    "w WARNING:",
+  ],
+  Array [
+    "e ERROR:",
+  ],
+  Array [
+    "i:",
+  ],
+  Array [
+    "w WARNING:",
+  ],
+  Array [
+    "e ERROR:",
+  ],
+]
+`;
+
+exports[`logging Allows to log including v 1`] = `
+Array [
+  Array [
+    "i:",
+  ],
+  Array [
+    "w WARNING:",
+  ],
+  Array [
+    "e ERROR:",
+  ],
+  Array [
+    "v:",
+  ],
+  Array [
+    "d:",
+  ],
+  Array [
+    "i:",
+  ],
+  Array [
+    "w WARNING:",
+  ],
+  Array [
+    "e ERROR:",
+  ],
+]
+`;
+
+exports[`logging Allows to log including w 1`] = `
+Array [
+  Array [
+    "i:",
+  ],
+  Array [
+    "w WARNING:",
+  ],
+  Array [
+    "e ERROR:",
+  ],
+  Array [
+    "v:",
+  ],
+  Array [
+    "d:",
+  ],
+  Array [
+    "i:",
+  ],
+  Array [
+    "w WARNING:",
+  ],
+  Array [
+    "e ERROR:",
+  ],
+  Array [
+    "d:",
+  ],
+  Array [
+    "i:",
+  ],
+  Array [
+    "w WARNING:",
+  ],
+  Array [
+    "e ERROR:",
+  ],
+  Array [
+    "i:",
+  ],
+  Array [
+    "w WARNING:",
+  ],
+  Array [
+    "e ERROR:",
+  ],
+  Array [
+    "w WARNING:",
+  ],
+  Array [
+    "e ERROR:",
+  ],
+]
+`;
+
+exports[`logging Default logs i, w and e 1`] = `
+Array [
+  Array [
+    "i:",
+  ],
+  Array [
+    "w WARNING:",
+  ],
+  Array [
+    "e ERROR:",
+  ],
+]
+`;

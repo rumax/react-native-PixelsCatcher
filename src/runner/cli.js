@@ -44,11 +44,19 @@ if (!configuration) {
   process.exit(-1);
 }
 
+
+const fullConfig = readConfig();
+const config = fullConfig[platform];
+
+if (!config) {
+  log.e(TAG, `Cannot find configuration for plarform [${platform}] in `
+    + `config:\n ${JSON.stringify(fullConfig, null, 2)}`);
+  process.exit(-1);
+}
+
+log.setLevel(fullConfig.logLevelel);
 log.i(TAG, `Starting snapshots with [${configuration}] configuration for [${platform}]`);
-
-const config = readConfig(platform);
-
-log.i(TAG, 'Using config\n' + JSON.stringify(config, null, 2));
+log.v(TAG, 'Using config\n' + JSON.stringify(config, null, 2));
 
 const getParamFromConfig = (paramName: string) =>
   (config[configuration] || {})[paramName] || config[paramName];
