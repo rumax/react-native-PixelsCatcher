@@ -14,6 +14,10 @@ Library for testing React Native UI components and screens
 
     $ npm install pixels-catcher --save-dev
 
+or
+
+    $ yarn add pixels-catcher
+
 The library depend on
 [react-native-save-view](https://www.npmjs.com/package/react-native-save-view)
 which is used to convert `View` to base64 data and has native implementation.
@@ -96,8 +100,9 @@ where
     - `deviceParams` - [Optional] Array of emulator params like -no-audio,
       -no-snapshot, -no-window, etc.
     - `physicalDevice` - [Optional] Boolean value that indicates if real device should be used (*iOS devices are not supported yet*)
-    - `packageName` - Android package name, example:
-      com.rumax.pixelscatcher.testapp
+    - `packageName` -
+        **Android** package name, example: *com.rumax.pixelscatcher.testapp**.
+      **iOS** bundle identifier, example: *org.reactjs.native.example.demo*
     - `snapshotsPath` - Path to snapshots, example: ./snapshotsImages
   - `SHARED_CONFIGURATION`. In case more that one configurations exists, shared
     parameters can be moved here.
