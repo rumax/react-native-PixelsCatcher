@@ -33,6 +33,11 @@
     "dev": {},
     "debug": {
       "appFile": "./ios/build/Build/Products/Debug-iphonesimulator/demo.app"
+    },
+    "debugIphone6": {
+      "deviceName": "iPhone 6",
+      "snapshotsPath": "./snapshots/iPhone6",
+      "appFile": "./ios/build/Build/Products/Debug-iphonesimulator/demo.app"
     }
   }
 }
