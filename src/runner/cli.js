@@ -154,6 +154,9 @@ ${results.map((result: any): any => `
 Total tests: ${totalTests}
 Passed tests: ${passedTests}
 Failed tests: ${totalTests - passedTests}
+${results
+    .filter((result: any) => result.status === 'FAILED')
+    .map((result: any): any => `  - ${result.snapshotName}`).join('\n')}
 --------------------------------------------------------------------------------
 `);
   const isPassed = totalTests === passedTests;
