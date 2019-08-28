@@ -41,7 +41,7 @@ const readConfigFromFile = (): any => {
   return JSON.parse(fileContent);
 };
 
-module.exports = (platform: string) => {
+module.exports = () => {
   const pixelsCatcherConfig = readConfigFromPackageJSON() ||
     readConfigFromFile();
 
@@ -51,13 +51,5 @@ module.exports = (platform: string) => {
     process.exit(-1);
   }
 
-  const config = pixelsCatcherConfig[platform];
-
-  if (!config) {
-    log.e(TAG, `Cannot find configuration for plarform [${platform}] in `
-      + `config:\n ${JSON.stringify(pixelsCatcherConfig, null, 2)}`);
-    process.exit(-1);
-  }
-
-  return config;
+  return pixelsCatcherConfig;
 };

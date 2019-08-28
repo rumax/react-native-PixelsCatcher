@@ -2,12 +2,16 @@
 
 exports[`readConfig read config from package.json 1`] = `
 Object {
-  "_content": "platform config content from package.json",
+  "android": Object {
+    "_content": "platform config content from package.json",
+  },
 }
 `;
 
 exports[`readConfig read config from pixels-catcher.json 1`] = `
 Object {
-  "_content": "platform config content from pixels-catcher.json",
+  "ios": Object {
+    "_content": "platform config content from pixels-catcher.json",
+  },
 }
 `;
