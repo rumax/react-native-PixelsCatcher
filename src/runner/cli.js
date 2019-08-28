@@ -135,7 +135,10 @@ const stopByTimeout = () => {
   if (stopByTimeoutID) {
     clearTimeout(stopByTimeoutID);
   }
-  stopByTimeoutID = setTimeout(testingCompleted, 25000);
+  stopByTimeoutID = setTimeout(() => {
+    log.i(TAG, 'Stop tests by timeout');
+    testingCompleted();
+  }, 25000);
 };
 
 const onAppActivity = () => {
