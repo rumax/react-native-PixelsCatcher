@@ -84,7 +84,9 @@ PixelsCatcher: {
     CONFIGURATION: {
       ...CONFIGURATION_SPECIFIC
     }
-  }
+  },
+  logLevelel: number,
+  timeout: number
 }
 ```
 
@@ -104,8 +106,9 @@ where
         **Android** package name, example: *com.rumax.pixelscatcher.testapp**.
       **iOS** bundle identifier, example: *org.reactjs.native.example.demo*
     - `snapshotsPath` - Path to snapshots, example: ./snapshotsImages
-  - `SHARED_CONFIGURATION`. In case more that one configurations exists, shared
-    parameters can be moved here.
+  - `SHARED_CONFIGURATION`. In case more that one configurations exists, shared parameters can be moved here.
+  - `logLevelel` - log levels: `e`, `w`, `i`, `d`, `v`. This corresponds to ERROR, WARN, INFO, DEBUG, VERBOSE
+  - `timeout` - tests timeout, with default value 2500ms. If timeout is reached, tests will fail automatically
 
 Example for `package.json` configuration (or check
 [demo](https://github.com/rumax/PixelsCatcher/tree/master/demo) project):

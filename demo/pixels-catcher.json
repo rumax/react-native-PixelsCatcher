@@ -40,5 +40,6 @@
       "appFile": "./ios/build/Build/Products/Debug-iphonesimulator/demo.app"
     }
   },
-  "logLevelel": "v"
+  "logLevelel": "v",
+  "timeout": 30000
 }

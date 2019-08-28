@@ -68,6 +68,7 @@ const activityName = getParamFromConfig('activityName') || 'MainActivity';
 const appFile = getParamFromConfig('appFile');
 const packageName = getParamFromConfig('packageName');
 const snapshotsPath = getParamFromConfig('snapshotsPath');
+const timeout = fullConfig.timeout || 25 * 1000; // 25 sec is default
 
 if (!deviceName) {
   log.e(TAG, 'Valid device name is required, check "PixelsCatcher.deviceName" '
@@ -136,9 +137,9 @@ const stopByTimeout = () => {
     clearTimeout(stopByTimeoutID);
   }
   stopByTimeoutID = setTimeout(() => {
-    log.i(TAG, 'Stop tests by timeout');
+    log.e(TAG, 'Stop tests by timeout');
     testingCompleted();
-  }, 25000);
+  }, timeout);
 };
 
 const onAppActivity = () => {
