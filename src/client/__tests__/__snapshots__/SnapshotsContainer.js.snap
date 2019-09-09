@@ -6,7 +6,7 @@ exports[`SnapshotsContainer Renders empty view and reports it to the server if n
 [MockFunction] {
   "calls": Array [
     Array [
-      "APP::SNAPSHOTS_CONTAINER",
+      "PIXELS_CATCHER::APP::SNAPSHOTS_CONTAINER",
       "No snapshots registered",
     ],
   ],
@@ -25,19 +25,4 @@ exports[`SnapshotsContainer Renders registered snapshot 1`] = `
 />
 `;
 
-exports[`SnapshotsContainer Renders registered snapshot: render snapshot reported 1`] = `
-[MockFunction] {
-  "calls": Array [
-    Array [
-      "APP::SNAPSHOTS_CONTAINER",
-      "render SnapshotsContainer",
-    ],
-  ],
-  "results": Array [
-    Object {
-      "type": "return",
-      "value": undefined,
-    },
-  ],
-}
-`;
+exports[`SnapshotsContainer Renders registered snapshot: render snapshot reported 1`] = `[MockFunction]`;

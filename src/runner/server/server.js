@@ -97,8 +97,8 @@ const postHandlers = {
     res.end();
   },
   '/log': ({ res, fields }: any) => {
-    const { tag, args } = fields;
-    log.v(TAG, `=> ${tag}: `, ...args);
+    const { tag, args, logLevel } = fields;
+    log[logLevel || 'v'](tag, ...args);
     res.write(JSON.stringify({ result: 'OK' }));
     res.end();
   },
