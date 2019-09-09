@@ -25,9 +25,9 @@
   "license": "MIT",
   "dependencies": {
     "formidable": "^1.2.1",
-    "multer": "^1.4.1",
-    "pixelmatch": "^4.0.2",
-    "pngjs": "^3.3.3",
+    "multer": "^1.4.2",
+    "pixelmatch": "5.0.2",
+    "pngjs": "^3.4.0",
     "react-native-save-view": "0.2.3"
   },
   "peerDependencies": {
