@@ -16,7 +16,7 @@ export const Snapshot = require('./Snapshot').default;
 
 export const registerSnapshot = require('./snapshotsManager').registerSnapshot;
 
-const TAG = 'APP::SNAPSHOT';
+const TAG = 'PIXELS_CATCHER::APP::SNAPSHOT';
 
 type ConfigType = { baseUrl?: string };
 

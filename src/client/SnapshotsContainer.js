@@ -14,7 +14,7 @@ import endOfTest from './utils/endOfTest';
 import log from './utils/log';
 import reporter from './utils/reporter';
 
-const TAG = 'APP::SNAPSHOTS_CONTAINER';
+const TAG = 'PIXELS_CATCHER::APP::SNAPSHOTS_CONTAINER';
 
 export default class SnapshotsContainer extends Component<*, *> {
   // eslint-disable-next-line react/sort-comp
@@ -49,7 +49,7 @@ export default class SnapshotsContainer extends Component<*, *> {
       return null;
     }
 
-    log.v(TAG, 'render SnapshotsContainer');
+    log.i(TAG, `rendering snapshot [${ActiveSnapshot.snapshotName}]`);
 
     return (
       <ActiveSnapshot ref={this._onRef} onReady={this._onSnapshotReady} />
@@ -102,9 +102,9 @@ export default class SnapshotsContainer extends Component<*, *> {
         try {
           const isEqual = await compareToReference(snapshotName, base64);
           if (!isEqual) {
-            log.e(`Snapshot ${snapshotName} failed`);
+            log.e(TAG, `Snapshot ${snapshotName} failed`);
           } else {
-            log.i(`Snapshot ${snapshotName} passed`);
+            log.i(TAG, `Snapshot ${snapshotName} passed`);
           }
           reporter.report({
             snapshotName,

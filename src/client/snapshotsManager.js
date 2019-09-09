@@ -8,7 +8,7 @@
 import log from './utils/log';
 
 const snapshots = [];
-const TAG = 'APP::SNAPSHOTS_MANAGER';
+const TAG = 'PIXELS_CATCHER::APP::SNAPSHOTS_MANAGER';
 
 
 export function registerSnapshot(component: any) {

@@ -12,7 +12,7 @@ import log from './utils/log';
 
 type SnapshotPropsType = { onReady: Function };
 
-const TAG = 'APP::SNAPSHOT';
+const TAG = 'PIXELS_CATCHER::APP::SNAPSHOT';
 const ERROR_NO_IMPLEMENTED = 'Not implemented. Should be implemented by actual snapshot';
 
 export default class Snapshot extends Component<SnapshotPropsType, void> {
