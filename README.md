@@ -18,11 +18,13 @@ or
 
     $ yarn add pixels-catcher
 
-The library depend on
+The library depends on
 [react-native-save-view](https://www.npmjs.com/package/react-native-save-view)
 which is used to convert `View` to base64 data and has native implementation.
 Starting from [RN 0.60](https://github.com/facebook/react-native/releases/tag/v0.60.0) there is no need to link - [Native Modules are now Autolinked](https://facebook.github.io/react-native/blog/2019/07/03/version-60), otherwise check
 [official react native documentation](https://facebook.github.io/react-native/docs/linking-libraries-ios).
+
+*Note: [react-native-save-view](https://www.npmjs.com/package/react-native-save-view) can be added to devDependencies of you project, otherwise auto-linking may not work. Check the version in [package.json](https://github.com/rumax/react-native-PixelsCatcher/blob/master/package.json#L31)*
 
 ### Create test
 
