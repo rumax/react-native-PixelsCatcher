@@ -119,7 +119,7 @@ class AndroidEmulator implements DeviceInterface {
     }
 
     if (!deviceBooted) {
-      log.e(TAG, 'Failed to load emulator in 30 seconds. Check your emulator. Or try to tun it with "-no-snapshot"');
+      log.e(TAG, 'Failed to load emulator in 30 seconds. Check your emulator. Or try to run it with "-no-snapshot"');
       throw new Error('Device is not loaded in 30 seconds');
     }
   }
