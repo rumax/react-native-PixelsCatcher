@@ -12,14 +12,9 @@ const { spawn } = require('child_process');
 const exec = require('../exec');
 const delay = require('../delay');
 const log = require('../log');
+const emulatorCmd = require('./AndroidEmulatorCmd');
 
 const TAG = 'PIXELS_CATCHER::UTIL_EMULATOR';
-const EMULATOR_CMD =
-   process.env.ANDROID_EMULATOR
-   || (
-     exec('uname -s').trim() === 'Darwin'
-       ? `${process.env.HOME || ''}/Library/Android/sdk/emulator/emulator`
-       : 'emulator');
 
 class AndroidEmulator implements DeviceInterface {
   _name: string;
@@ -83,7 +78,7 @@ class AndroidEmulator implements DeviceInterface {
     }
 
     log.d(TAG, `Starting emulator [${this._name}]`);
-    const result = spawn(EMULATOR_CMD, [
+    const result = spawn(emulatorCmd, [
       '-avd', this._name,
       ...params,
     ].filter((value: any): any => Boolean(value)));
