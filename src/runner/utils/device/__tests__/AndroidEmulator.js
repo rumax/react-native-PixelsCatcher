@@ -7,6 +7,7 @@ jest.mock('../../log', () => ({
   d: jest.fn(),
   e: jest.fn(),
 }));
+jest.mock('../AndroidEmulatorCmd', () => 'emulator');
 
 const { spawn } = require('child_process');
 

@@ -145,7 +145,7 @@ Example for `package.json` configuration (or check
 
 ### Run android
 
-*To run android emulator, [emulator command](https://developer.android.com/studio/run/emulator-commandline) is used. It has to be defined in the system PATH or an `ANDROID_EMULATOR` system variable can be used to specify it.*
+*To run android emulator, [emulator command](https://developer.android.com/studio/run/emulator-commandline) is used. It has to be defined in the system PATH or an `ANDROID_EMULATOR` system variable can be used to specify it. If none is defined, it will try to fallback to `~/Library/Android/sdk/emulator/emulator` on mac*
 
 There are two options to run UI snapshots:
 
