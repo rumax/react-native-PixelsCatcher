@@ -55,13 +55,19 @@ const postHandlers = {
     fs.writeFile(snapshotFile, base64, { encoding: 'base64' }, (writeError: any) => {
       if (!writeError) {
         log.v(TAG, 'File created');
-        const differentPixelsCount = compareImages(
-          snapshotFile,
-          expectedFile,
-          diffFile,
-        );
+        let differentPixelsCount = -1;
 
-        if (!differentPixelsCount) {
+        try {
+          differentPixelsCount = compareImages(
+            snapshotFile,
+            expectedFile,
+            diffFile,
+          );
+        } catch (err) {
+          log.e(TAG, `Failed to compare images: [${err.message}]`, err);
+        }
+
+        if (differentPixelsCount === 0) {
           log.v(TAG, 'All ok', differentPixelsCount);
           res.write(JSON.stringify({ result: 'OK' }));
         } else {
