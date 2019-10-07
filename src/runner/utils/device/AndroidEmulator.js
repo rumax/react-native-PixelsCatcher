@@ -106,11 +106,11 @@ class AndroidEmulator implements DeviceInterface {
       log.v(TAG, `on close: child process exited with code ${code}`);
     });
 
-    let tryCnt = 30;
+    let tryCnt = 60 * 2 / 5; // 2 minutes with 5000 delay
 
     while (--tryCnt >= 0 && !deviceBooted) {
       log.v(TAG, 'awaiting when device is booted');
-      await delay(1000);
+      await delay(5000);
     }
 
     if (!deviceBooted) {
