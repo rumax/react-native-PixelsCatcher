@@ -1,6 +1,7 @@
 snapshots/*/diffs/
 snapshots/*/uploads/
 package-lock.json
+yarn.lock
 
 # OSX
 #
@@ -24,7 +25,6 @@ DerivedData
 *.hmap
 *.ipa
 *.xcuserstate
-project.xcworkspace
 
 # Android/IntelliJ
 #
@@ -44,6 +44,7 @@ yarn-error.log
 buck-out/
 \.buckd/
 *.keystore
+!debug.keystore
 
 # fastlane
 #
