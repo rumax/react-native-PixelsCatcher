@@ -58,14 +58,17 @@ log.setLevel(fullConfig.logLevelel);
 log.i(TAG, `Starting snapshots with [${configuration}] configuration for [${platform}]`);
 log.v(TAG, 'Using config\n' + JSON.stringify(config, null, 2));
 
-const getParamFromConfig = (paramName: string) =>
-  (config[configuration] || {})[paramName] || config[paramName];
+const getParamFromConfig = (paramName: string) => {
+  const value = (config[configuration] || {})[paramName];
+  return value !== undefined ? value : config[paramName];
+};
 
+const activityName = getParamFromConfig('activityName') || 'MainActivity';
+const appFile = getParamFromConfig('appFile');
+const canStopDevice = getParamFromConfig('canStopDevice');
 const deviceName = getParamFromConfig('deviceName');
 const deviceParams = getParamFromConfig('deviceParams');
 const isPhysicalDevice = getParamFromConfig('physicalDevice');
-const activityName = getParamFromConfig('activityName') || 'MainActivity';
-const appFile = getParamFromConfig('appFile');
 const packageName = getParamFromConfig('packageName');
 const snapshotsPath = getParamFromConfig('snapshotsPath');
 const timeout = fullConfig.timeout || 25 * 1000; // 25 sec is default
@@ -76,7 +79,12 @@ if (!deviceName) {
   process.exit(-1);
 }
 
-const device: DeviceInterface = getDevice(deviceName, platform, isPhysicalDevice);
+const device: DeviceInterface = getDevice(
+  deviceName,
+  platform,
+  isPhysicalDevice,
+  canStopDevice,
+);
 
 const DEV_MODE = !appFile;
 
@@ -88,7 +96,8 @@ log.i(TAG, `Using config:
   - deviceName: [${deviceName}]
   - deviceParams: [${deviceParams}]
   - packageName: [${packageName}]
-  - snapshotsPath: [${snapshotsPath}]`);
+  - snapshotsPath: [${snapshotsPath}]
+  - canStopDevice: [${canStopDevice}]`);
 
 if (!packageName) {
   log.e(TAG, 'Package name is required');

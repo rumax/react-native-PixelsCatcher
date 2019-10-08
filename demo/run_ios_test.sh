@@ -21,5 +21,4 @@ xcrun xcodebuild \
 
 cd ..
 
-../node_modules/.bin/flow-node ../src/runner/cli.js ios debug || true
-../node_modules/.bin/flow-node ../src/runner/cli.js ios debugIphone6 || true
+../node_modules/.bin/flow-node ../src/runner/cli.js ios test
