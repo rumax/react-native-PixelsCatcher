@@ -19,8 +19,11 @@ const TAG = 'PIXELS_CATCHER::UTIL_EMULATOR';
 class AndroidEmulator implements DeviceInterface {
   _name: string;
 
-  constructor(name: string) {
+  _canStopDevice: boolean;
+
+  constructor(name: string, canStopDevice?: boolean) {
     this._name = name;
+    this._canStopDevice = Boolean(canStopDevice);
   }
 
 
@@ -73,8 +76,14 @@ class AndroidEmulator implements DeviceInterface {
     }
 
     if (this._getActiveDevice()) {
-      log.e(TAG, 'Other emulator already started, stopping it');
-      await this.stop();
+      log.e(TAG, 'Other emulator already started');
+      if (this._canStopDevice) {
+        log.e(TAG, 'Stopping emulator');
+        await this.stop();
+      } else {
+        log.d(TAG, 'Using active emulator');
+        return;
+      }
     }
 
     log.d(TAG, `Starting emulator [${this._name}]`);
@@ -106,11 +115,11 @@ class AndroidEmulator implements DeviceInterface {
       log.v(TAG, `on close: child process exited with code ${code}`);
     });
 
-    let tryCnt = 30;
+    let tryCnt = 60 * 2 / 5; // 2 minutes with 5000 delay
 
     while (--tryCnt >= 0 && !deviceBooted) {
       log.v(TAG, 'awaiting when device is booted');
-      await delay(1000);
+      await delay(5000);
     }
 
     if (!deviceBooted) {
@@ -121,6 +130,10 @@ class AndroidEmulator implements DeviceInterface {
 
 
   async stop() {
+    if (!this._canStopDevice) {
+      log.v(TAG, 'Stopping device is restricted in config');
+      return;
+    }
     log.v(TAG, 'Stopping active device');
     try {
       exec(`adb -s ${this._getActiveDevice()} emu kill;`);

@@ -9,7 +9,7 @@
 export type StartParamsType = Array<string>;
 
 export interface DeviceInterface {
-  constructor(deviceName: string): void,
+  constructor(deviceName: string, canStopDevice?: boolean): void,
 
   start(params: StartParamsType): Promise<void>,
 

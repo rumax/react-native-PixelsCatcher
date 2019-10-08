@@ -18,15 +18,16 @@ module.exports = (
   name: string,
   platform: string,
   isPhysicalDevice?: boolean,
+  canStopDevice?: boolean = true,
 ): DeviceInterface => {
   if (platform === 'android') {
     return isPhysicalDevice
       ? new AndroidDevice(name)
-      : new AndroidEmulator(name);
+      : new AndroidEmulator(name, canStopDevice);
   }
 
   if (!isPhysicalDevice) {
-    return new IosSimulator(name);
+    return new IosSimulator(name, canStopDevice);
   }
 
   log.e(TAG, 'iOS devices are not supported yet');

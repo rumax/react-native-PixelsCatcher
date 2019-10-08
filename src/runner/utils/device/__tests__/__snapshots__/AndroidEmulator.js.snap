@@ -2,6 +2,7 @@
 
 exports[`AndroidEmulator initialise emulator 1`] = `
 AndroidEmulator {
+  "_canStopDevice": false,
   "_name": "emulator_name",
 }
 `;

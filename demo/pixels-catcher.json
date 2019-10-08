@@ -17,6 +17,14 @@
       ],
       "appFile": "./android/app/build/outputs/apk/debug/app-debug.apk"
     },
+    "test": {
+      "canStopDevice": false,
+      "deviceParams": [
+        "-no-audio",
+        "-no-snapshot"
+      ],
+      "appFile": "./android/app/build/outputs/apk/debug/app-debug.apk"
+    },
     "release": {
       "deviceParams": [
         "-no-audio",
@@ -33,6 +41,10 @@
     "dev": {},
     "debug": {
       "appFile": "./ios/build/Build/Products/Debug-iphonesimulator/demo.app"
+    },
+    "test": {
+      "appFile": "./ios/build/Build/Products/Debug-iphonesimulator/demo.app",
+      "canStopDevice": false
     },
     "debugIphone6": {
       "deviceName": "iPhone 6",

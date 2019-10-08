@@ -25,8 +25,11 @@ type DeviceType = {
 class IOSSimulator implements DeviceInterface {
   _name: string;
 
-  constructor(name: string) {
+  _canStopDevice: boolean;
+
+  constructor(name: string, canStopDevice?: boolean) {
     this._name = name;
+    this._canStopDevice = Boolean(canStopDevice);
   }
 
 
@@ -166,6 +169,11 @@ class IOSSimulator implements DeviceInterface {
 
 
   async stop() {
+    if (!this._canStopDevice) {
+      log.v(TAG, 'Stopping device is restricted in config');
+      return;
+    }
+
     log.v(TAG, 'Stopping all devices');
 
     exec('osascript -e \'tell application "iOS Simulator" to quit\'');
