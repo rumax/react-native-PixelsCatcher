@@ -24,7 +24,7 @@
     "eslint": "^6.5.1",
     "jest": "^24.9.0",
     "metro-react-native-babel-preset": "^0.56.0",
-    "pixels-catcher": "^0.5.2",
+    "pixels-catcher": "^0.5.3",
     "react-native-webview": "^7.4.1",
     "react-test-renderer": "16.9.0"
   },
