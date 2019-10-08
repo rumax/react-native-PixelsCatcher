@@ -76,8 +76,8 @@ import com.android.build.OutputFile
  */
 
 project.ext.react = [
-    entryFile: System.getProperty("entryFile") ?: "index.js",
-    bundleInDebug: System.getProperty("bundleInDebug") ? System.getProperty("bundleInDebug").toBoolean() : false,
+    entryFile: System.getenv('ENTRY_FILE') ?: "index.js",
+    bundleInDebug: System.getenv("BUNDLE_IN_DEBUG") ? System.getenv("BUNDLE_IN_DEBUG").toBoolean() : false,
     enableHermes: false,  // clean and rebuild if changing
 ]
 

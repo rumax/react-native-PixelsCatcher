@@ -2,9 +2,12 @@
 set -x
 set -e
 
+export ENTRY_FILE="indexSnapshot.js"
+export BUNDLE_IN_DEBUG="true"
+
 cd android
 rm -rf build .gradle/ app/build
-./gradlew assembleDebug -DentryFile="indexSnapshot.js" -DbundleInDebug=true
+./gradlew assembleDebug
 cd ..
 
 ../node_modules/.bin/flow-node ../src/runner/cli.js android test
