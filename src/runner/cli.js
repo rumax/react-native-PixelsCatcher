@@ -71,6 +71,7 @@ const deviceParams = getParamFromConfig('deviceParams');
 const isPhysicalDevice = getParamFromConfig('physicalDevice');
 const packageName = getParamFromConfig('packageName');
 const snapshotsPath = getParamFromConfig('snapshotsPath');
+const port = getParamFromConfig('port');
 const timeout = fullConfig.timeout || 25 * 1000; // 25 sec is default
 
 if (!deviceName) {
@@ -97,7 +98,8 @@ log.i(TAG, `Using config:
   - deviceParams: [${deviceParams}]
   - packageName: [${packageName}]
   - snapshotsPath: [${snapshotsPath}]
-  - canStopDevice: [${canStopDevice}]`);
+  - canStopDevice: [${canStopDevice}]
+  - port: [${port}]`);
 
 if (!packageName) {
   log.e(TAG, 'Package name is required');
@@ -226,7 +228,7 @@ const startIOS = async () => {
 
 const start = async () => {
   log.d(TAG, 'Starting server');
-  await server.start(onTestsCompleted, snapshotsPath, onAppActivity);
+  await server.start(onTestsCompleted, snapshotsPath, onAppActivity, port);
   log.d(TAG, 'Server started');
 
   if (DEV_MODE) {
