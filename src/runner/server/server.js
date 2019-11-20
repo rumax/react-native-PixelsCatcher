@@ -13,7 +13,7 @@ const path = require('path');
 const compareImages = require('./compareImages');
 const log = require('../utils/log');
 
-const PORT = 3000;
+const DEFAULT_PORT = 3000;
 const TAG = 'PIXELS_CATCHER::SERVER';
 
 let server;
@@ -114,6 +114,7 @@ const startServer = (
   onTestsCompleted: Function,
   snapshotsPath: string,
   onAppActivity: Function,
+  port?: number = DEFAULT_PORT,
 ) => {
   if (server) {
     throw new Error('Server already started');
@@ -157,7 +158,13 @@ const startServer = (
       res.end();
     }
     onAppActivity();
-  }).listen(PORT);
+  }).listen(port, (err: any) => {
+    if (err) {
+      log.e(TAG, 'Server error:', err);
+    }
+
+    log.d(TAG, `server is listening on port [${port}]`);
+  });
 
   server.on('connection', (socket: any) => {
     // Add a newly connected socket
@@ -177,7 +184,7 @@ const startServer = (
 
 const stopServer = () => {
   if (!server) {
-    log.d('Server is not started');
+    log.d(TAG, 'Server is not started');
     return;
   }
   server.close(() => { log.i(TAG, 'Server closed!'); });

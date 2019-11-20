@@ -109,6 +109,7 @@ where
         **Android** package name, example: *com.rumax.pixelscatcher.testapp**.
       **iOS** bundle identifier, example: *org.reactjs.native.example.demo*
     - `snapshotsPath` - Path to snapshots, example: ./snapshotsImages
+    - `port` - Server port. Default value is `3000`
   - `SHARED_CONFIGURATION`. In case more that one configurations exists, shared parameters can be moved here.
   - `logLevelel` - log levels: `e`, `w`, `i`, `d`, `v`. This corresponds to ERROR, WARN, INFO, DEBUG, VERBOSE
   - `timeout` - tests timeout, with default value 2500ms. If timeout is reached, tests will fail automatically
