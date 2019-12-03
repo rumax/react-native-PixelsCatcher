@@ -44,7 +44,6 @@ if (!configuration) {
   process.exit(-1);
 }
 
-
 const fullConfig = readConfig();
 const config = fullConfig[platform];
 
@@ -54,38 +53,46 @@ if (!config) {
   process.exit(-1);
 }
 
+if (!config[configuration]) {
+  log.e(TAG, `Valid configuration is required. Cannot find [${configuration}]`);
+  process.exit(-1);
+}
+
 log.setLevel(fullConfig.logLevelel);
 log.i(TAG, `Starting snapshots with [${configuration}] configuration for [${platform}]`);
 log.v(TAG, 'Using config\n' + JSON.stringify(config, null, 2));
 
-const getParamFromConfig = (paramName: string) => {
-  const value = (config[configuration] || {})[paramName];
-  return value !== undefined ? value : config[paramName];
+const getParamFromConfig = (paramName: string, defaultValue: any) => {
+  if (config[configuration][paramName] !== undefined) {
+    return config[configuration][paramName];
+  }
+
+  if (config[paramName] !== undefined) {
+    return config[paramName];
+  }
+
+  return fullConfig[paramName] !== undefined
+    ? fullConfig[paramName]
+    : defaultValue;
 };
 
-const activityName = getParamFromConfig('activityName') || 'MainActivity';
-const appFile = getParamFromConfig('appFile');
-const canStopDevice = getParamFromConfig('canStopDevice');
-const deviceName = getParamFromConfig('deviceName');
-const deviceParams = getParamFromConfig('deviceParams');
-const isPhysicalDevice = getParamFromConfig('physicalDevice');
-const packageName = getParamFromConfig('packageName');
-const snapshotsPath = getParamFromConfig('snapshotsPath');
-const port = getParamFromConfig('port');
-const timeout = fullConfig.timeout || 25 * 1000; // 25 sec is default
+const activityName = getParamFromConfig('activityName', 'MainActivity');
+const appFile = getParamFromConfig('appFile', '');
+const canStopDevice = getParamFromConfig('canStopDevice', false);
+const deviceName = getParamFromConfig('deviceName', '');
+const deviceParams = getParamFromConfig('deviceParams', []);
+const deviceStartTimeout = getParamFromConfig('deviceStartTimeout', 60 * 1000); // 60 sec is default;
+const isPhysicalDevice = getParamFromConfig('physicalDevice', false);
+const packageName = getParamFromConfig('packageName', '');
+const port = getParamFromConfig('port', 3000);
+const snapshotsPath = getParamFromConfig('snapshotsPath', '');
+const timeout = getParamFromConfig('timeout', 25 * 1000); // 25 sec is default
 
 if (!deviceName) {
   log.e(TAG, 'Valid device name is required, check "PixelsCatcher.deviceName" '
     + 'sproperty in package.json');
   process.exit(-1);
 }
-
-const device: DeviceInterface = getDevice(
-  deviceName,
-  platform,
-  isPhysicalDevice,
-  canStopDevice,
-);
 
 const DEV_MODE = !appFile;
 
@@ -99,7 +106,9 @@ log.i(TAG, `Using config:
   - packageName: [${packageName}]
   - snapshotsPath: [${snapshotsPath}]
   - canStopDevice: [${canStopDevice}]
-  - port: [${port}]`);
+  - port: [${port}]
+  - timeout: [${timeout}]
+  - deviceStartTimeout: [${deviceStartTimeout}]`);
 
 if (!packageName) {
   log.e(TAG, 'Package name is required');
@@ -121,6 +130,14 @@ if (!DEV_MODE) {
     process.exit(-1);
   }
 }
+
+const device: DeviceInterface = getDevice(
+  deviceName,
+  platform,
+  isPhysicalDevice,
+  canStopDevice,
+  deviceStartTimeout,
+);
 
 let stopByTimeoutID: TimeoutID | void;
 

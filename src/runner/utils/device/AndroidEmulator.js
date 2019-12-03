@@ -21,9 +21,12 @@ class AndroidEmulator implements DeviceInterface {
 
   _canStopDevice: boolean;
 
-  constructor(name: string, canStopDevice?: boolean) {
+  _deviceStartTimeout: number;
+
+  constructor(name: string, canStopDevice?: boolean, deviceStartTimeout?: number = 60 * 1000) {
     this._name = name;
     this._canStopDevice = Boolean(canStopDevice);
+    this._deviceStartTimeout = deviceStartTimeout;
   }
 
 
@@ -68,6 +71,7 @@ class AndroidEmulator implements DeviceInterface {
 
 
   async start(params: any = []) {
+    const startAt = (new Date()).getTime();
     if (!this._isDeviceAvailable(this._name)) {
       log.e(TAG, `Invalid name provided [${this._name}], check that the name is \
   correct and device is available. Available devices:
@@ -102,8 +106,12 @@ class AndroidEmulator implements DeviceInterface {
     });
 
     result.stderr.on('data', (data: any): any => {
-      // Some data appears in stderr when running the emulator first time
       const stringRepresentation = data.toString();
+      if (stringRepresentation.indexOf('WARNING:') === 0) {
+        log.w(TAG, `Check the emulator settings to avoid warnings: ${stringRepresentation}`);
+        return;
+      }
+      // Some data appears in stderr when running the emulator first time
       if (stringRepresentation.indexOf('.avd/snapshots/default_boot/ram.img') !== -1) {
         return;
       }
@@ -115,16 +123,20 @@ class AndroidEmulator implements DeviceInterface {
       log.v(TAG, `on close: child process exited with code ${code}`);
     });
 
-    let tryCnt = 60 * 2 / 5; // 2 minutes with 5000 delay
+    let startingTime = ((new Date()).getTime() - startAt);
 
-    while (--tryCnt >= 0 && !deviceBooted) {
+    while (
+      (startingTime < this._deviceStartTimeout)
+      && !deviceBooted
+    ) {
       log.v(TAG, 'awaiting when device is booted');
       await delay(5000);
+      startingTime = ((new Date()).getTime() - startAt);
     }
 
     if (!deviceBooted) {
-      log.e(TAG, 'Failed to load emulator in 30 seconds. Check your emulator. Or try to run it with "-no-snapshot"');
-      throw new Error('Device is not loaded in 30 seconds');
+      log.e(TAG, `Failed to load emulator in ${startingTime} ms (${startingTime / 1000} seconds). Check your emulator. Or try to run it with "-no-snapshot"`);
+      throw new Error(`Failed to load emulator in ${startingTime} seconds`);
     }
   }
 

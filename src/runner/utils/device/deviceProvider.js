@@ -19,11 +19,12 @@ module.exports = (
   platform: string,
   isPhysicalDevice?: boolean,
   canStopDevice?: boolean = true,
+  deviceStartTimeout?: number,
 ): DeviceInterface => {
   if (platform === 'android') {
     return isPhysicalDevice
       ? new AndroidDevice(name)
-      : new AndroidEmulator(name, canStopDevice);
+      : new AndroidEmulator(name, canStopDevice, deviceStartTimeout);
   }
 
   if (!isPhysicalDevice) {

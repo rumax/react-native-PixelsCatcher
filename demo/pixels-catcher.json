@@ -18,7 +18,7 @@
       "appFile": "./android/app/build/outputs/apk/debug/app-debug.apk"
     },
     "test": {
-      "port": 3001,
+      "port": 3000,
       "canStopDevice": false,
       "deviceParams": [
         "-no-audio",
@@ -33,7 +33,8 @@
         "-no-window"
       ],
       "appFile": "./android/app/build/outputs/apk/release/app-release.apk"
-    }
+    },
+    "deviceStartTimeout": 80000
   },
   "ios": {
     "deviceName": "iPhone 8 Plus",
@@ -56,5 +57,5 @@
     }
   },
   "logLevelel": "v",
-  "timeout": 30000
+  "timeout": 37000
 }

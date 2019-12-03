@@ -113,6 +113,7 @@ where
   - `SHARED_CONFIGURATION`. In case more that one configurations exists, shared parameters can be moved here.
   - `logLevelel` - log levels: `e`, `w`, `i`, `d`, `v`. This corresponds to ERROR, WARN, INFO, DEBUG, VERBOSE
   - `timeout` - tests timeout, with default value 2500ms. If timeout is reached, tests will fail automatically
+  - `deviceStartTimeout` [Optional] Number parameter that defines the timeout required to start android emulator. For other devices it is ignored
   - `canStopDevice` [Optional] Boolean parameter that allows to stop device (used to restart simulator/emulator). If set to false, the runner will start a new simulator/emulator if none is started. If a simulator/emulator is already started, it will be used for tests. The runner will also stop the device after tests. **If set to "false" it is possible that wrong device will be used!**. Default value is `true`.
 
 Example for `package.json` configuration (or check
