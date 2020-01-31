@@ -120,7 +120,12 @@ class IOSSimulator implements DeviceInterface {
 
 
   async _open(uid: string) {
-    exec(`open -a Simulator --args -CurrentDeviceUDID ${uid}`);
+    const activeXcode = exec('xcode-select -p').trim();
+    log.v(TAG, `Active Xcode: ${activeXcode}`);
+    const simulatorApp = `${activeXcode}/Applications/Simulator.app`;
+    log.v(TAG, `starting ${simulatorApp}`);
+    exec(`open -a ${simulatorApp} --args -CurrentDeviceUDID ${uid}`);
+    log.v(TAG, 'started');
   }
 
 
