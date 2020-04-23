@@ -30,28 +30,38 @@ const serverLog = async (logLevel: LogLevelType, tag: string, ...args: any) => {
 
 const log = {
   v: (tag: string, ...args: any) => {
-    consoleLog(tag, ...args);
-    serverLog('v', tag, ...args);
+    global.requestAnimationFrame(() => {
+      consoleLog(tag, ...args);
+      serverLog('v', tag, ...args);
+    });
   },
 
   d: (tag: string, ...args: any) => {
-    consoleLog(tag, ...args);
-    serverLog('d', tag, ...args);
+    global.requestAnimationFrame(() => {
+      consoleLog(tag, ...args);
+      serverLog('d', tag, ...args);
+    });
   },
 
   i: (tag: string, ...args: any) => {
-    consoleLog(tag, ...args);
-    serverLog('i', tag, ...args);
+    global.requestAnimationFrame(() => {
+      consoleLog(tag, ...args);
+      serverLog('i', tag, ...args);
+    });
   },
 
   w: (tag: string, ...args: any) => {
-    consoleLog(`${tag} WARNING:`, ...args);
-    serverLog('w', `${tag} WARNING:`, ...args);
+    global.requestAnimationFrame(() => {
+      consoleLog(`${tag} WARNING:`, ...args);
+      serverLog('w', `${tag} WARNING:`, ...args);
+    });
   },
 
   e: (tag: string, ...args: any) => {
-    consoleLog(`${tag} ERROR:`, ...args);
-    serverLog('e', `${tag} ERROR:`, ...args);
+    global.requestAnimationFrame(() => {
+      consoleLog(`${tag} ERROR:`, ...args);
+      serverLog('e', `${tag} ERROR:`, ...args);
+    });
   },
 };
 

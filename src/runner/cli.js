@@ -159,6 +159,14 @@ const onAppActivity = () => {
 
 const onTestsCompleted = async ({ message, results }: any) => {
   const totalTests = results.length;
+  const minRenderTime = {
+    name: '-',
+    time: Number.MAX_VALUE,
+  };
+  const maxRenderTime = {
+    name: '-',
+    time: Number.MIN_VALUE,
+  };
   const passedTests = results
     .filter((result: any): boolean => result.status === 'PASSED')
     .length;
@@ -167,13 +175,27 @@ const onTestsCompleted = async ({ message, results }: any) => {
 --------------------------------------------------------------------------------
 ${message}
 
-${results.map((result: any): any => `
+${results.map((result: any): any => {
+    if (result.renderTime < minRenderTime.time) {
+      minRenderTime.time = result.renderTime;
+      minRenderTime.name = result.snapshotName;
+    }
+    if (result.renderTime > maxRenderTime.time) {
+      maxRenderTime.time = result.renderTime;
+      maxRenderTime.name = result.snapshotName;
+    }
+    return `
     Name: ${result.snapshotName}
-    Time: ${timeToSec(result.executionTime)} sec
+    Render Time: ${result.renderTime} ms
+    Total time: ${timeToSec(result.executionTime)} sec
     Status: ${result.status}
     Message: ${result.message || '-'}
-`).join('\n')}
+  `;
+  }).join('\n')}
 
+Render time:
+    min: ${minRenderTime.time}ms (${minRenderTime.name})
+    max: ${maxRenderTime.time}ms (${maxRenderTime.name})
 Total tests: ${totalTests}
 Passed tests: ${passedTests}
 Failed tests: ${totalTests - passedTests}

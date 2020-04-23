@@ -26,9 +26,9 @@ export default class Snapshot extends Component<SnapshotPropsType, void> {
     InteractionManager.runAfterInteractions(() => {
       const time = (new Date()).getTime() - startTime;
       log.v(TAG, `Interaction completed in ${time} milliseconds`);
-      setTimeout(() => {
+      global.requestAnimationFrame(() => {
         this.props.onReady();
-      }, 150); // Some delay to wait untill images are loaded, etc.
+      });
     });
   }
 

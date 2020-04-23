@@ -22,6 +22,7 @@ export default class SnapshotsContainer extends Component<*, *> {
 
   _testStartedAt: number = (new Date()).getTime();
 
+  _renderStartedAt: number = 0;
 
   constructor(props: void) {
     super(props);
@@ -51,6 +52,8 @@ export default class SnapshotsContainer extends Component<*, *> {
 
     log.i(TAG, `rendering snapshot [${ActiveSnapshot.snapshotName}]`);
 
+    this._renderStartedAt = (new Date()).getTime();
+
     return (
       <ActiveSnapshot ref={this._onRef} onReady={this._onSnapshotReady} />
     );
@@ -63,6 +66,7 @@ export default class SnapshotsContainer extends Component<*, *> {
 
 
   _onSnapshotReady() {
+    const renderTime = (new Date()).getTime() - this._renderStartedAt;
     log.v(TAG, 'Snapshot ready');
 
     setTimeout(async () => {
@@ -86,6 +90,7 @@ export default class SnapshotsContainer extends Component<*, *> {
         reporter.report({
           snapshotName: snapshotName || '',
           executionTime: this._getTestExecutionTime(),
+          renderTime,
           status: 'FAILED',
           message: errorMessage,
         });
@@ -109,6 +114,7 @@ export default class SnapshotsContainer extends Component<*, *> {
           reporter.report({
             snapshotName,
             executionTime: this._getTestExecutionTime(),
+            renderTime,
             status: isEqual ? 'PASSED' : 'FAILED',
           });
         } catch (err) {
@@ -117,6 +123,7 @@ export default class SnapshotsContainer extends Component<*, *> {
           reporter.report({
             snapshotName,
             executionTime: this._getTestExecutionTime(),
+            renderTime,
             status: 'FAILED',
             message: errorMessage,
           });
