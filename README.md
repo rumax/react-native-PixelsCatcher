@@ -69,6 +69,12 @@ runSnapshots(PUT_YOUR_APP_NAME_HERE);
 
 Snapshots testing will be started as soon as the application is started.
 
+Each `Snapshot` gets `onReady` property that is triggered after all
+interactions ([InteractionManager](https://reactnative.dev/docs/interactionmanager)) are completed. In case if it is not enough, which can be some network requests, etc., it is possible to do:
+
+  * register animations by creating an interaction 'handle' and clearing it upon completion
+  * override `componentDidMount` of the `Snapshot` and call `onReady` whenever you need it. `WebViewTest` in [demo](https://github.com/rumax/react-native-PixelsCatcher/blob/master/demo/indexSnapshot.js) project for more details
+
 ### Configuration
 
 There are two options to define config:
