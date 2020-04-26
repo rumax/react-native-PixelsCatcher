@@ -116,6 +116,7 @@ where
       **iOS** bundle identifier, example: *org.reactjs.native.example.demo*
     - `snapshotsPath` - Path to snapshots, example: ./snapshotsImages
     - `port` - Server port. Default value is `3000`
+    - `locale` - Locale to be used, for example `uk-UA`, `nl-NL`, etc. At this moment supported only on iOS simulators. ([Pull request welcome](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/about-pull-requests) for android implementation)
   - `SHARED_CONFIGURATION`. In case more that one configurations exists, shared parameters can be moved here.
   - `logLevelel` - log levels: `e`, `w`, `i`, `d`, `v`. This corresponds to ERROR, WARN, INFO, DEBUG, VERBOSE
   - `timeout` - tests timeout, with default value 2500ms. If timeout is reached, tests will fail automatically
