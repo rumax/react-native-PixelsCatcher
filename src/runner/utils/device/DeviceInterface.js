@@ -17,7 +17,7 @@ export interface DeviceInterface {
 
   installApp(appName: string, appFile: string): Promise<void>,
 
-  startApp(appName: string, activityName: string): void,
+  startApp(appName: string, activityName: string, locale?: string): void,
 
   uninstallApp(name: string): Promise<void>,
 

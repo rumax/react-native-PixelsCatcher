@@ -161,9 +161,10 @@ class IOSSimulator implements DeviceInterface {
   }
 
 
-  startApp(appName: string, activityName: string) {
-    log.v(TAG, `startApp: appName [${appName}], activityName [${activityName}]`);
-    exec(`xcrun simctl launch booted ${appName}`);
+  startApp(appName: string, activityName: string, locale?: string) {
+    const withLocale = locale ? `-AppleLanguages "(${locale})"` : '';
+    log.v(TAG, `startApp: appName [${appName}], activityName [${activityName}], locale [${locale || '-'}]`);
+    exec(`xcrun simctl launch booted ${appName} ${withLocale}`);
   }
 
 

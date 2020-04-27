@@ -72,6 +72,7 @@ const isPhysicalDevice = getParamFromConfig('physicalDevice');
 const packageName = getParamFromConfig('packageName');
 const snapshotsPath = getParamFromConfig('snapshotsPath');
 const port = getParamFromConfig('port');
+const locale = getParamFromConfig('locale');
 const timeout = fullConfig.timeout || 25 * 1000; // 25 sec is default
 
 if (!deviceName) {
@@ -99,7 +100,8 @@ log.i(TAG, `Using config:
   - packageName: [${packageName}]
   - snapshotsPath: [${snapshotsPath}]
   - canStopDevice: [${canStopDevice}]
-  - port: [${port}]`);
+  - port: [${port}]
+  - locale: [${locale}]`);
 
 if (!packageName) {
   log.e(TAG, 'Package name is required');
@@ -223,6 +225,9 @@ const startAndroid = async () => {
   log.d(TAG, 'APK installed');
 
   log.d(TAG, 'Starting application');
+  if (locale) {
+    log.w(TAG, `[${locale} is ignored for android]`);
+  }
   await device.startApp(packageName, activityName);
   log.d(TAG, 'Application started');
 
@@ -244,7 +249,7 @@ const startIOS = async () => {
   log.d(TAG, 'APP installed');
 
   log.d(TAG, 'Starting application');
-  await device.startApp(packageName, activityName);
+  await device.startApp(packageName, activityName, locale);
   log.d(TAG, 'Application started');
 };
 
