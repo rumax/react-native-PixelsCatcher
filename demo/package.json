@@ -8,13 +8,16 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "dependencies": {
     "react": "16.9.0",
     "react-native": "0.61.2",
     "react-native-save-view": "^0.2.3",
-    "react-native-webview": "7.4.1"
+    "react-native-webview": "7.4.1",
+    "snyk": "^1.316.1"
   },
   "devDependencies": {
     "@babel/core": "^7.6.2",
@@ -30,5 +33,6 @@
   },
   "jest": {
     "preset": "react-native"
-  }
+  },
+  "snyk": true
 }
