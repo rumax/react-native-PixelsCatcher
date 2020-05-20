@@ -5,26 +5,19 @@ import compareToReference from '../compareToReference';
 jest.mock('../network', () => ({ postBase64: jest.fn() }));
 
 describe('compareToReference', () => {
-  it('Throws exception if HTTP status is not 200', async () => {
+  it('Returns failure if HTTP status is not 200', async () => {
     const snapshotName = 'snapshotName';
     const base64 = 'base64 data';
-    let exception;
 
     (network.postBase64: any).mockImplementationOnce(() => ({ status: 404 }));
 
-    try {
-      await compareToReference(snapshotName, base64);
-    } catch (err) {
-      exception = err;
-    }
-
-    expect(exception).toMatchSnapshot();
+    const failure = await compareToReference(snapshotName, base64);
+    expect(failure).toMatchSnapshot();
   });
 
-  it('Throws exception if result is not OK', async () => {
+  it('Returns failure if result is not OK', async () => {
     const snapshotName = 'snapshotName';
     const base64 = 'base64 data';
-    let exception;
 
     (network.postBase64: any).mockImplementationOnce(() => ({
       status: 200,
@@ -34,16 +27,11 @@ describe('compareToReference', () => {
       }),
     }));
 
-    try {
-      await compareToReference(snapshotName, base64);
-    } catch (err) {
-      exception = err;
-    }
-
-    expect(exception).toMatchSnapshot();
+    const failure = await compareToReference(snapshotName, base64);
+    expect(failure).toMatchSnapshot();
   });
 
-  it('Returns success if image matches the reference', async () => {
+  it('Returns nothing if image matches the reference', async () => {
     const snapshotName = 'snapshotName';
     const base64 = 'base64 data';
 
@@ -56,6 +44,6 @@ describe('compareToReference', () => {
     }));
 
     const result = await compareToReference(snapshotName, base64);
-    expect(result).toBe(true);
+    expect(result).toBe(undefined);
   });
 });

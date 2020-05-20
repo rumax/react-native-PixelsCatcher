@@ -13,6 +13,14 @@ let baseUrl = Platform.select({
   ios: 'http://127.0.0.1:3000',
 });
 
+type TestcaseType = {|
+  name: string,
+  failure?: string,
+  isSkipped?: boolean,
+  time: number,
+  renderTime?: number,
+|};
+
 const fetchRequest = async (url: string, body: Object): Promise<*> => {
   const response = await fetch(url, {
     method: 'POST',
@@ -42,6 +50,11 @@ export default {
 
   serverLog: async (body: Object): Promise<void> => {
     await fetchRequest(`${baseUrl}/log`, body);
+  },
+
+
+  reportTest: async (testCase: TestcaseType): Promise<void> => {
+    await fetchRequest(`${baseUrl}/reportTest`, testCase);
   },
 
 

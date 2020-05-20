@@ -13,9 +13,9 @@ const path = require('path');
 
 const server = require('./server/server');
 const log = require('./utils/log');
-const timeToSec = require('./utils/timeToSec');
 const readConfig = require('./utils/readConfig');
 const getDevice = require('./utils/device/deviceProvider');
+const Reporter = require('./utils/Reporter');
 
 const TAG = 'PIXELS_CATCHER';
 const [,, platform, configuration] = process.argv;
@@ -125,6 +125,8 @@ if (!DEV_MODE) {
 }
 
 let stopByTimeoutID: TimeoutID | void;
+const reporter = new Reporter(`UI tests for ${platform}/${deviceName}`);
+const jUnitFile = path.join(process.cwd(), 'junit.xml');
 
 const testingCompleted = async (isPassed: boolean = false) => {
   if (stopByTimeoutID) {
@@ -159,56 +161,10 @@ const onAppActivity = () => {
   stopByTimeout();
 };
 
-const onTestsCompleted = async ({ message, results }: any) => {
-  const totalTests = results.length;
-  const minRenderTime = {
-    name: '-',
-    time: Number.MAX_VALUE,
-  };
-  const maxRenderTime = {
-    name: '-',
-    time: Number.MIN_VALUE,
-  };
-  const passedTests = results
-    .filter((result: any): boolean => result.status === 'PASSED')
-    .length;
-  log.i(TAG, `Tests completed with result:
-
---------------------------------------------------------------------------------
-${message}
-
-${results.map((result: any): any => {
-    if (result.renderTime < minRenderTime.time) {
-      minRenderTime.time = result.renderTime;
-      minRenderTime.name = result.snapshotName;
-    }
-    if (result.renderTime > maxRenderTime.time) {
-      maxRenderTime.time = result.renderTime;
-      maxRenderTime.name = result.snapshotName;
-    }
-    return `
-    Name: ${result.snapshotName}
-    Render Time: ${result.renderTime} ms
-    Total time: ${timeToSec(result.executionTime)} sec
-    Status: ${result.status}
-    Message: ${result.message || '-'}
-  `;
-  }).join('\n')}
-
-Render time:
-    min: ${minRenderTime.time}ms (${minRenderTime.name})
-    max: ${maxRenderTime.time}ms (${maxRenderTime.name})
-Total tests: ${totalTests}
-Passed tests: ${passedTests}
-Failed tests: ${totalTests - passedTests}
-${results
-    .filter((result: any) => result.status === 'FAILED')
-    .map((result: any): any => `  - ${result.snapshotName}`).join('\n')}
---------------------------------------------------------------------------------
-`);
-  const isPassed = totalTests === passedTests;
-  log.i(TAG, 'isPassed', isPassed);
-  testingCompleted(isPassed);
+const onTestsCompleted = async () => {
+  reporter.toLog();
+  reporter.tojUnit(jUnitFile);
+  testingCompleted(reporter.isPassed());
 };
 
 const startAndroid = async () => {
@@ -255,7 +211,13 @@ const startIOS = async () => {
 
 const start = async () => {
   log.d(TAG, 'Starting server');
-  await server.start(onTestsCompleted, snapshotsPath, onAppActivity, port);
+  await server.start(
+    reporter,
+    onTestsCompleted,
+    snapshotsPath,
+    onAppActivity,
+    port,
+  );
   log.d(TAG, 'Server started');
 
   if (DEV_MODE) {

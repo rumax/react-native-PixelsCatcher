@@ -20,6 +20,7 @@ const baseUrl = Platform.select({ // Put real IP of your server to run on real d
   android: 'http://10.0.2.2:3000',
   ios: 'http://127.0.0.1:3000',
 });
+const useFailedTest = false;
 
 registerSnapshot(class SnapshotClass extends Snapshot {
   static snapshotName = 'AppSnapshot';
@@ -31,15 +32,17 @@ registerSnapshot(class SnapshotClass extends Snapshot {
   }
 });
 
-// registerSnapshot(class SnapshotClass extends Snapshot {
-//   static snapshotName = 'AppSnapshotWithWrongRefImg';
-//
-//   renderContent() {
-//     return (
-//       <App />
-//     );
-//   }
-// });
+if (useFailedTest) {
+  registerSnapshot(class SnapshotClass extends Snapshot {
+    static snapshotName = 'AppSnapshotWithWrongRefImg';
+
+    renderContent() {
+      return (
+        <App />
+      );
+    }
+  });
+}
 
 registerSnapshot(class SnapshotClass extends Snapshot {
   static snapshotName = 'someComponent';
