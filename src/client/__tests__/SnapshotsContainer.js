@@ -3,7 +3,7 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 
 import SnapshotsContainer from '../SnapshotsContainer';
-import endOfTest from '../utils/endOfTest';
+import network from '../utils/network';
 import log from '../utils/log';
 import { getNextSnapshot } from '../snapshotsManager';
 
@@ -13,7 +13,7 @@ jest.mock('../utils/log', () => ({
   w: jest.fn(),
   e: jest.fn(),
 }));
-jest.mock('../utils/endOfTest', () => jest.fn());
+jest.mock('../utils/network', () => ({ endOfTests: jest.fn() }));
 jest.mock('../snapshotsManager', () => ({ getNextSnapshot: jest.fn() }));
 
 describe('SnapshotsContainer', () => {
@@ -25,7 +25,7 @@ describe('SnapshotsContainer', () => {
     const tree = renderer.create(<SnapshotsContainer />);
 
     expect(tree).toMatchSnapshot();
-    expect(endOfTest).toHaveBeenCalledTimes(1);
+    expect(network.endOfTests).toHaveBeenCalledTimes(1);
     expect(log.e).toMatchSnapshot('loggin error');
   });
 
@@ -34,7 +34,7 @@ describe('SnapshotsContainer', () => {
     const tree = renderer.create(<SnapshotsContainer />);
 
     expect(tree).toMatchSnapshot();
-    expect(endOfTest).toHaveBeenCalledTimes(0);
+    expect(network.endOfTests).toHaveBeenCalledTimes(0);
     expect(log.v).toMatchSnapshot('render snapshot reported');
   });
 });

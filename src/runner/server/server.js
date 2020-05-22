@@ -5,6 +5,8 @@
 * LICENSE file in the root directory of this source tree.
 */
 /* @flow */
+import type Reporter from '../utils/Reporter';
+
 const formidable = require('formidable');
 const fs = require('fs');
 const http = require('http');
@@ -15,6 +17,7 @@ const log = require('../utils/log');
 
 const DEFAULT_PORT = 3000;
 const TAG = 'PIXELS_CATCHER::SERVER';
+const RESPONSE_OK = JSON.stringify({ result: 'OK' });
 
 let server;
 let sockets = {};
@@ -68,8 +71,8 @@ const postHandlers = {
         }
 
         if (differentPixelsCount === 0) {
-          log.v(TAG, 'All ok', differentPixelsCount);
-          res.write(JSON.stringify({ result: 'OK' }));
+          log.v(TAG, 'All ok');
+          res.write(RESPONSE_OK);
         } else {
           log.v(TAG, 'Different', differentPixelsCount);
           res.write(JSON.stringify({
@@ -89,28 +92,37 @@ const postHandlers = {
     });
   },
   '/endOfTests': ({
-    res, fields, onTestsCompleted,
+    res, onTestsCompleted,
   }: any) => {
-    log.v(TAG, fields);
-    res.write(JSON.stringify({ result: 'OK' }));
+    res.write(RESPONSE_OK);
     res.end();
-    setTimeout(() => {
-      onTestsCompleted(fields);
-    }, 300);
+    setTimeout(onTestsCompleted, 300);
   },
   '/registerTest': ({ res }: any) => {
-    res.write(JSON.stringify({ result: 'OK' }));
+    res.write(RESPONSE_OK);
+    res.end();
+  },
+  '/reportTest': ({ res, fields, reporter }: any) => {
+    reporter.reportTest({
+      name: fields.name,
+      failure: fields.failure,
+      time: fields.time,
+      renderTime: fields.renderTime,
+      isSkipped: fields.isSkipped,
+    });
+    res.write(RESPONSE_OK);
     res.end();
   },
   '/log': ({ res, fields }: any) => {
     const { tag, args, logLevel } = fields;
     log[logLevel || 'v'](tag, ...args);
-    res.write(JSON.stringify({ result: 'OK' }));
+    res.write(RESPONSE_OK);
     res.end();
   },
 };
 
 const startServer = (
+  reporter: Reporter,
   onTestsCompleted: Function,
   snapshotsPath: string,
   onAppActivity: Function,
@@ -144,6 +156,7 @@ const startServer = (
           files,
           onTestsCompleted,
           snapshotsPath,
+          reporter,
         });
       });
     } else {

@@ -242,6 +242,62 @@ Check the [demo](https://github.com/rumax/PixelsCatcher/tree/master/demo) which
 includes an example how the snapshots can be done and also has some useful
 scripts that can be used to integrate with CI.
 
+Log report:
+
+```bash
+==> All tests completed: <==
+┌─────────┬──────────────────────────────┬──────────┬───────┬────────────┬────────────────────────────────────┐
+│ (index) │             name             │  status  │ time  │ renderTime │              failure               │
+├─────────┼──────────────────────────────┼──────────┼───────┼────────────┼────────────────────────────────────┤
+│    0    │        'AppSnapshot'         │ 'PASSED' │ 0.909 │    0.13    │                 ''                 │
+│    1    │ 'AppSnapshotWithWrongRefImg' │ 'FAILED' │ 1.116 │   0.054    │ 'Files mismatch with 5088 pixels'  │
+│    2    │       'someComponent'        │ 'PASSED' │ 0.684 │   0.019    │                 ''                 │
+│    3    │        'WebViewTest'         │ 'FAILED' │ 3.123 │   2.697    │ 'Files mismatch with 19930 pixels' │
+│    4    │        'longContent'         │ 'PASSED' │ 0.793 │   0.017    │                 ''                 │
+└─────────┴──────────────────────────────┴──────────┴───────┴────────────┴────────────────────────────────────┘
+
+==> Summary: <==
+┌─────────┬───────────────────┬────────────────────────┐
+│ (index) │         0         │           1            │
+├─────────┼───────────────────┼────────────────────────┤
+│    0    │   'Total tests'   │           5            │
+│    1    │  'Passed tests'   │           3            │
+│    2    │  'Skipped tests'  │           0            │
+│    3    │  'Failed tests'   │           2            │
+│    4    │ 'Min render time' │  '17ms (longContent)'  │
+│    5    │ 'Max render time' │ '2697ms (WebViewTest)' │
+└─────────┴───────────────────┴────────────────────────┘
+==> Failed tests: <==
+┌─────────┬──────────────────────────────┐
+│ (index) │            Values            │
+├─────────┼──────────────────────────────┤
+│    0    │ 'AppSnapshotWithWrongRefImg' │
+│    1    │        'WebViewTest'         │
+└─────────┴──────────────────────────────┘
+```
+
+junit report:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="UI tests for ios/iPhone 8 Plus" tests="4" skipped="0" errors="0" failures="0" time="4261" >
+  <testsuite name="UI tests for ios/iPhone 8 Plus" tests="4" skipped="0" errors="0" failures="0" time="4261" >
+    <testcase classname="AppSnapshot" name="AppSnapshot" time="989">
+    </testcase>
+    <testcase classname="someComponent" name="someComponent" time="738">
+    </testcase>
+    <testcase classname="WebViewTest" name="WebViewTest" time="1678">
+    </testcase>
+    <testcase classname="longContent" name="longContent" time="856">
+    </testcase>
+  </testsuites>
+</testsuites>
+```
+
+Azure Devops integration result
+
+![Android](https://github.com/rumax/react-native-PixelsCatcher/raw/master/demo/res/azureDevops.png)
+
 ## License
 
 [MIT](https://opensource.org/licenses/MIT)

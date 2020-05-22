@@ -10,9 +10,8 @@ import SaveView from 'react-native-save-view';
 
 import { getNextSnapshot } from './snapshotsManager';
 import compareToReference from './utils/compareToReference';
-import endOfTest from './utils/endOfTest';
 import log from './utils/log';
-import reporter from './utils/reporter';
+import network from './utils/network';
 
 const TAG = 'PIXELS_CATCHER::APP::SNAPSHOTS_CONTAINER';
 
@@ -30,7 +29,7 @@ export default class SnapshotsContainer extends Component<*, *> {
     const ActiveSnapshot = getNextSnapshot();
 
     if (!ActiveSnapshot) {
-      endOfTest();
+      this._endOfTest();
       log.e(TAG, 'No snapshots registered');
     }
 
@@ -79,65 +78,48 @@ export default class SnapshotsContainer extends Component<*, *> {
       }
 
       const { ActiveSnapshot } = this.state;
-      const snapshotName = ActiveSnapshot.snapshotName;
+      const name = ActiveSnapshot.snapshotName;
 
-      log.v(TAG, `snapshotName: [${snapshotName}]`);
+      log.v(TAG, `snapshotName: [${name}]`);
 
-      if (!snapshotName) {
+      if (!name) {
         const errorMessage = 'Snapshot should has a proper name';
 
         log.w(TAG, errorMessage);
-        reporter.report({
-          snapshotName: snapshotName || '',
-          executionTime: this._getTestExecutionTime(),
-          renderTime,
-          status: 'FAILED',
-          message: errorMessage,
+        network.reportTest({
+          name,
+          failure: errorMessage,
+          time: this._getTestExecutionTime(),
         });
         this.nextSnapshot();
 
         return;
       }
 
+      let failure;
+
       try {
         log.v(TAG, '++SaveView.save');
         const base64 = await SaveView.saveToPNGBase64(ref);
         log.v(TAG, `--SaveView.save, size is ${base64.length}`);
 
-        try {
-          const isEqual = await compareToReference(snapshotName, base64);
-          if (!isEqual) {
-            log.e(TAG, `Snapshot ${snapshotName} failed`);
-          } else {
-            log.i(TAG, `Snapshot ${snapshotName} passed`);
-          }
-          reporter.report({
-            snapshotName,
-            executionTime: this._getTestExecutionTime(),
-            renderTime,
-            status: isEqual ? 'PASSED' : 'FAILED',
-          });
-        } catch (err) {
-          const errorMessage = `Images do not match: ${err.message}`;
-          log.w(TAG, errorMessage);
-          reporter.report({
-            snapshotName,
-            executionTime: this._getTestExecutionTime(),
-            renderTime,
-            status: 'FAILED',
-            message: errorMessage,
-          });
+        failure = await compareToReference(name, base64);
+        if (failure) {
+          log.e(TAG, `Snapshot ${name} failed: ${failure}`);
+        } else {
+          log.i(TAG, `Snapshot ${name} passed`);
         }
       } catch (err) {
-        const errorMessage = `Failed to save view: ${err.message}`;
-        log.e(TAG, errorMessage);
-        reporter.report({
-          snapshotName,
-          executionTime: this._getTestExecutionTime(),
-          status: 'FAILED',
-          message: errorMessage,
-        });
+        failure = `Failed to save view: ${err.message}`;
+        log.e(TAG, failure);
       }
+
+      network.reportTest({
+        name,
+        failure,
+        time: this._getTestExecutionTime(),
+        renderTime,
+      });
 
       this.nextSnapshot();
     }, 50);
@@ -159,7 +141,11 @@ export default class SnapshotsContainer extends Component<*, *> {
       this.setState({ ActiveSnapshot: nextSnapshot });
     } else {
       log.v('No more snapshots left, exit testing');
-      endOfTest();
+      this._endOfTest();
     }
+  }
+
+  _endOfTest() {
+    network.endOfTests({ message: 'All tests completed' });
   }
 }

@@ -7,23 +7,23 @@
 /* @flow */
 import network from './network';
 
-// Throws exception
-const compareToReference = async (snapshotName: string, base64: string): Promise<boolean> => {
+const compareToReference = async (snapshotName: string, base64: string): Promise<string | void> => {
   const response = await network.postBase64({
     base64,
     fileName: `${snapshotName}.png`,
   });
 
   if (response.status !== 200) {
-    throw new Error(`Invalid status ${response.status}`);
+    return `Invalid status ${response.status}`;
   }
+
   const responseJSON = await response.json();
 
   if (responseJSON.result !== 'OK') {
-    throw new Error(`Files mismatch with ${responseJSON.info.differentPixelsCount} pixels`);
+    return `Files mismatch with ${responseJSON.info.differentPixelsCount} pixels`;
   }
 
-  return true;
+  return undefined;
 };
 
 export default compareToReference;

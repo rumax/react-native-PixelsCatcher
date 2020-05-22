@@ -15,8 +15,9 @@ coverage/
 node_modules/
 npm-debug.log
 yarn-error.log
-pixels-catcher-*.tgz
+pixels-catcher*.tgz
 package*/
+demo/junit.xml
 
 # Xcode
 #
