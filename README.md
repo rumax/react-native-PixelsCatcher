@@ -296,7 +296,7 @@ junit report:
 
 Azure Devops integration result
 
-![Android](https://github.com/rumax/react-native-PixelsCatcher/raw/master/demo/res/azureDevops.png)
+![Azure Devops](https://github.com/rumax/react-native-PixelsCatcher/blob/master/res/azureDevops.png)
 
 ## License
 
