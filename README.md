@@ -3,6 +3,7 @@
 [![npm](https://img.shields.io/npm/l/express.svg)](https://github.com/rumax/react-native-PixelsCatcher)
 [![npm version](https://badge.fury.io/js/pixels-catcher.svg)](https://badge.fury.io/js/pixels-catcher)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+[![Build Status](https://tfsprodweu6.visualstudio.com/A94b22b53-118f-4630-a94a-6d5bd33d6515/react-native-PixelsCatcher/_apis/build/status/rumax.react-native-PixelsCatcher?branchName=master)](https://tfsprodweu6.visualstudio.com/A94b22b53-118f-4630-a94a-6d5bd33d6515/react-native-PixelsCatcher/_build/latest?definitionId=1&branchName=master)
 [![CircleCI](https://circleci.com/gh/rumax/react-native-PixelsCatcher.svg?style=shield)](https://circleci.com/gh/rumax/react-native-PixelsCatcher)
 [![codecov](https://codecov.io/gh/rumax/react-native-PixelsCatcher/branch/master/graph/badge.svg)](https://codecov.io/gh/rumax/react-native-PixelsCatcher)
 
