@@ -31,15 +31,15 @@ registerSnapshot(class SnapshotClass extends Snapshot {
   }
 });
 
-registerSnapshot(class SnapshotClass extends Snapshot {
-  static snapshotName = 'AppSnapshotWithWrongRefImg';
-
-  renderContent() {
-    return (
-      <App />
-    );
-  }
-});
+// registerSnapshot(class SnapshotClass extends Snapshot {
+//   static snapshotName = 'AppSnapshotWithWrongRefImg';
+//
+//   renderContent() {
+//     return (
+//       <App />
+//     );
+//   }
+// });
 
 registerSnapshot(class SnapshotClass extends Snapshot {
   static snapshotName = 'someComponent';
@@ -65,7 +65,7 @@ registerSnapshot(class SnapshotClass extends Snapshot {
   renderContent() {
     return (
       <WebView
-        source={{uri: 'https://github.com/rumax/react-native-PixelsCatcher'}}
+        source={{uri: 'https://raw.githubusercontent.com/rumax/react-native-PixelsCatcher/master/package.json'}}
         style={{ flex: 1, marginTop: 20 }}
         onLoad={() => {
           this.props.onReady();
