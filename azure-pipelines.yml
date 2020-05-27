@@ -34,5 +34,5 @@ stages:
         testResultsFiles: '$(Build.SourcesDirectory)/demo/junit.xml'
     - publish: $(Build.SourcesDirectory)/demo/snapshots/ios
       condition: failed()
-      artifact: screenshots_android
+      artifact: screenshots_ios
       displayName: 'Test results'
