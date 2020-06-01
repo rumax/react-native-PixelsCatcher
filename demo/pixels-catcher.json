@@ -15,6 +15,7 @@
         "-no-audio",
         "-no-snapshot"
       ],
+      "canStopDevice": false,
       "appFile": "./android/app/build/outputs/apk/debug/app-debug.apk"
     },
     "test": {

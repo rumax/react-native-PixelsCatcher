@@ -25,6 +25,12 @@ const useFailedTest = false;
 registerSnapshot(class SnapshotClass extends Snapshot {
   static snapshotName = 'AppSnapshot';
 
+  componentDidMount() {
+    setTimeout(() => { // delay for rendering images
+      this.props.onReady();
+    }, 300);
+  }
+
   renderContent() {
     return (
       <App />
