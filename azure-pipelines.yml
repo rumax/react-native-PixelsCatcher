@@ -11,7 +11,7 @@ trigger:
 stages:
 - stage: Tests
   jobs:
-  - job: UiTests
+  - job: UiTestsIOS
     pool:
       vmImage: '$(MAC_RUNNER_IMAGE)'
     steps:
@@ -27,12 +27,39 @@ stages:
     - script: ./run_ios_debug.sh
       displayName: 'Run tests'
       workingDirectory: '$(Build.SourcesDirectory)/demo'
-    - task: PublishTestResults@2
-      condition: succeededOrFailed()
-      inputs:
-        testRunner: JUnit
-        testResultsFiles: '$(Build.SourcesDirectory)/demo/junit.xml'
     - publish: $(Build.SourcesDirectory)/demo/snapshots/ios
       condition: failed()
       artifact: screenshots_ios
-      displayName: 'Test results'
+      displayName: 'Publish test results'
+    - task: PublishTestResults@2
+      condition: succeededOrFailed()
+      displayName: 'Publish test report'
+      inputs:
+        testRunner: JUnit
+        testResultsFiles: '$(Build.SourcesDirectory)/demo/junit.xml'
+  - job: UiTestsAndroid
+    pool:
+      vmImage: '$(MAC_RUNNER_IMAGE)'
+    steps:
+    - task: NodeTool@0
+      displayName: 'Set Node version $(NODE_VERSION)'
+      inputs:
+        versionSpec: $(NODE_VERSION)
+    - script: npm install
+      displayName: 'NPM Install'
+      workingDirectory: '$(Build.SourcesDirectory)/demo'
+    - script: ./scripts/create_android_emulator.sh
+      displayName: 'Create and start Android Emulator'
+    - script: ./run_android_debug.sh
+      displayName: 'Run tests'
+      workingDirectory: '$(Build.SourcesDirectory)/demo'
+    - publish: $(Build.SourcesDirectory)/demo/snapshots/android
+      condition: failed()
+      artifact: screenshots_android
+      displayName: 'Publish test results'
+    - task: PublishTestResults@2
+      condition: succeededOrFailed()
+      displayName: 'Publish test report'
+      inputs:
+        testRunner: JUnit
+        testResultsFiles: '$(Build.SourcesDirectory)/demo/junit.xml'
