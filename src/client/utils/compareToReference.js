@@ -20,7 +20,7 @@ const compareToReference = async (snapshotName: string, base64: string): Promise
   const responseJSON = await response.json();
 
   if (responseJSON.result !== 'OK') {
-    return `Files mismatch with ${responseJSON.info.differentPixelsCount} pixels`;
+    return responseJSON.info;
   }
 
   return undefined;
