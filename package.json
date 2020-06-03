@@ -23,6 +23,9 @@
   ],
   "author": "Maksym Rusynyk <m.rusynyk@gmail.com>",
   "license": "MIT",
+  "engines": {
+    "node": ">=12.*"
+  },
   "dependencies": {
     "formidable": "^1.2.2",
     "multer": "^1.4.2",
