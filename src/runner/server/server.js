@@ -66,25 +66,28 @@ const postHandlers = {
             expectedFile,
             diffFile,
           );
+          if (differentPixelsCount === 0) {
+            log.v(TAG, 'All ok');
+            res.write(RESPONSE_OK);
+          } else {
+            log.v(TAG, 'Different', differentPixelsCount);
+            res.write(JSON.stringify({
+              result: 'ERROR',
+              info: `Files mismatch with ${differentPixelsCount} pixels`,
+            }));
+          }
         } catch (err) {
           log.e(TAG, `Failed to compare images: [${err.message}]`, err);
-        }
-
-        if (differentPixelsCount === 0) {
-          log.v(TAG, 'All ok');
-          res.write(RESPONSE_OK);
-        } else {
-          log.v(TAG, 'Different', differentPixelsCount);
           res.write(JSON.stringify({
             result: 'ERROR',
-            info: { differentPixelsCount },
+            info: err.message,
           }));
         }
       } else {
         log.v(TAG, 'File created, error:', writeError);
         res.write(JSON.stringify({
           result: 'ERROR',
-          info: { error: writeError },
+          info: writeError,
         }));
       }
 

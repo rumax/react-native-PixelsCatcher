@@ -20,6 +20,14 @@ module.exports = (actual: any, expected: any, diffFile: any): number => {
   const imageActual = PNG.sync.read(fs.readFileSync(actual));
   const imageExpected = PNG.sync.read(fs.readFileSync(expected));
 
+  if (imageActual.width !== imageExpected.width) {
+    throw new Error(`Width mismatch: expected ${imageExpected.width}, actual: ${imageActual.width}`);
+  }
+
+  if (imageActual.height !== imageExpected.height) {
+    throw new Error(`Height mismatch: expected ${imageExpected.height}, actual: ${imageActual.height}`);
+  }
+
   const diff = new PNG({ width: imageExpected.width, height: imageExpected.height });
 
   const differentPixelsCount = pixelmatch(

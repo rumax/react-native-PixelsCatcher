@@ -23,7 +23,7 @@ describe('compareToReference', () => {
       status: 200,
       json: async () => ({
         result: 'ERROR',
-        info: { differentPixelsCount: 1 },
+        info: 'Files mismatch with 1 pixels',
       }),
     }));
 
