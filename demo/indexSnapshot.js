@@ -74,7 +74,7 @@ registerSnapshot(class SnapshotClass extends Snapshot {
   renderContent() {
     return (
       <WebView
-        source={{uri: 'https://raw.githubusercontent.com/rumax/react-native-PixelsCatcher/master/package.json'}}
+        source={{uri: 'https://raw.githubusercontent.com/rumax/react-native-PixelsCatcher/master/CONTRIBUTING.md'}}
         style={{ flex: 1, marginTop: 20 }}
         onLoad={() => {
           this.props.onReady();
