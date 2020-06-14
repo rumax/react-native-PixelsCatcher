@@ -23,6 +23,8 @@ const filterFailed = (testcase: TestcaseType): boolean =>
 class TestReporter {
   _name: string;
 
+  _className: string;
+
   _tests: Array<TestcaseType> = [];
 
   _minRenderTime = {
@@ -35,8 +37,9 @@ class TestReporter {
     time: Number.MIN_VALUE,
   };
 
-  constructor(name: string) {
+  constructor(name: string, className: string) {
     this._name = name;
+    this._className = className;
   }
 
   reportTest(testCase: TestcaseType) {
@@ -123,7 +126,7 @@ class TestReporter {
                    ` time="${timeToSec(this._getTotalTime())}" >`);
     this._tests.forEach((testcase: TestcaseType) => {
       xmlResult.push('    <testcase' +
-                     ` classname="${testcase.name}"` +
+                     ` classname="${this._className}"` +
                      ` name="${testcase.name}"` +
                      ` time="${timeToSec(testcase.time)}">`);
       if (testcase.failure) {

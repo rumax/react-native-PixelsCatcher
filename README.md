@@ -238,6 +238,25 @@ const baseUrl = 'http://127.0.0.1:3000';
 runSnapshots(appName, { baseUrl });
 ```
 
+### JUnit test report
+
+Each run of tests produces a JUnit test report that is generated and available in `junit.xml` file. For integrating it with Azure DevOps, follow the [Azure DevOps and React Native UI testing](https://itnext.io/azure-devops-and-react-native-ui-testing-8144ba1a9eb) article that describes how to automate iOS testing.
+
+JUnit test report does not specify attachments, but to upload attachements to test report use third parameter `azureAttachements`. This can be done with azure task:
+
+```
+script: ./node_modules/.bin/pixels-catcher ios debug azureAttachements
+  condition: failed()
+  env:
+    SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+  workingDirectory: '$(Build.SourcesDirectory)/demo'
+  displayName: 'Upload screenshots'
+```
+
+that has to be executed after `PublishTestResults@2` task. In this case the `pixels-catcher` will be started with the same parameters that were used for tests and will upload attachments for filed tests.
+
+![Azure DevOps Test Results](https://raw.githubusercontent.com/rumax/react-native-PixelsCatcher/master/res/testResults.png)
+
 ## Demo
 Check the [demo](https://github.com/rumax/PixelsCatcher/tree/master/demo) which
 includes an example how the snapshots can be done and also has some useful
