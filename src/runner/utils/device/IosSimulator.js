@@ -156,7 +156,7 @@ class IOSSimulator implements DeviceInterface {
 
   async installApp(appName: string, appFile: string) {
     this.uninstallApp(appName);
-    log.v(TAG, `Installing [${appName}], appFile [${appFile}]`);
+    log.v(TAG, `Installing application [${appName}], appFile [${appFile}]`);
     exec(`xcrun simctl install booted ${appFile}`);
   }
 
@@ -169,7 +169,7 @@ class IOSSimulator implements DeviceInterface {
 
 
   async uninstallApp(appName: string) {
-    log.v('uninstallApp: name', appName);
+    log.v(TAG, `Uninstalling application [${appName}]`);
     exec(`xcrun simctl uninstall booted ${appName}`);
   }
 
