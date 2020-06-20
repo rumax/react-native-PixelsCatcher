@@ -240,7 +240,7 @@ runSnapshots(appName, { baseUrl });
 
 ### JUnit test report
 
-Each run of tests produces a JUnit test report that is generated and available in `junit.xml` file. For integrating it with Azure DevOps, follow the [Azure DevOps and React Native UI testing](https://itnext.io/azure-devops-and-react-native-ui-testing-8144ba1a9eb) article that describes how to automate iOS testing.
+Each run of tests produces a JUnit test report that is generated and available in `junit.xml` file. For integrating it with Azure DevOps, follow the [Azure DevOps and React Native UI testing](https://itnext.io/azure-devops-and-react-native-ui-testing-8144ba1a9eb) article that describes how to automate iOS testing or [Azure DevOps and React Native UI testing part 2 - Android](https://itnext.io/azure-devops-and-react-native-ui-testing-part-2-android-580c44d8c7ec) for Android.
 
 JUnit test report does not specify attachments, but to upload attachements to test report use third parameter `azureAttachements`. This can be done with azure task:
 
