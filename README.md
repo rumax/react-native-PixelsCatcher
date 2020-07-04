@@ -104,20 +104,20 @@ where
 
   - `PLATFORM` can be `android` or `ios`
   - `CONFIGURATION` is a configuration with the following properties:
-    - `activityName` - Activity name, example: MainActivity.
-    - `appFile` - [Optional] Path to apk file on adroid or app folder on iOS,
+    * `activityName` - (*Android only*) Activity name, example: com.demo.MainActivity.
+    * `appFile` - (*Optional*) Path to apk file on adroid or app folder on iOS,
       example: ./app/build/outputs/apk/debug/app-debug.apk
-    - `deviceName` - Device name, for example emulator: Nexus_5X or iOS:
+    * `deviceName` - Device name, for example emulator: Nexus_5X or iOS:
       iPhone 8 Plus
-    - `deviceParams` - [Optional] Array of emulator params like -no-audio,
+    * `deviceParams` - (*Optional*) Array of emulator params like -no-audio,
       -no-snapshot, -no-window, etc.
-    - `physicalDevice` - [Optional] Boolean value that indicates if real device should be used (*iOS devices are not supported yet*)
-    - `packageName` -
-        **Android** package name, example: *com.rumax.pixelscatcher.testapp**.
-      **iOS** bundle identifier, example: *org.reactjs.native.example.demo*
-    - `snapshotsPath` - Path to snapshots, example: ./snapshotsImages
-    - `port` - Server port. Default value is `3000`
-    - `locale` - Locale to be used, for example `uk-UA`, `nl-NL`, etc. At this moment supported only on iOS simulators. ([Pull request welcome](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/about-pull-requests) for android implementation)
+    * `physicalDevice` - (*Optional*) Boolean value that indicates if real device should be used (*iOS devices are not supported yet*)
+    * `packageName` -
+        **Android** package name, example: *com.demo**.
+        **iOS** bundle identifier, example: *org.reactjs.native.example.demo*
+    * `snapshotsPath` - Path to snapshots, example: ./snapshotsImages
+    * `port` - Server port. Default value is `3000`
+    * `locale` - Locale to be used, for example `uk-UA`, `nl-NL`, etc. At this moment supported only on iOS simulators. ([Pull request welcome](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/about-pull-requests) for android implementation)
   - `SHARED_CONFIGURATION`. In case more that one configurations exists, shared parameters can be moved here.
   - `logLevelel` - log levels: `e`, `w`, `i`, `d`, `v`. This corresponds to ERROR, WARN, INFO, DEBUG, VERBOSE
   - `timeout` - tests timeout, with default value 2500ms. If timeout is reached, tests will fail automatically

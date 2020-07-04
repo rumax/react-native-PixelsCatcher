@@ -1,6 +1,6 @@
 {
   "android": {
-    "activityName": "MainActivity",
+    "activityName": "com.demo.MainActivity",
     "deviceName": "Nexus_5X",
     "packageName": "com.demo",
     "snapshotsPath": "./snapshots/android",
