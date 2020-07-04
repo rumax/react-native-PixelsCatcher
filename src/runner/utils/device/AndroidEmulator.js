@@ -200,7 +200,7 @@ class AndroidEmulator implements DeviceInterface {
   startApp(packageName: string, activityName: string) {
     log.v(TAG, `Starting application [${packageName}]`);
 
-    const cmd = `adb shell am start -n ${packageName}/${packageName}.${activityName}`;
+    const cmd = `adb shell am start -n ${packageName}/${activityName}`;
     const result = exec(cmd);
 
     if (result.indexOf('does not exist') >= 0 || result.indexOf('Error') >= 0) {
