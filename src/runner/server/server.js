@@ -25,7 +25,7 @@ let nextSocketId = 0;
 
 const mkDir = (dirName: string) => {
   if (!fs.existsSync(dirName)) {
-    fs.mkdirSync(dirName);
+    fs.mkdirSync(dirName, { recursive: true });
   }
 };
 
