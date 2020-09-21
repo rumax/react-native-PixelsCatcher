@@ -18,14 +18,25 @@ export const registerSnapshot = require('./snapshotsManager').registerSnapshot;
 
 const TAG = 'PIXELS_CATCHER::APP::SNAPSHOT';
 
-type ConfigType = { baseUrl?: string };
+type ConfigType = {
+  baseUrl?: string,
+  /**
+   * Callback for react-native-navigation
+   * @param snapshot Current snapshot
+   */
+  rnnSetup?: (snapshot: SnapshotsContainer) => void,
+};
 
 export const runSnapshots = (appName: string, config: ConfigType = {}) => {
   log.i(TAG, `Run snapshots for ${appName}`);
   log.i(TAG, `Config is:\n ${JSON.stringify(config, null, 2)}`);
-  const { baseUrl } = config;
+  const { baseUrl, rnnSetup } = config;
   if (baseUrl) {
     network.setBaseUrl(baseUrl);
   }
-  AppRegistry.registerComponent(appName, () => SnapshotsContainer);
+  if (rnnSetup) {
+    rnnSetup(SnapshotsContainer);
+  } else {
+    AppRegistry.registerComponent(appName, () => SnapshotsContainer);
+  }
 };

@@ -76,6 +76,34 @@ interactions ([InteractionManager](https://reactnative.dev/docs/interactionmanag
   * register animations by creating an interaction 'handle' and clearing it upon completion
   * override `componentDidMount` of the `Snapshot` and call `onReady` whenever you need it. `WebViewTest` in [demo](https://github.com/rumax/react-native-PixelsCatcher/blob/master/demo/indexSnapshot.js) project for more details
 
+### React Native Navigation support
+
+Register your component and `setRoot` in `rnnSetup`
+
+```
+runSnapshots(appName, {
+  rnnSetup: snapshot => {
+    Navigation.registerComponent(appName, () => snapshot)
+
+    Navigation.events().registerAppLaunchedListener(async () => {
+      Navigation.setRoot({
+        root: {
+          stack: {
+            children: [
+              {
+                component: {
+                  name: appName,
+                },
+              },
+            ],
+          },
+        },
+      })
+    })
+  },
+})
+```
+
 ### Configuration
 
 There are two options to define config:
