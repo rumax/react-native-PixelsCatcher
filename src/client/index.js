@@ -18,14 +18,26 @@ export const registerSnapshot = require('./snapshotsManager').registerSnapshot;
 
 const TAG = 'PIXELS_CATCHER::APP::SNAPSHOT';
 
-type ConfigType = { baseUrl?: string };
+type ConfigType = {
+  baseUrl?: string,
+  /**
+   * Callback to override AppRegistry.registerComponent with custom
+   * implementation. Can be used for projects with react-native-navigation
+   * @param snapshot Current snapshot
+   */
+  registerComponent?: (snapshot: typeof SnapshotsContainer) => void,
+};
 
 export const runSnapshots = (appName: string, config: ConfigType = {}) => {
   log.i(TAG, `Run snapshots for ${appName}`);
   log.i(TAG, `Config is:\n ${JSON.stringify(config, null, 2)}`);
-  const { baseUrl } = config;
-  if (baseUrl) {
-    network.setBaseUrl(baseUrl);
+
+  if (config.baseUrl) {
+    network.setBaseUrl(config.baseUrl);
   }
-  AppRegistry.registerComponent(appName, () => SnapshotsContainer);
+  if (config.registerComponent) {
+    config.registerComponent(SnapshotsContainer);
+  } else {
+    AppRegistry.registerComponent(appName, () => SnapshotsContainer);
+  }
 };
