@@ -19,7 +19,7 @@
       "appFile": "./android/app/build/outputs/apk/debug/app-debug.apk"
     },
     "test": {
-      "port": 3001,
+      "port": 3000,
       "canStopDevice": false,
       "deviceParams": [
         "-no-audio",
@@ -49,7 +49,9 @@
       "canStopDevice": false
     },
     "testPort": {},
-    "testPort2": { "port": 3001 },
+    "testPort2": {
+      "port": 3001
+    },
     "debugIphone6": {
       "deviceName": "iPhone 6",
       "snapshotsPath": "./snapshots/iPhone6",
