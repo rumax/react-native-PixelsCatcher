@@ -23,8 +23,8 @@ describe('readConfig', () => {
     const rawConfig = '{"PixelsCatcher":{"android":{"_content":"platform '
       + 'config content from package.json"}}}';
 
-    fs.existsSync.mockImplementationOnce(() => true);
-    fs.readFileSync.mockImplementationOnce(() => rawConfig);
+    (fs.existsSync: any).mockImplementationOnce(() => true);
+    (fs.readFileSync: any).mockImplementationOnce(() => rawConfig);
 
     const config = readConfig();
 
@@ -33,13 +33,13 @@ describe('readConfig', () => {
 
   it('read config from pixels-catcher.json', () => {
     // package.json mock
-    fs.existsSync.mockImplementationOnce(() => true);
-    fs.readFileSync.mockImplementationOnce(() => '{}');
+    (fs.existsSync: any).mockImplementationOnce(() => true);
+    (fs.readFileSync: any).mockImplementationOnce(() => '{}');
     // pixels-catcher.json mock
     const rawConfig = '{"ios":{"_content":"platform config content from '
       + 'pixels-catcher.json"}}';
-    fs.existsSync.mockImplementationOnce(() => true);
-    fs.readFileSync.mockImplementationOnce(() => rawConfig);
+    (fs.existsSync: any).mockImplementationOnce(() => true);
+    (fs.readFileSync: any).mockImplementationOnce(() => rawConfig);
 
     const config = readConfig();
 

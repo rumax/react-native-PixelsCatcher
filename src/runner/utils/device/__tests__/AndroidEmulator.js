@@ -54,7 +54,7 @@ describe('AndroidEmulator', () => {
       stderr: { on: jest.fn() },
       on: jest.fn(),
     };
-    spawn.mockImplementationOnce(() => spawnMock);
+    (spawn: any).mockImplementationOnce(() => spawnMock);
 
     const emularor = new AndroidEmulator(name);
 
@@ -77,7 +77,7 @@ describe('AndroidEmulator', () => {
       stderr: { on: jest.fn() },
       on: jest.fn(),
     };
-    spawn.mockImplementationOnce(() => spawnMock);
+    (spawn: any).mockImplementationOnce(() => spawnMock);
 
     const emularor = new AndroidEmulator(name);
 
@@ -103,7 +103,7 @@ describe('AndroidEmulator', () => {
       on: jest.fn(),
     };
 
-    spawn.mockImplementationOnce(() => spawnMock);
+    (spawn: any).mockImplementationOnce(() => spawnMock);
     // $FlowFixMe: ignore for mocks
     delay.mockImplementation(() => {
       const spawnMockCalls = spawnMock.stdout.on.mock.calls;

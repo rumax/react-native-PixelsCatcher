@@ -5,7 +5,7 @@ import { AppRegistry, View } from 'react-native';
 import { runSnapshots, Snapshot, registerSnapshot } from '../index';
 import network from '../utils/network';
 
-jest.mock('AppRegistry', () => ({ registerComponent: jest.fn() }));
+jest.mock('react-native/Libraries/ReactNative/AppRegistry', () => ({ registerComponent: jest.fn() }));
 jest.mock('../utils/network', () => ({ setBaseUrl: jest.fn() }));
 jest.mock('../SnapshotsContainer', () => 'SnapshotsContainer');
 jest.mock('../utils/log', () => ({ i: jest.fn() }));

@@ -177,7 +177,8 @@ class AzurePublisher {
           'Content-Length': Buffer.byteLength(_postData),
         };
       }
-      const req = https.request(_options, (resp: any) => {
+
+      const req = https.request(_options, (resp: any): void => {
         if (resp.statusCode >= 300) {
           log.e(TAG, `Failed to ${_options.method} [${_options.path}]`);
           reject(new Error(`Status code: ${resp.statusCode}, statusMessage: ${resp.statusMessage}`));
