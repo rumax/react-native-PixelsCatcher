@@ -90,48 +90,68 @@ class TestsRunner {
   }
 
 
-  _testingCompleted = async (isPassed: boolean = false) => {
-    if (this._stopByTimeoutID) {
-      clearTimeout(this._stopByTimeoutID);
+  _stopAllTests = async (isTimeout?: boolean) => {
+    log.i(TAG, 'Stopping the server and emulator');
+    await server.stop();
+    await this._device.stop();
+    log.i(TAG, 'Server and emulator are stopped');
+
+    if (isTimeout) {
+      this._reporter.reportTimeout();
     }
-    if (!this._isDevMode) {
-      log.i(TAG, 'Stopping the server and emulator');
-      await server.stop();
-      await this._device.stop();
-      log.i(TAG, 'Server and emulator are stopped');
 
-      if (!isPassed) {
-        log.i(TAG, 'Some tests failed, exit with error');
-        process.exit(-1);
-      } else {
-        log.i(TAG, 'No errors found');
-      }
+    this._generateReport();
+
+    if (isTimeout || !this._reporter.isPassed()) {
+      log.e(TAG, 'Some tests failed, exit with error');
+      process.exit(-1);
+    } else {
+      log.i(TAG, 'No errors found');
     }
-  };
-
-
-  _onTestsCompleted = async () => {
-    const jUnitFile = path.join(process.cwd(), 'junit.xml');
-    this._reporter.toLog();
-    this._reporter.tojUnit(jUnitFile);
-    this._testingCompleted(this._reporter.isPassed());
-  };
-
-
-  _onAppActivity = () => {
-    this._stopByTimeout();
   }
 
 
-  _stopByTimeout = () => {
+  _testingCompleted = async (isTimeout?: boolean) => {
+    log.v(TAG, 'Testing Completed');
+    if (this._stopByTimeoutID) {
+      log.v(TAG, 'Stopping timer');
+      clearTimeout(this._stopByTimeoutID);
+      this._stopByTimeoutID = undefined;
+    }
+    if (this._isDevMode) {
+      log.v(TAG, 'Dev mode, nothing to do more');
+      return;
+    }
+
+    // Some delay so that all log calls are received from the app
+    const timeout = 5000;
+    log.v(TAG, `Stopping all tests in ${timeout / 1000} sec`);
+    setTimeout(() => {
+      this._stopAllTests(isTimeout);
+    }, timeout);
+  };
+
+
+  _generateReport() {
+    const jUnitFile = path.join(process.cwd(), 'junit.xml');
+    const deviceLogsFile = path.join(
+      process.cwd(),
+      `${this._platform}_logs.log`,
+    );
+    this._reporter.deviceLogsToFile(deviceLogsFile);
+    this._reporter.toLog();
+    this._reporter.tojUnit(jUnitFile);
+  }
+
+
+  _onAppActivity = () => {
     if (this._stopByTimeoutID) {
       clearTimeout(this._stopByTimeoutID);
     }
     this._stopByTimeoutID = setTimeout(() => {
-      log.e(TAG, 'Stop tests by timeout');
-      this._testingCompleted();
+      this._testingCompleted(true);
     }, this._timeout);
-  };
+  }
 
 
   async _startAndroid() {
@@ -154,7 +174,9 @@ class TestsRunner {
     await this._device.startApp(this._packageName, this._activityName);
     log.d(TAG, 'Application started');
 
-    this._stopByTimeout();
+    this._stopByTimeoutID = setTimeout(() => {
+      this._testingCompleted(true);
+    }, this._timeout);
   }
 
 
@@ -182,7 +204,7 @@ class TestsRunner {
     log.d(TAG, 'Starting server');
     await server.start(
       this._reporter,
-      this._onTestsCompleted,
+      this._testingCompleted,
       this._snapshotsPath,
       this._onAppActivity,
       this._port,
@@ -195,10 +217,12 @@ class TestsRunner {
     }
 
     if (this._platform === 'ios') {
-      this._startIOS();
+      await this._startIOS();
     } else {
-      this._startAndroid();
+      await this._startAndroid();
     }
+
+    this._reporter.collectLogs(this._platform, this._packageName);
   }
 }
 

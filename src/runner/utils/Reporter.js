@@ -1,7 +1,10 @@
 /* @flow */
 const fs = require('fs');
+const { spawn } = require('child_process');
 
+const log = require('./log');
 const timeToSec = require('./timeToSec');
+const exec = require('./exec');
 
 export type TestcaseType = {|
   failure: string | void,
@@ -10,6 +13,8 @@ export type TestcaseType = {|
   renderTime?: number,
   time: number,
 |};
+
+const TAG = 'PIXELS_CATCHER::REPORTER';
 
 const timeReducer = (time: number, testcase: TestcaseType): number =>
   time + testcase.time;
@@ -37,9 +42,23 @@ class TestReporter {
     time: Number.MIN_VALUE,
   };
 
+  _timeoutReported: boolean = false;
+
+  _deviceLogs = [];
+
+  _stopDeviceLogger: Function | void;
+
   constructor(name: string, className: string) {
     this._name = name;
     this._className = className;
+  }
+
+  reportTimeout() {
+    this._timeoutReported = true;
+  }
+
+  resetTimeout() {
+    this._timeoutReported = false;
   }
 
   reportTest(testCase: TestcaseType) {
@@ -63,7 +82,7 @@ class TestReporter {
 
   toLog() {
     global.console.log('');
-    global.console.log('==> All tests completed: <==');
+    global.console.log('==> Testing completed <==');
 
     const failedTests = this._getFailedTests();
     const passedTests = this._getPassedTests();
@@ -93,6 +112,11 @@ class TestReporter {
     global.console.log('');
     global.console.log('==> Summary: <==');
 
+    if (this._timeoutReported) {
+      global.console.log('');
+      global.console.log('==> Not all tests are processed due to timeout <==');
+    }
+
     global.console.table([
       ['Total tests', this._tests.length],
       ['Passed tests', passedTests.length],
@@ -106,6 +130,14 @@ class TestReporter {
       global.console.log('==> Failed tests: <==');
       global.console.table(failedTests.map((testCase: TestcaseType) => testCase.name));
     }
+  }
+
+  deviceLogsToFile(fileName: string) {
+    if (this._stopDeviceLogger) {
+      this._stopDeviceLogger();
+      this._stopDeviceLogger = undefined;
+    }
+    fs.writeFileSync(fileName, this._deviceLogs.join(''));
   }
 
   tojUnit(jUnitFile: string) {
@@ -163,6 +195,33 @@ class TestReporter {
     return this._tests
       .filter(filterSkipped)
       .reduce(timeReducer, 0);
+  }
+
+  collectLogs(platform: string, packageName: string) {
+    let spawnProcess;
+    if (platform === 'android') {
+      exec('adb logcat -c');
+      spawnProcess = spawn('adb', [
+        'logcat', `${packageName}:I`, '*:V',
+      ]);
+    } else if (platform === 'ios') {
+      spawnProcess = spawn('xcrun', [
+        'simctl', 'spawn', 'booted', 'log', 'stream',
+      ]);
+    } else {
+      log.e(TAG, `Not supported or invalid platform [${platform}]`);
+      return;
+    }
+
+    spawnProcess.stdout.on('data', (data: any): any => {
+      const stringRepresentation = data.toString();
+      this._deviceLogs.push(stringRepresentation);
+    });
+
+    this._stopDeviceLogger = () => {
+      (spawnProcess.stdin: any).pause();
+      spawnProcess.kill();
+    };
   }
 }
 

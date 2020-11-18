@@ -286,6 +286,10 @@ that has to be executed after `PublishTestResults@2` task. In this case the `pix
 
 ![Azure DevOps Test Results](https://raw.githubusercontent.com/rumax/react-native-PixelsCatcher/master/res/testResults.png)
 
+### Device logs
+
+Each run of the tests collects logs for iOS (`ios_logs.log`) or android (`android_logs.log`) that can be used for futher analysis of failed tests.
+
 ## Demo
 Check the [demo](https://github.com/rumax/PixelsCatcher/tree/master/demo) which
 includes an example how the snapshots can be done and also has some useful
