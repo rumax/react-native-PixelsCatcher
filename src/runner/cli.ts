@@ -5,21 +5,20 @@
 * This source code is licensed under the MIT license found in the
 * LICENSE file in the root directory of this source tree.
 */
-/* @flow */
 import type { DeviceInterface } from './utils/device/DeviceInterface';
 
-const log = require('./utils/log');
-const readConfig = require('./utils/readConfig');
-const getDevice = require('./utils/device/deviceProvider');
-const AzurePublisher = require('./azure/AzurePublisher');
-const TestsRunner = require('./TestsRunner');
+import log from './utils/log';
+import readConfig from './utils/readConfig';
+import getDevice from './utils/device/deviceProvider';
+import AzurePublisher from './azure/AzurePublisher';
+import TestsRunner from './TestsRunner';
 
 const TAG = 'PIXELS_CATCHER';
-const AZURE_PUBLISH_ACTION = 'azureAttachements';
+const AZURE_PUBLISH_ACTION = 'azureAttachments';
 const [,, platform, configuration, action] = process.argv;
 
 if (!platform || !(platform === 'ios' || platform === 'android')) {
-  log.e(TAG, `Valid platform is requred, specify "ios" or "android". Example:
+  log.e(TAG, `Valid platform is required, specify "ios" or "android". Example:
 
   $ pixels-catcher android debug
 
@@ -64,9 +63,9 @@ if (!config) {
   process.exit(-1);
 }
 
-log.setLevel(fullConfig.logLevelel);
+log.setLevel(fullConfig.logLevel);
 log.i(TAG, `Starting with [${configuration}] configuration for [${platform}]`);
-log.v(TAG, 'Config\n' + JSON.stringify(config, null, 2));
+log.v(TAG, `Config\n${JSON.stringify(config, null, 2)}`);
 
 const getParamFromConfig = (paramName: string) => {
   const value = (config[configuration] || {})[paramName];
@@ -87,7 +86,7 @@ const timeout = fullConfig.timeout || 25 * 1000; // 25 sec is default
 
 if (!deviceName) {
   log.e(TAG, 'Valid device name is required, check "PixelsCatcher.deviceName" '
-    + 'sproperty in package.json');
+    + 'property in package.json');
   process.exit(-1);
 }
 

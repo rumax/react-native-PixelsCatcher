@@ -4,7 +4,6 @@
 * This source code is licensed under the MIT license found in the
 * LICENSE file in the root directory of this source tree.
 */
-/* @flow */
 import { AppRegistry } from 'react-native';
 
 import log from './utils/log';
@@ -14,7 +13,7 @@ import SnapshotsContainer from './SnapshotsContainer';
 
 export const Snapshot = require('./Snapshot').default;
 
-export const registerSnapshot = require('./snapshotsManager').registerSnapshot;
+export const { registerSnapshot } = require('./snapshotsManager');
 
 const TAG = 'PIXELS_CATCHER::APP::SNAPSHOT';
 
@@ -25,6 +24,7 @@ type ConfigType = {
    * implementation. Can be used for projects with react-native-navigation
    * @param snapshot Current snapshot
    */
+  // eslint-disable-next-line no-unused-vars
   registerComponent?: (snapshot: typeof SnapshotsContainer) => void,
 };
 

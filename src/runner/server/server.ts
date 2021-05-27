@@ -4,23 +4,22 @@
 * This source code is licensed under the MIT license found in the
 * LICENSE file in the root directory of this source tree.
 */
-/* @flow */
+import * as formidable from 'formidable';
+import * as fs from 'fs';
+import * as http from 'http';
+import * as path from 'path';
+
+import compareImages from './compareImages';
+import log from '../utils/log';
+
 import type Reporter from '../utils/Reporter';
-
-const formidable = require('formidable');
-const fs = require('fs');
-const http = require('http');
-const path = require('path');
-
-const compareImages = require('./compareImages');
-const log = require('../utils/log');
 
 const DEFAULT_PORT = 3000;
 const TAG = 'PIXELS_CATCHER::SERVER';
 const RESPONSE_OK = JSON.stringify({ result: 'OK' });
 
-let server;
-let sockets = {};
+let server: any;
+let sockets: any = {};
 let nextSocketId = 0;
 
 const mkDir = (dirName: string) => {
@@ -29,7 +28,7 @@ const mkDir = (dirName: string) => {
   }
 };
 
-const postHandlers = {
+const postHandlers: any = {
   '/base64': ({ res, fields, snapshotsPath }: any) => {
     const { base64, fileName } = fields;
     log.i(TAG, `Processing base64 data for file [${fileName}]`);
@@ -129,13 +128,13 @@ const startServer = (
   onTestsCompleted: Function,
   snapshotsPath: string,
   onAppActivity: Function,
-  port?: number = DEFAULT_PORT,
+  port: number = DEFAULT_PORT,
 ) => {
   if (server) {
     throw new Error('Server already started');
   }
   server = http.createServer((req: any, res: any) => {
-    log.v(TAG, `Processsing ${req.method} method to [${req.url}]`);
+    log.v(TAG, `Processing ${req.method} method to [${req.url}]`);
     if (req.method.toLowerCase() === 'post') {
       const handler = postHandlers[req.url];
 
@@ -174,11 +173,7 @@ const startServer = (
       res.end();
     }
     onAppActivity();
-  }).listen(port, (err: any) => {
-    if (err) {
-      log.e(TAG, 'Server error:', err);
-    }
-
+  }).listen(port, () => {
     log.d(TAG, `server is listening on port [${port}]`);
   });
 
@@ -215,7 +210,7 @@ const stopServer = () => {
   nextSocketId = 0;
 };
 
-module.exports = {
+export default {
   start: startServer,
   stop: stopServer,
 };

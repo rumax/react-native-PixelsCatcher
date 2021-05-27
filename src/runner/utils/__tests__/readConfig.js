@@ -1,18 +1,17 @@
-/* @flow */
-const fs = require('fs');
+import fs from 'fs';
 
-const readConfig = require('../readConfig');
+import readConfig from '../readConfig';
 
 jest.mock('fs', () => ({
   existsSync: jest.fn(),
   readFileSync: jest.fn(),
 }));
 jest.mock('path', () => ({
-  join: jest.fn((...args: any) => args.join('/')),
+  join: jest.fn((...args) => args.join('/')),
 }));
 
-(process: any).exit = jest.fn();
-(process: any).cwd = jest.fn(() => 'path_to_file');
+process.exit = jest.fn();
+process.cwd = jest.fn(() => 'path_to_file');
 
 describe('readConfig', () => {
   afterEach(() => {

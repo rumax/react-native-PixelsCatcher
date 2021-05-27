@@ -4,7 +4,6 @@
 * This source code is licensed under the MIT license found in the
 * LICENSE file in the root directory of this source tree.
 */
-/* @flow */
 import network from './network';
 
 const consoleLog = global.console && global.console.log
@@ -30,38 +29,28 @@ const serverLog = async (logLevel: LogLevelType, tag: string, ...args: any) => {
 
 const log = {
   v: (tag: string, ...args: any) => {
-    global.requestAnimationFrame(() => {
-      consoleLog(tag, ...args);
-      serverLog('v', tag, ...args);
-    });
+    consoleLog(tag, ...args);
+    serverLog('v', tag, ...args);
   },
 
   d: (tag: string, ...args: any) => {
-    global.requestAnimationFrame(() => {
-      consoleLog(tag, ...args);
-      serverLog('d', tag, ...args);
-    });
+    consoleLog(tag, ...args);
+    serverLog('d', tag, ...args);
   },
 
   i: (tag: string, ...args: any) => {
-    global.requestAnimationFrame(() => {
-      consoleLog(tag, ...args);
-      serverLog('i', tag, ...args);
-    });
+    consoleLog(tag, ...args);
+    serverLog('i', tag, ...args);
   },
 
   w: (tag: string, ...args: any) => {
-    global.requestAnimationFrame(() => {
-      consoleLog(`${tag} WARNING:`, ...args);
-      serverLog('w', `${tag} WARNING:`, ...args);
-    });
+    consoleLog(`${tag} WARNING:`, ...args);
+    serverLog('w', `${tag} WARNING:`, ...args);
   },
 
   e: (tag: string, ...args: any) => {
-    global.requestAnimationFrame(() => {
-      consoleLog(`${tag} ERROR:`, ...args);
-      serverLog('e', `${tag} ERROR:`, ...args);
-    });
+    consoleLog(`${tag} ERROR:`, ...args);
+    serverLog('e', `${tag} ERROR:`, ...args);
   },
 };
 

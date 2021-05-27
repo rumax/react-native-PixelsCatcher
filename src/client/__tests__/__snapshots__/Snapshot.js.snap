@@ -1,5 +1,20 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Snapshot component renders snapshot component 1`] = `
+<RCTScrollView
+  collapsable={false}
+  contentContainerStyle={
+    Object {
+      "flexGrow": 1,
+    }
+  }
+>
+  <View>
+    <View />
+  </View>
+</RCTScrollView>
+`;
+
 exports[`Snapshot component renders snpashot component 1`] = `
 <RCTScrollView
   collapsable={false}

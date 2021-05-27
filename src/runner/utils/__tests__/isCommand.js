@@ -1,4 +1,3 @@
-/* @flow */
 import isCommand from '../isCommand';
 import exec from '../exec';
 
@@ -10,7 +9,7 @@ describe('isCommand', () => {
   });
 
   it('Returns true if command exists', () => {
-    (exec: any).mockReturnValueOnce('/bin/ls');
+    exec.mockReturnValueOnce('/bin/ls');
 
     const exists = isCommand('ls');
 
@@ -19,7 +18,7 @@ describe('isCommand', () => {
   });
 
   it('Returns false if command does not exists', () => {
-    (exec: any).mockReturnValueOnce('');
+    exec.mockReturnValueOnce('');
 
     const exists = isCommand('sl');
 

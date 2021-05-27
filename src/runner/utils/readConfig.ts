@@ -4,11 +4,10 @@
 * This source code is licensed under the MIT license found in the
 * LICENSE file in the root directory of this source tree.
 */
-/* @flow */
-const fs = require('fs');
-const path = require('path');
+import * as fs from 'fs';
+import * as path from 'path';
 
-const log = require('./log');
+import log from './log';
 
 const TAG = 'PIXELS_CATCHER::UTIL_READ_CONFIG';
 const CONFIG_FILE = 'pixels-catcher.json';
@@ -41,9 +40,9 @@ const readConfigFromFile = (): any => {
   return JSON.parse(fileContent);
 };
 
-module.exports = () => {
-  const pixelsCatcherConfig = readConfigFromPackageJSON() ||
-    readConfigFromFile();
+export default () => {
+  const pixelsCatcherConfig = readConfigFromPackageJSON()
+    || readConfigFromFile();
 
   if (!pixelsCatcherConfig) {
     log.e(TAG, 'Cannot find "PixelsCatcher" in package.json or find '

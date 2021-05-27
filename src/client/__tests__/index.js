@@ -1,11 +1,12 @@
 /* @flow */
+// eslint-disable-next-line no-use-before-define
 import React from 'react';
 import { AppRegistry, View } from 'react-native';
 
 import { runSnapshots, Snapshot, registerSnapshot } from '../index';
 import network from '../utils/network';
 
-jest.mock('AppRegistry', () => ({ registerComponent: jest.fn() }));
+jest.mock('react-native/Libraries/ReactNative/AppRegistry', () => ({ registerComponent: jest.fn() }));
 jest.mock('../utils/network', () => ({ setBaseUrl: jest.fn() }));
 jest.mock('../SnapshotsContainer', () => 'SnapshotsContainer');
 jest.mock('../utils/log', () => ({ i: jest.fn() }));
@@ -32,9 +33,9 @@ describe('Snapshot component', () => {
     runSnapshots(appName);
 
     expect(AppRegistry.registerComponent).toHaveBeenCalledTimes(1);
-    expect((AppRegistry.registerComponent: any).mock.calls)
+    expect(AppRegistry.registerComponent.mock.calls)
       .toMatchSnapshot('registerComponent');
-    expect((AppRegistry.registerComponent: any).mock.calls[0][1]())
+    expect(AppRegistry.registerComponent.mock.calls[0][1]())
       .toBe('SnapshotsContainer');
     expect(network.setBaseUrl).toHaveBeenCalledTimes(0);
   });
@@ -44,9 +45,9 @@ describe('Snapshot component', () => {
     runSnapshots(appName, { baseUrl });
 
     expect(AppRegistry.registerComponent).toHaveBeenCalledTimes(1);
-    expect((AppRegistry.registerComponent: any).mock.calls)
+    expect(AppRegistry.registerComponent.mock.calls)
       .toMatchSnapshot('registerComponent');
-    expect((AppRegistry.registerComponent: any).mock.calls[0][1]())
+    expect(AppRegistry.registerComponent.mock.calls[0][1]())
       .toBe('SnapshotsContainer');
     expect(network.setBaseUrl).toHaveBeenCalledTimes(1);
     expect(network.setBaseUrl).toHaveBeenCalledWith(baseUrl);

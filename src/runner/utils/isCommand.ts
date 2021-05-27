@@ -4,11 +4,12 @@
 * This source code is licensed under the MIT license found in the
 * LICENSE file in the root directory of this source tree.
 */
-/* @flow */
+import exec from './exec';
 
-const timeToSec = (ms: number): number => {
-  const sec = ms / 1000;
-  return Math.round(sec * 1000) / 1000;
-};
+function isCommand(cmd: string) {
+  const out = exec(`whereis ${cmd}`);
 
-module.exports = timeToSec;
+  return Boolean(out.trim());
+}
+
+export default isCommand;

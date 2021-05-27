@@ -1,15 +1,14 @@
-/* @flow */
-const fs = require('fs');
-const path = require('path');
+import * as fs from 'fs';
+import * as path from 'path';
 
-const log = require('./utils/log');
-const Reporter = require('./utils/Reporter');
-const server = require('./server/server');
+import log from './utils/log';
+import Reporter from './utils/Reporter';
+import server from './server/server';
 
 const TAG = 'PIXELS_CATCHER';
 
 type TestsRunnerParamsType =
-{|
+{
   activityName: string,
   appFile: string,
   device: any,
@@ -23,14 +22,14 @@ type TestsRunnerParamsType =
   snapshotsPath: string,
   testRunName: string,
   timeout: number,
-|};
+};
 
 class TestsRunner {
   _activityName: string;
 
   _appFile: string;
 
-  _appFileFullPath: string;
+  _appFileFullPath: string | void;
 
   _device: any;
 
@@ -52,7 +51,7 @@ class TestsRunner {
 
   _snapshotsPath: string;
 
-  _stopByTimeoutID: TimeoutID | void;
+  _stopByTimeoutID: ReturnType<typeof setTimeout> | void;
 
   _timeout: number;
 
@@ -203,4 +202,4 @@ class TestsRunner {
 }
 
 
-module.exports = TestsRunner;
+export default TestsRunner;

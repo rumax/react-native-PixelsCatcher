@@ -4,9 +4,10 @@
 * This source code is licensed under the MIT license found in the
 * LICENSE file in the root directory of this source tree.
 */
-/* @flow */
 const TAG = 'PIXELS_CATCHER::UTIL_LOG';
-const logLevels = {
+const logLevels: {
+  [key: string]: number
+} = {
   v: 4,
   d: 3,
   i: 2,
@@ -15,7 +16,9 @@ const logLevels = {
 };
 let activeLevel = logLevels.i;
 
-module.exports = {
+const log: {
+  [key: string]: Function
+} = {
   v(tag: string, ...args: any) {
     if (activeLevel >= logLevels.v) {
       global.console.log(`${tag}:`, ...args);
@@ -46,7 +49,7 @@ module.exports = {
     }
   },
 
-  setLevel(level?: string = 'i') {
+  setLevel(level: string | undefined = 'i') {
     let nextLevel = logLevels[level];
     if (nextLevel === undefined) {
       global.console.log(`${TAG} WARNING:`, `Invalid level [${level}]. Supported levels: ${Object.keys(logLevels).join(', ')}`);
@@ -55,3 +58,5 @@ module.exports = {
     activeLevel = nextLevel;
   },
 };
+
+export default log;

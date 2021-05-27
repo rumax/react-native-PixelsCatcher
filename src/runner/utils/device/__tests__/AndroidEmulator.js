@@ -11,7 +11,7 @@ jest.mock('../AndroidEmulatorCmd', () => 'emulator');
 
 const { spawn } = require('child_process');
 
-const AndroidEmulator = require('../AndroidEmulator');
+const AndroidEmulator = require('../AndroidEmulator').default;
 const exec = require('../../exec');
 const delay = require('../../delay');
 
@@ -91,7 +91,7 @@ describe('AndroidEmulator', () => {
 
   it('start emulator when it is available and already started should stop it before starting', async () => {
     // $FlowFixMe: ignore for mock
-    exec.mockImplementation((cmd: string): string => {
+    exec.mockImplementation((cmd) => {
       if (cmd === 'emulator -avd -list-avds') {
         return `avd devices including ${name}`;
       }
