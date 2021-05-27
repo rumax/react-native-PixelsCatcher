@@ -1,4 +1,5 @@
 /* @flow */
+// eslint-disable-next-line no-use-before-define
 import React from 'react';
 import renderer from 'react-test-renderer';
 
@@ -30,7 +31,7 @@ describe('SnapshotsContainer', () => {
   });
 
   it('Renders registered snapshot', () => {
-    (getNextSnapshot: any).mockImplementationOnce(() => 'SomeSnapshot');
+    getNextSnapshot.mockImplementationOnce(() => 'SomeSnapshot');
     const tree = renderer.create(<SnapshotsContainer />);
 
     expect(tree).toMatchSnapshot();

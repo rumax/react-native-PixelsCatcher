@@ -1,24 +1,21 @@
 /* @flow */
-const fs = require('fs');
+import * as fs from 'fs';
 
-const timeToSec = require('./timeToSec');
+import timeToSec from './timeToSec';
 
-export type TestcaseType = {|
+export type TestcaseType = {
   failure: string | void,
   isSkipped: boolean | void,
   name: string,
   renderTime?: number,
   time: number,
-|};
+};
 
-const timeReducer = (time: number, testcase: TestcaseType): number =>
-  time + testcase.time;
+const timeReducer = (time: number, testcase: TestcaseType): number => time + testcase.time;
 
-const filterSkipped = (testcase: TestcaseType): boolean =>
-  !testcase.isSkipped;
+const filterSkipped = (testcase: TestcaseType): boolean => !testcase.isSkipped;
 
-const filterFailed = (testcase: TestcaseType): boolean =>
-  !testcase.failure;
+const filterFailed = (testcase: TestcaseType): boolean => !testcase.failure;
 
 class TestReporter {
   _name: string;
@@ -68,7 +65,7 @@ class TestReporter {
     const failedTests = this._getFailedTests();
     const passedTests = this._getPassedTests();
     const skippedTests = this._getSkippedTests();
-    const reportTable = [];
+    const reportTable: any = [];
 
     this._tests.forEach((testcase: TestcaseType) => {
       let status = 'PASSED';
@@ -110,25 +107,25 @@ class TestReporter {
 
   tojUnit(jUnitFile: string) {
     const xmlResult = ['<?xml version="1.0" encoding="UTF-8"?>'];
-    xmlResult.push('<testsuites' +
-                   ` name="${this._name}"` +
-                   ` tests="${this._tests.length}"` +
-                   ` skipped="${this._getSkippedTests().length}"` +
-                   ' errors="0"' +
-                   ` failures="${this._getFailedTests().length}"` +
-                   ` time="${timeToSec(this._getTotalTime())}" >`);
-    xmlResult.push('  <testsuite' +
-                   ` name="${this._name}"` +
-                   ` tests="${this._tests.length}"` +
-                   ` skipped="${this._getSkippedTests().length}"` +
-                   ' errors="0"' +
-                   ` failures="${this._getFailedTests().length}"` +
-                   ` time="${timeToSec(this._getTotalTime())}" >`);
+    xmlResult.push('<testsuites'
+                   + ` name="${this._name}"`
+                   + ` tests="${this._tests.length}"`
+                   + ` skipped="${this._getSkippedTests().length}"`
+                   + ' errors="0"'
+                   + ` failures="${this._getFailedTests().length}"`
+                   + ` time="${timeToSec(this._getTotalTime())}" >`);
+    xmlResult.push('  <testsuite'
+                   + ` name="${this._name}"`
+                   + ` tests="${this._tests.length}"`
+                   + ` skipped="${this._getSkippedTests().length}"`
+                   + ' errors="0"'
+                   + ` failures="${this._getFailedTests().length}"`
+                   + ` time="${timeToSec(this._getTotalTime())}" >`);
     this._tests.forEach((testcase: TestcaseType) => {
-      xmlResult.push('    <testcase' +
-                     ` classname="${this._className}"` +
-                     ` name="${testcase.name}"` +
-                     ` time="${timeToSec(testcase.time)}">`);
+      xmlResult.push('    <testcase'
+                     + ` classname="${this._className}"`
+                     + ` name="${testcase.name}"`
+                     + ` time="${timeToSec(testcase.time)}">`);
       if (testcase.failure) {
         xmlResult.push(`      <failure>${testcase.failure}</failure>`);
       } else if (testcase.isSkipped) {
@@ -166,4 +163,4 @@ class TestReporter {
   }
 }
 
-module.exports = TestReporter;
+export default TestReporter;

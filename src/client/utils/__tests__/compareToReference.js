@@ -9,7 +9,7 @@ describe('compareToReference', () => {
     const snapshotName = 'snapshotName';
     const base64 = 'base64 data';
 
-    (network.postBase64: any).mockImplementationOnce(() => ({ status: 404 }));
+    network.postBase64.mockImplementationOnce(() => ({ status: 404 }));
 
     const failure = await compareToReference(snapshotName, base64);
     expect(failure).toMatchSnapshot();
@@ -19,7 +19,7 @@ describe('compareToReference', () => {
     const snapshotName = 'snapshotName';
     const base64 = 'base64 data';
 
-    (network.postBase64: any).mockImplementationOnce(() => ({
+    network.postBase64.mockImplementationOnce(() => ({
       status: 200,
       json: async () => ({
         result: 'ERROR',
@@ -35,7 +35,7 @@ describe('compareToReference', () => {
     const snapshotName = 'snapshotName';
     const base64 = 'base64 data';
 
-    (network.postBase64: any).mockImplementationOnce(() => ({
+    network.postBase64.mockImplementationOnce(() => ({
       status: 200,
       json: async () => ({
         result: 'OK',

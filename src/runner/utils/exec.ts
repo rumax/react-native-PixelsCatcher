@@ -4,14 +4,13 @@
 * This source code is licensed under the MIT license found in the
 * LICENSE file in the root directory of this source tree.
 */
-/* @flow */
-const childProcess = require('child_process');
+import * as childProcess from 'child_process';
 
-const log = require('./log');
+import log from './log';
 
 const TAG = 'PIXELS_CATCHER::UTIL_EXEC';
 
-module.exports = function exec(cmd: string): string {
+export default function exec(cmd: string): string {
   let result = '';
 
   try {
@@ -21,4 +20,4 @@ module.exports = function exec(cmd: string): string {
   }
 
   return result;
-};
+}

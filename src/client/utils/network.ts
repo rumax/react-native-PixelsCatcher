@@ -4,8 +4,6 @@
 * This source code is licensed under the MIT license found in the
 * LICENSE file in the root directory of this source tree.
 */
-/* @flow */
-/* global: fetch */
 import { Platform } from 'react-native';
 
 let baseUrl = Platform.select({
@@ -13,15 +11,15 @@ let baseUrl = Platform.select({
   ios: 'http://127.0.0.1:3000',
 });
 
-type TestcaseType = {|
+type TestcaseType = {
   name: string,
   failure?: string,
   isSkipped?: boolean,
   time: number,
   renderTime?: number,
-|};
+};
 
-const fetchRequest = async (url: string, body: Object): Promise<*> => {
+const fetchRequest = async (url: string, body: Object): Promise<unknown> => {
   const response = await fetch(url, {
     method: 'POST',
     headers: {
@@ -42,7 +40,7 @@ export default {
   },
 
 
-  postBase64: async (body: Object): Promise<*> => {
+  postBase64: async (body: Object): Promise<unknown> => {
     const response = await fetchRequest(`${baseUrl}/base64`, body);
     return response;
   },

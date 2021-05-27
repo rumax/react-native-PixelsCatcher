@@ -1,18 +1,18 @@
-/* @flow */
-const fs = require('fs');
-const https = require('https');
-const path = require('path');
+import * as fs from 'fs';
+import * as https from 'https';
+import * as path from 'path';
 
-const log = require('../utils/log');
+import log from '../utils/log';
 
 const TAG = 'PIXELS_CATCHER::AZURE_PUBLISHER';
 
+const processEnv: any = process.env;
 const {
   BUILD_BUILDURI,
   SYSTEM_ACCESSTOKEN,
   SYSTEM_TEAMFOUNDATIONCOLLECTIONURI,
   SYSTEM_TEAMPROJECT,
-} = (process.env: any);
+} = processEnv;
 
 const DEFAULT_OPTIONS = {
   hostname: 'dev.azure.com',
@@ -30,17 +30,15 @@ type ImageType = 'refImages' | 'uploads' | 'diffs';
 
 const uploadImageSuffix = {
   diffs: 'Diff',
-  refImages: 'Refference',
+  refImages: 'Reference',
   uploads: 'Actual',
 };
 
 const imageTypes = Object.keys(uploadImageSuffix);
 
-
 function base64Encode(file: string) {
   return Buffer.from(fs.readFileSync(file)).toString('base64');
 }
-
 
 class AzurePublisher {
   _workingDir: string;
@@ -48,7 +46,6 @@ class AzurePublisher {
   _testRunName: string;
 
   _urlBasePath: string;
-
 
   constructor(workingDir: string, testRunName: string) {
     this._workingDir = workingDir;
@@ -60,7 +57,6 @@ class AzurePublisher {
     this._urlBasePath = `/${organization}/${SYSTEM_TEAMPROJECT}/_apis/test`;
   }
 
-
   async publish() {
     try {
       const buildRunId = await this._getBuildRunId(BUILD_BUILDURI);
@@ -69,7 +65,9 @@ class AzurePublisher {
       log.i(TAG, `failedTests count [${failedTests.length}]`);
       failedTests.forEach(async (test: any) => {
         log.v(TAG, `Uploading results for test [${test.testCaseTitle}] from [${test.automatedTestStorage}]`);
-        imageTypes.forEach(async (type: ImageType) => {
+        let type: any;
+        for (let ind = 0; ind < imageTypes.length; ++ind) {
+          type = imageTypes[ind];
           await this._uploadScreenshot(
             buildRunId,
             test.id,
@@ -77,7 +75,7 @@ class AzurePublisher {
             test.automatedTestStorage,
             type,
           );
-        });
+        }
       });
     } catch (err) {
       log.e(TAG, `Failed to upload results: ${err.message}`);
@@ -85,9 +83,8 @@ class AzurePublisher {
     }
   }
 
-
   async _getBuildRunId(_buildUri: string): Promise<string> {
-    const data = await this._httpsRequest({
+    const data: any = await this._httpsRequest({
       method: 'GET',
       path: `${this._urlBasePath}/runs?api-version=5.1&buildUri=${_buildUri}`,
     });
@@ -112,16 +109,14 @@ class AzurePublisher {
     return id;
   }
 
-
   async _getTestFailures(runId: string) {
-    const data = await this._httpsRequest({
+    const data: any = await this._httpsRequest({
       method: 'GET',
       path: `${this._urlBasePath}/Runs/${runId}/results?outcomes=3&api-version=5.1&outcomes=3`,
     });
 
     return data.value;
   }
-
 
   async _upload(buildRunId: string, id: string, fileToUpload: string, fileNameToShow: string) {
     const postData = {
@@ -131,14 +126,13 @@ class AzurePublisher {
       attachmentType: 'GeneralAttachment',
     };
 
-    const data = await this._httpsRequest({
+    const data: any = await this._httpsRequest({
       method: 'POST',
       path: `${this._urlBasePath}/Runs/${buildRunId}/Results/${id}/attachments?api-version=5.1-preview.1`,
     }, postData);
 
     return data.value;
   }
-
 
   async _uploadScreenshot(
     buildRunId: string,
@@ -158,8 +152,7 @@ class AzurePublisher {
     log.v(TAG, `${suffix} uploaded`);
   }
 
-
-  async _httpsRequest(options: any, postData: any) {
+  async _httpsRequest(options: any, postData: any = undefined) {
     let _options = {
       ...DEFAULT_OPTIONS,
       ...options,
@@ -194,7 +187,7 @@ class AzurePublisher {
           resolve(JSON.parse(data));
         });
       }).on('error', (err: Error) => {
-        reject(new Error('Error: ' + err.message));
+        reject(new Error(`Error: ${err.message}`));
       });
 
       if (_postData) {
@@ -206,4 +199,4 @@ class AzurePublisher {
   }
 }
 
-module.exports = AzurePublisher;
+export default AzurePublisher;

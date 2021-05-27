@@ -4,15 +4,14 @@
 * This source code is licensed under the MIT license found in the
 * LICENSE file in the root directory of this source tree.
 */
-/* @flow */
+import { spawn } from 'child_process';
+
+import exec from '../exec';
+import delay from '../delay';
+import log from '../log';
+import emulatorCmd from './AndroidEmulatorCmd';
+
 import type { DeviceInterface } from './DeviceInterface';
-
-const { spawn } = require('child_process');
-
-const exec = require('../exec');
-const delay = require('../delay');
-const log = require('../log');
-const emulatorCmd = require('./AndroidEmulatorCmd');
 
 const TAG = 'PIXELS_CATCHER::UTIL_EMULATOR';
 
@@ -26,7 +25,6 @@ class AndroidEmulator implements DeviceInterface {
     this._canStopDevice = Boolean(canStopDevice);
   }
 
-
   _getDevices(): Array<string> {
     const cmd = 'emulator -avd -list-avds';
     const devices = exec(cmd).split('\n')
@@ -34,7 +32,6 @@ class AndroidEmulator implements DeviceInterface {
 
     return devices;
   }
-
 
   _isDeviceAvailable(name: string): boolean {
     const devices = this._getDevices();
@@ -50,7 +47,6 @@ class AndroidEmulator implements DeviceInterface {
     return isAvailable;
   }
 
-
   _getActiveDevice(): any {
     log.v(TAG, 'Get active device');
     const device = exec('adb devices').split('\n')
@@ -65,7 +61,6 @@ class AndroidEmulator implements DeviceInterface {
     log.v(TAG, 'Active device', name);
     return name;
   }
-
 
   async start(params: any = []) {
     if (!this._isDeviceAvailable(this._name)) {
@@ -115,7 +110,7 @@ class AndroidEmulator implements DeviceInterface {
       log.v(TAG, `on close: child process exited with code ${code}`);
     });
 
-    let tryCnt = 60 * 2 / 5; // 2 minutes with 5000 delay
+    let tryCnt = (60 * 2) / 5; // 2 minutes with 5000 delay
 
     while (--tryCnt >= 0 && !deviceBooted) {
       log.v(TAG, 'awaiting when device is booted');
@@ -127,7 +122,6 @@ class AndroidEmulator implements DeviceInterface {
       throw new Error('Device is not loaded in 30 seconds');
     }
   }
-
 
   async stop() {
     if (!this._canStopDevice) {
@@ -144,7 +138,6 @@ class AndroidEmulator implements DeviceInterface {
     log.v(TAG, 'Active device stopped');
   }
 
-
   isAppInstalled(packageName: string): boolean {
     const cmd = 'adb shell pm list packages';
 
@@ -158,7 +151,6 @@ class AndroidEmulator implements DeviceInterface {
     return isInstalled;
   }
 
-
   async uninstallApp(name: string) {
     log.v(TAG, `Uninstalling ${name}`);
     const isInstalled = await this.isAppInstalled(name);
@@ -168,7 +160,6 @@ class AndroidEmulator implements DeviceInterface {
     }
     log.v(TAG, 'Uninstalling completed');
   }
-
 
   async installApp(name: string, apkFile: string) {
     let tryCnt = 3;
@@ -196,7 +187,6 @@ class AndroidEmulator implements DeviceInterface {
     }
   }
 
-
   startApp(packageName: string, activityName: string) {
     log.v(TAG, `Starting application [${packageName}]`);
 
@@ -212,4 +202,4 @@ class AndroidEmulator implements DeviceInterface {
   }
 }
 
-module.exports = AndroidEmulator;
+export default AndroidEmulator;

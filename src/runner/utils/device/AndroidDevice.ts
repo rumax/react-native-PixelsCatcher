@@ -4,12 +4,11 @@
 * This source code is licensed under the MIT license found in the
 * LICENSE file in the root directory of this source tree.
 */
-/* @flow */
 import type { DeviceInterface } from './DeviceInterface';
 
-const exec = require('../exec');
-const delay = require('../delay');
-const log = require('../log');
+import exec from '../exec';
+import delay from '../delay';
+import log from '../log';
 
 const TAG = 'PIXELS_CATCHER::ANDROID_DEVICE';
 
@@ -133,4 +132,4 @@ class AndroidDevice implements DeviceInterface {
   }
 }
 
-module.exports = AndroidDevice;
+export default AndroidDevice;

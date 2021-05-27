@@ -1,4 +1,5 @@
 /* @flow */
+// eslint-disable-next-line no-use-before-define
 import React from 'react';
 import { View } from 'react-native';
 import renderer from 'react-test-renderer';
@@ -7,7 +8,6 @@ import Snapshot from '../Snapshot';
 
 jest.mock('../utils/log', () => ({ e: () => {}, v: () => {} }));
 global.console.error = () => {};
-
 
 describe('Snapshot component', () => {
   const onReadyMock = jest.fn();
@@ -24,7 +24,7 @@ describe('Snapshot component', () => {
     expect(exception).toMatchSnapshot();
   });
 
-  it('renders snpashot component', () => {
+  it('renders snapshot component', () => {
     class SnapshotClass extends Snapshot {
       static snapshotName = 'AppSnapshot';
 

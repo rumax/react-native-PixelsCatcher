@@ -8,7 +8,7 @@ describe('AndroidEmulatorCmd', () => {
 
   it('returns command provided via ANDROID_EMULATOR', () => {
     process.env.ANDROID_EMULATOR = 'cmdFrom_ANDROID_EMULATOR';
-    const emulatorCmd = require('../AndroidEmulatorCmd');
+    const emulatorCmd = require('../AndroidEmulatorCmd').default;
 
     expect(emulatorCmd).toBe(process.env.ANDROID_EMULATOR);
   });
@@ -16,7 +16,7 @@ describe('AndroidEmulatorCmd', () => {
   it('returns command available in PATH', () => {
     process.env.ANDROID_EMULATOR = '';
     jest.mock('../../isCommand', () => () => true);
-    const emulatorCmd = require('../AndroidEmulatorCmd');
+    const emulatorCmd = require('../AndroidEmulatorCmd').default;
 
     expect(emulatorCmd).toBe('emulator');
   });
@@ -25,7 +25,7 @@ describe('AndroidEmulatorCmd', () => {
     process.env.ANDROID_EMULATOR = '';
     jest.mock('../../isCommand', () => () => false);
     jest.mock('../../exec', () => () => 'Darwin');
-    const emulatorCmd = require('../AndroidEmulatorCmd');
+    const emulatorCmd = require('../AndroidEmulatorCmd').default;
 
     expect(emulatorCmd
       .indexOf('Library/Android/sdk/emulator/emulator') > 0).toBe(true);

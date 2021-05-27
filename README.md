@@ -4,8 +4,6 @@
 [![npm version](https://badge.fury.io/js/pixels-catcher.svg)](https://badge.fury.io/js/pixels-catcher)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 [![Build Status](https://tfsprodweu6.visualstudio.com/A94b22b53-118f-4630-a94a-6d5bd33d6515/react-native-PixelsCatcher/_apis/build/status/rumax.react-native-PixelsCatcher?branchName=master)](https://tfsprodweu6.visualstudio.com/A94b22b53-118f-4630-a94a-6d5bd33d6515/react-native-PixelsCatcher/_build/latest?definitionId=1&branchName=master)
-[![CircleCI](https://circleci.com/gh/rumax/react-native-PixelsCatcher.svg?style=shield)](https://circleci.com/gh/rumax/react-native-PixelsCatcher)
-[![codecov](https://codecov.io/gh/rumax/react-native-PixelsCatcher/branch/master/graph/badge.svg)](https://codecov.io/gh/rumax/react-native-PixelsCatcher)
 
 Library for testing React Native UI components and screens
 
@@ -123,7 +121,7 @@ PixelsCatcher: {
       ...CONFIGURATION_SPECIFIC
     }
   },
-  logLevelel: number,
+  logLevel: number,
   timeout: number,
   canStopDevice: boolean
 }
@@ -134,7 +132,7 @@ where
   - `PLATFORM` can be `android` or `ios`
   - `CONFIGURATION` is a configuration with the following properties:
     * `activityName` - (*Android only*) Activity name, example: com.demo.MainActivity.
-    * `appFile` - (*Optional*) Path to apk file on adroid or app folder on iOS,
+    * `appFile` - (*Optional*) Path to apk file on android or app folder on iOS,
       example: ./app/build/outputs/apk/debug/app-debug.apk
     * `deviceName` - Device name, for example emulator: Nexus_5X or iOS:
       iPhone 8 Plus
@@ -148,7 +146,7 @@ where
     * `port` - Server port. Default value is `3000`
     * `locale` - Locale to be used, for example `uk-UA`, `nl-NL`, etc. At this moment supported only on iOS simulators. ([Pull request welcome](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/about-pull-requests) for android implementation)
   - `SHARED_CONFIGURATION`. In case more that one configurations exists, shared parameters can be moved here.
-  - `logLevelel` - log levels: `e`, `w`, `i`, `d`, `v`. This corresponds to ERROR, WARN, INFO, DEBUG, VERBOSE
+  - `logLevel` - log levels: `e`, `w`, `i`, `d`, `v`. This corresponds to ERROR, WARN, INFO, DEBUG, VERBOSE
   - `timeout` - tests timeout, with default value 2500ms. If timeout is reached, tests will fail automatically
   - `canStopDevice` [Optional] Boolean parameter that allows to stop device (used to restart simulator/emulator). If set to false, the runner will start a new simulator/emulator if none is started. If a simulator/emulator is already started, it will be used for tests. The runner will also stop the device after tests. **If set to "false" it is possible that wrong device will be used!**. Default value is `true`.
 
@@ -271,10 +269,10 @@ runSnapshots(appName, { baseUrl });
 
 Each run of tests produces a JUnit test report that is generated and available in `junit.xml` file. For integrating it with Azure DevOps, follow the [Azure DevOps and React Native UI testing](https://itnext.io/azure-devops-and-react-native-ui-testing-8144ba1a9eb) article that describes how to automate iOS testing or [Azure DevOps and React Native UI testing part 2 - Android](https://itnext.io/azure-devops-and-react-native-ui-testing-part-2-android-580c44d8c7ec) for Android.
 
-JUnit test report does not specify attachments, but to upload attachements to test report use third parameter `azureAttachements`. This can be done with azure task:
+JUnit test report does not specify attachments, but to upload attachments to test report use third parameter `azureAttachments`. This can be done with azure task:
 
 ```
-script: ./node_modules/.bin/pixels-catcher ios debug azureAttachements
+script: ./node_modules/.bin/pixels-catcher ios debug azureAttachments
   condition: failed()
   env:
     SYSTEM_ACCESSTOKEN: $(System.AccessToken)

@@ -7,9 +7,9 @@
 /* @flow */
 import type { DeviceInterface, StartParamsType } from './DeviceInterface';
 
-const exec = require('../exec');
-const log = require('../log');
-const delay = require('../delay');
+import exec from '../exec';
+import log from '../log';
+import delay from '../delay';
 
 const TAG = 'PIXELS_CATCHER::UTIL_SIMULATOR';
 
@@ -37,7 +37,7 @@ class IOSSimulator implements DeviceInterface {
     const cmd = 'xcrun simctl list --json';
     const response = JSON.parse(exec(cmd));
     const { devices } = response;
-    const availableDevices = [];
+    const availableDevices: Array<DeviceType> = [];
 
     Object.keys(devices).forEach((name: string) => {
       devices[name].forEach((device: DeviceType) => {
@@ -135,7 +135,7 @@ class IOSSimulator implements DeviceInterface {
     this.stop();
 
     const uid = this._getUid(this._name);
-    log.i(TAG, `Uid of the devive is [${uid || '-'}]`);
+    log.i(TAG, `Uid of the device is [${uid || '-'}]`);
 
     if (!uid) {
       throw new Error(`Invalid simulator [${this._name}], cannot find uid`);
@@ -188,8 +188,8 @@ class IOSSimulator implements DeviceInterface {
     let device = this._getDeviceWithStatus('Shutting Down');
 
     while (device) {
-      log.v(TAG, `Awaiting for shutdown completed (Device ${device.name} has ` +
-        `state ${device.state})`);
+      log.v(TAG, `Awaiting for shutdown completed (Device ${device.name} has `
+        + `state ${device.state})`);
       await delay(1000);
       device = this._getDeviceWithStatus('Shutting Down');
     }
@@ -198,4 +198,4 @@ class IOSSimulator implements DeviceInterface {
   }
 }
 
-module.exports = IOSSimulator;
+export default IOSSimulator;

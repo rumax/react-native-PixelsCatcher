@@ -4,12 +4,11 @@
 * This source code is licensed under the MIT license found in the
 * LICENSE file in the root directory of this source tree.
 */
-/* @flow */
-const fs = require('fs');
-const { PNG } = require('pngjs');
-const pixelmatch = require('pixelmatch');
+import * as fs from 'fs';
+import { PNG } from 'pngjs';
+import * as pixelmatch from 'pixelmatch';
 
-module.exports = (actual: any, expected: any, diffFile: any): number => {
+export default (actual: any, expected: any, diffFile: any): number => {
   if (!actual || !fs.existsSync(actual)) {
     throw new Error(`Actual file is required, cannot get [${actual}] file`);
   }

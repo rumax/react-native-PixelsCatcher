@@ -1,24 +1,23 @@
-/* @flow */
+import getDevice from '../deviceProvider';
+
 jest.mock('../AndroidEmulator', () => (class {
-  constructor(name: string) {
-    (this: any)._name = 'AndroidEmulator';
-    (this: any).deviceName = name;
+  constructor(name) {
+    this._name = 'AndroidEmulator';
+    this.deviceName = name;
   }
 }));
 jest.mock('../AndroidDevice', () => (class {
-  constructor(name: string) {
-    (this: any)._name = 'AndroidDevice';
-    (this: any).deviceName = name;
+  constructor(name) {
+    this._name = 'AndroidDevice';
+    this.deviceName = name;
   }
 }));
 jest.mock('../IosSimulator', () => (class {
-  constructor(name: string) {
-    (this: any)._name = 'IosSimulator';
-    (this: any).deviceName = name;
+  constructor(name) {
+    this._name = 'IosSimulator';
+    this.deviceName = name;
   }
 }));
-
-const getDevice = require('../deviceProvider');
 
 describe('deviceProvider', () => {
   it('provide Android Emulator', () => {

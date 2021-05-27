@@ -7,7 +7,3 @@ jobs:
       - checkout
       - run: npm install
       - run: npm run lint
-      - run: npm run flow
-      - run: npm run test
-      - run: npm run test-coverage
-      - run: npm run test-coverage-report

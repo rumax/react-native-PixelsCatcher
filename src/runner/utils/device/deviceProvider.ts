@@ -4,21 +4,20 @@
 * This source code is licensed under the MIT license found in the
 * LICENSE file in the root directory of this source tree.
 */
-/* @flow */
 import type { DeviceInterface } from './DeviceInterface';
 
-const log = require('../../utils/log');
-const AndroidEmulator = require('./AndroidEmulator');
-const AndroidDevice = require('./AndroidDevice');
-const IosSimulator = require('./IosSimulator');
+import log from '../log';
+import AndroidEmulator from './AndroidEmulator';
+import AndroidDevice from './AndroidDevice';
+import IosSimulator from './IosSimulator';
 
 const TAG = 'PIXELS_CATCHER::DEVICE_PROVIDER';
 
-module.exports = (
+export default (
   name: string,
   platform: string,
   isPhysicalDevice?: boolean,
-  canStopDevice?: boolean = true,
+  canStopDevice: boolean = true,
 ): DeviceInterface => {
   if (platform === 'android') {
     return isPhysicalDevice
