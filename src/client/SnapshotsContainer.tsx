@@ -6,6 +6,7 @@
  */
 // eslint-disable-next-line no-use-before-define
 import React, { Component } from 'react';
+import { View, Text } from 'react-native';
 // @ts-ignore
 import SaveView from 'react-native-save-view';
 
@@ -17,7 +18,6 @@ import network from './utils/network';
 const TAG = 'PIXELS_CATCHER::APP::SNAPSHOTS_CONTAINER';
 
 export default class SnapshotsContainer extends Component<any, any> {
-  // eslint-disable-next-line react/sort-comp
   _viewRef: any;
 
   _testStartedAt: number = new Date().getTime();
@@ -27,22 +27,26 @@ export default class SnapshotsContainer extends Component<any, any> {
   constructor(props: void) {
     super(props);
 
-    const ActiveSnapshot = getNextSnapshot();
+    this.state = {
+      ActiveSnapshot: null,
+      isReady: false,
+    };
+  }
 
-    if (!ActiveSnapshot) {
-      this._endOfTest();
-      log.e(TAG, 'No snapshots registered');
-    }
-
-    this.state = { ActiveSnapshot };
-    // $FlowFixMe: ignore for bind
-    this._onSnapshotReady = this._onSnapshotReady.bind(this);
-    // $FlowFixMe: ignore for bind
-    this._onRef = this._onRef.bind(this);
+  componentDidMount() {
+    this._startTesting();
   }
 
   render() {
-    const { ActiveSnapshot } = this.state;
+    const { isReady, ActiveSnapshot } = this.state;
+
+    if (!isReady) {
+      return (
+        <View>
+          <Text>Initializing tests</Text>
+        </View>
+      );
+    }
 
     if (!ActiveSnapshot) {
       log.i(TAG, 'No active snapshot');
@@ -56,11 +60,25 @@ export default class SnapshotsContainer extends Component<any, any> {
     return <ActiveSnapshot ref={this._onRef} onReady={this._onSnapshotReady} />;
   }
 
-  _onRef(ref: any) {
-    this._viewRef = ref;
-  }
+  _startTesting = async () => {
+    await network.initTests();
+    const ActiveSnapshot = getNextSnapshot();
+    if (!ActiveSnapshot) {
+      this._endOfTest();
+      log.e(TAG, 'No snapshots registered');
+    }
+    log.v(TAG, `Starting testing with ${ActiveSnapshot.snapshotName}`);
+    this.setState({
+      ActiveSnapshot,
+      isReady: true,
+    });
+  };
 
-  _onSnapshotReady() {
+  _onRef = (ref: any) => {
+    this._viewRef = ref;
+  };
+
+  _onSnapshotReady = () => {
     const renderTime = new Date().getTime() - this._renderStartedAt;
     log.v(TAG, 'Snapshot ready');
 
@@ -110,7 +128,7 @@ export default class SnapshotsContainer extends Component<any, any> {
         log.e(TAG, failure);
       }
 
-      network.reportTest({
+      await network.reportTest({
         name,
         failure,
         time: this._getTestExecutionTime(),
@@ -119,7 +137,7 @@ export default class SnapshotsContainer extends Component<any, any> {
 
       this.nextSnapshot();
     }, 50);
-  }
+  };
 
   _getTestExecutionTime(): number {
     return new Date().getTime() - this._testStartedAt;

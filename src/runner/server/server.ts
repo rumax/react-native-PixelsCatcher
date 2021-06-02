@@ -22,36 +22,41 @@ let server: any;
 let sockets: any = {};
 let nextSocketId = 0;
 
-const mkDir = (dirName: string) => {
-  if (!fs.existsSync(dirName)) {
-    fs.mkdirSync(dirName, { recursive: true });
+const mkDir = (directory: string, clean: boolean = false) => {
+  if (clean && fs.existsSync(directory)) {
+    log.i(TAG, `Cleaning [${directory}]`);
+    fs.rmdirSync(directory, { recursive: true });
   }
+
+  if (!fs.existsSync(directory)) {
+    log.i(TAG, `Creating [${directory}]`);
+    fs.mkdirSync(directory, { recursive: true });
+  }
+};
+
+const getSnapshotPath = (basePath: string, type: 'uploads' | 'refImages' | 'diffs') => {
+  const snapshotsPathAbs = path.isAbsolute(basePath)
+    ? basePath : path.join(process.cwd(), basePath);
+  return path.join(snapshotsPathAbs, type);
 };
 
 const postHandlers: any = {
   '/base64': ({ res, fields, snapshotsPath }: any) => {
     const { base64, fileName } = fields;
     log.i(TAG, `Processing base64 data for file [${fileName}]`);
-    const snapshotsPathAbs = path.isAbsolute(snapshotsPath)
-      ? snapshotsPath : path.join(process.cwd(), snapshotsPath);
-    const snapshotPath = path.join(snapshotsPathAbs, 'uploads');
-    const refImagesPath = path.join(snapshotsPathAbs, 'refImages');
-    const diffPath = path.join(snapshotsPathAbs, 'diffs');
+    const snapshotPath = getSnapshotPath(snapshotsPath, 'uploads');
+    const refImagesPath = getSnapshotPath(snapshotsPath, 'refImages');
+    const diffPath = getSnapshotPath(snapshotsPath, 'diffs');
     const snapshotFile = path.join(snapshotPath, fileName);
     const diffFile = path.join(diffPath, fileName);
     let expectedFile = path.join(refImagesPath, fileName);
-
-    mkDir(snapshotsPathAbs);
-    mkDir(snapshotPath);
-    mkDir(refImagesPath);
-    mkDir(diffPath);
 
     if (!fs.existsSync(expectedFile)) {
       log.w(TAG, `File [${expectedFile}] does not exists, using dummy file`);
       expectedFile = path.join(__dirname, 'dummy.png');
     }
 
-    log.v(TAG, `Writing file to ${snapshotFile}`);
+    log.v(TAG, `Writing file (length is ${base64.length}) to ${snapshotFile}`);
     log.v(TAG, `and comparing to ${expectedFile}`);
 
     fs.writeFile(snapshotFile, base64, { encoding: 'base64' }, (writeError: any) => {
@@ -83,7 +88,7 @@ const postHandlers: any = {
           }));
         }
       } else {
-        log.v(TAG, 'File created, error:', writeError);
+        log.v(TAG, 'File create, error:', writeError);
         res.write(JSON.stringify({
           result: 'ERROR',
           info: writeError,
@@ -99,6 +104,17 @@ const postHandlers: any = {
     res.write(RESPONSE_OK);
     res.end();
     setTimeout(onTestsCompleted, 300);
+  },
+  '/initTests': ({ res, snapshotsPath }: any) => {
+    log.i(TAG, `Initializing tests in [${snapshotsPath}]`);
+    const uploadsPath = getSnapshotPath(snapshotsPath, 'uploads');
+    const refImagesPath = getSnapshotPath(snapshotsPath, 'refImages');
+    const diffPath = getSnapshotPath(snapshotsPath, 'diffs');
+    mkDir(refImagesPath);
+    mkDir(uploadsPath, true);
+    mkDir(diffPath, true);
+    res.write(RESPONSE_OK);
+    res.end();
   },
   '/registerTest': ({ res }: any) => {
     res.write(RESPONSE_OK);

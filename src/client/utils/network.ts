@@ -40,6 +40,11 @@ export default {
   },
 
 
+  initTests: async (): Promise<void> => {
+    await fetchRequest(`${baseUrl}/initTests`, {});
+  },
+
+
   postBase64: async (body: Object): Promise<unknown> => {
     const response = await fetchRequest(`${baseUrl}/base64`, body);
     return response;
