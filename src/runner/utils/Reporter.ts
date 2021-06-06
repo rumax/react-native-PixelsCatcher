@@ -17,6 +17,7 @@ const filterSkipped = (testcase: TestcaseType): boolean => !testcase.isSkipped;
 
 const filterFailed = (testcase: TestcaseType): boolean => !testcase.failure;
 
+const MAX_LINES_TO_LOG = 10;
 class TestReporter {
   _name: string;
 
@@ -65,9 +66,10 @@ class TestReporter {
     const failedTests = this._getFailedTests();
     const passedTests = this._getPassedTests();
     const skippedTests = this._getSkippedTests();
-    const reportTable: any = [];
+    let reportTable: any = [];
+    let reportedTestCasesCount = 0;
 
-    this._tests.forEach((testcase: TestcaseType) => {
+    this._tests.forEach((testcase: TestcaseType, ind: number) => {
       let status = 'PASSED';
 
       if (testcase.failure) {
@@ -76,16 +78,25 @@ class TestReporter {
         status = 'SKIPPED';
       }
 
-      reportTable.push({
+      reportTable[ind] = {
         name: testcase.name,
         status,
         time: timeToSec(testcase.time),
         renderTime: testcase.renderTime !== undefined ? timeToSec(testcase.renderTime) : '-',
         failure: testcase.failure || '-',
-      });
+      };
+
+      ++reportedTestCasesCount;
+      if (reportedTestCasesCount > MAX_LINES_TO_LOG) {
+        global.console.table(reportTable);
+        reportedTestCasesCount = 0;
+        reportTable = [];
+      }
     });
 
-    global.console.table(reportTable);
+    if (reportTable.length > 0) {
+      global.console.table(reportTable);
+    }
 
     global.console.log('');
     global.console.log('==> Summary: <==');
