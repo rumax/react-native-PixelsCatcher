@@ -1,7 +1,7 @@
 variables:
-  MAC_RUNNER_IMAGE: 'macOS-10.14'
+  MAC_RUNNER_IMAGE: 'macOS-10.15'
   NODE_VERSION: '12.x'
-  XCODE_VERSION: '11.3.1'
+  XCODE_VERSION: '12.4'
 
 trigger:
   branches:
@@ -9,69 +9,69 @@ trigger:
       - master
 
 stages:
-- stage: Tests
-  jobs:
-  - job: UiTestsIOS
-    pool:
-      vmImage: '$(MAC_RUNNER_IMAGE)'
-    steps:
-    - task: NodeTool@0
-      displayName: 'Set Node version $(NODE_VERSION)'
-      inputs:
-        versionSpec: $(NODE_VERSION)
-    - script: npm install
-      displayName: 'NPM Install'
-      workingDirectory: '$(Build.SourcesDirectory)/demo'
-    - script: sudo xcode-select --switch /Applications/Xcode_$(XCODE_VERSION).app/Contents/Developer
-      displayName: 'Select xcode $(XCODE_VERSION)'
-    - script: ./run_ios_debug.sh
-      displayName: 'Run tests'
-      workingDirectory: '$(Build.SourcesDirectory)/demo'
-    - publish: $(Build.SourcesDirectory)/demo/snapshots/ios
-      condition: failed()
-      artifact: screenshots_ios
-      displayName: 'Publish test results'
-    - task: PublishTestResults@2
-      condition: succeededOrFailed()
-      displayName: 'Publish test report'
-      inputs:
-        testRunner: JUnit
-        testResultsFiles: '$(Build.SourcesDirectory)/demo/junit.xml'
-    - script: ./node_modules/.bin/pixels-catcher ios debug azureAttachements
-      condition: failed()
-      env:
-        SYSTEM_ACCESSTOKEN: $(System.AccessToken)
-      workingDirectory: '$(Build.SourcesDirectory)/demo'
-      displayName: 'Upload screenshots'
-  - job: UiTestsAndroid
-    pool:
-      vmImage: '$(MAC_RUNNER_IMAGE)'
-    steps:
-    - task: NodeTool@0
-      displayName: 'Set Node version $(NODE_VERSION)'
-      inputs:
-        versionSpec: $(NODE_VERSION)
-    - script: npm install
-      displayName: 'NPM Install'
-      workingDirectory: '$(Build.SourcesDirectory)/demo'
-    - script: ./scripts/create_android_emulator.sh
-      displayName: 'Create and start Android Emulator'
-    - script: ./run_android_debug.sh
-      displayName: 'Run tests'
-      workingDirectory: '$(Build.SourcesDirectory)/demo'
-    - publish: $(Build.SourcesDirectory)/demo/snapshots/android
-      condition: failed()
-      artifact: screenshots_android
-      displayName: 'Publish test results'
-    - task: PublishTestResults@2
-      condition: succeededOrFailed()
-      displayName: 'Publish test report'
-      inputs:
-        testRunner: JUnit
-        testResultsFiles: '$(Build.SourcesDirectory)/demo/junit.xml'
-    - script: ./node_modules/.bin/pixels-catcher android debug azureAttachements
-      condition: failed()
-      env:
-        SYSTEM_ACCESSTOKEN: $(System.AccessToken)
-      workingDirectory: '$(Build.SourcesDirectory)/demo'
-      displayName: 'Upload screenshots'
+  - stage: Tests
+    jobs:
+      - job: UiTestsIOS
+        pool:
+          vmImage: '$(MAC_RUNNER_IMAGE)'
+        steps:
+          - task: NodeTool@0
+            displayName: 'Set Node version $(NODE_VERSION)'
+            inputs:
+              versionSpec: $(NODE_VERSION)
+          - script: npm install
+            displayName: 'NPM Install'
+            workingDirectory: '$(Build.SourcesDirectory)/demo'
+          - script: sudo xcode-select --switch /Applications/Xcode_$(XCODE_VERSION).app/Contents/Developer
+            displayName: 'Select xcode $(XCODE_VERSION)'
+          - script: ./run_ios_debug.sh
+            displayName: 'Run tests'
+            workingDirectory: '$(Build.SourcesDirectory)/demo'
+          - publish: $(Build.SourcesDirectory)/demo/snapshots/ios
+            condition: failed()
+            artifact: screenshots_ios
+            displayName: 'Publish test results'
+          - task: PublishTestResults@2
+            condition: succeededOrFailed()
+            displayName: 'Publish test report'
+            inputs:
+              testRunner: JUnit
+              testResultsFiles: '$(Build.SourcesDirectory)/demo/junit.xml'
+          - script: ./node_modules/.bin/pixels-catcher ios debug azureAttachments
+            condition: failed()
+            env:
+              SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+            workingDirectory: '$(Build.SourcesDirectory)/demo'
+            displayName: 'Upload screenshots'
+      - job: UiTestsAndroid
+        pool:
+          vmImage: '$(MAC_RUNNER_IMAGE)'
+        steps:
+          - task: NodeTool@0
+            displayName: 'Set Node version $(NODE_VERSION)'
+            inputs:
+              versionSpec: $(NODE_VERSION)
+          - script: npm install
+            displayName: 'NPM Install'
+            workingDirectory: '$(Build.SourcesDirectory)/demo'
+          - script: ./scripts/create_android_emulator.sh
+            displayName: 'Create and start Android Emulator'
+          - script: ./run_android_debug.sh
+            displayName: 'Run tests'
+            workingDirectory: '$(Build.SourcesDirectory)/demo'
+          - publish: $(Build.SourcesDirectory)/demo/snapshots/android
+            condition: failed()
+            artifact: screenshots_android
+            displayName: 'Publish test results'
+          - task: PublishTestResults@2
+            condition: succeededOrFailed()
+            displayName: 'Publish test report'
+            inputs:
+              testRunner: JUnit
+              testResultsFiles: '$(Build.SourcesDirectory)/demo/junit.xml'
+          - script: ./node_modules/.bin/pixels-catcher android debug azureAttachments
+            condition: failed()
+            env:
+              SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+            workingDirectory: '$(Build.SourcesDirectory)/demo'
+            displayName: 'Upload screenshots'
