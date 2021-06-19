@@ -2,8 +2,11 @@ import React from 'react';
 import { Platform, Text, View, YellowBox } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { registerSnapshot, runSnapshots, Snapshot } from 'pixels-catcher';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 
 import App from './App';
+import { HomeScreen } from './AppWithNavigation';
 import { name as appName } from './app.json';
 
 const baseUrl = Platform.select({
@@ -26,6 +29,16 @@ registerSnapshot(
 
     renderContent() {
       return <App />;
+    }
+  },
+);
+
+registerSnapshot(
+  class SnapshotClass extends Snapshot {
+    static snapshotName = 'HomeScreen';
+
+    renderContent() {
+      return <HomeScreen />;
     }
   },
 );
@@ -99,4 +112,24 @@ registerSnapshot(
   },
 );
 
-runSnapshots(appName, { baseUrl });
+const Stack = createStackNavigator();
+
+function getRootElement(SnapshotsContainer) {
+  const RootElement = ({children}) => (
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen
+          name="SnapshotsContainer"
+          options={{
+            headerShown: false,
+            title: '',
+          }}
+          component={SnapshotsContainer} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  )
+  return RootElement;
+}
+
+
+runSnapshots(appName, { baseUrl, getRootElement });

@@ -105,7 +105,7 @@ export default class SnapshotsContainer extends Component<any, any> {
           failure: errorMessage,
           time: this._getTestExecutionTime(),
         });
-        this.nextSnapshot();
+        this._nextSnapshot();
 
         return;
       }
@@ -135,7 +135,7 @@ export default class SnapshotsContainer extends Component<any, any> {
         renderTime,
       });
 
-      this.nextSnapshot();
+      this._nextSnapshot();
     }, 50);
   };
 
@@ -143,8 +143,8 @@ export default class SnapshotsContainer extends Component<any, any> {
     return new Date().getTime() - this._testStartedAt;
   }
 
-  nextSnapshot() {
-    log.v(TAG, 'Trying to gen next snapshot');
+  _nextSnapshot() {
+    log.v(TAG, 'Trying to get next snapshot');
     const nextSnapshot = getNextSnapshot();
 
     if (nextSnapshot) {
