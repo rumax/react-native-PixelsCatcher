@@ -103,6 +103,35 @@ runSnapshots(appName, {
 })
 ```
 
+### React Navigation support
+
+In case if some children components use [useNavigation hooks](https://reactnavigation.org/docs/use-navigation/), it might be necessary to use `NavigationContainer`. To do that use `getRootElement` config, which is available in the config.
+
+Example:
+
+```
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+
+const Stack = createStackNavigator();
+
+function getRootElement(SnapshotsContainer) {
+  const RootElement = ({children}) => (
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen
+          name="SnapshotsContainer"
+          options={{ headerShown: false, title: '' }}
+          component={SnapshotsContainer} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  )
+  return RootElement;
+}
+
+runSnapshots(appName, { baseUrl, getRootElement });
+```
+
 ### Configuration
 
 There are two options to define config:
