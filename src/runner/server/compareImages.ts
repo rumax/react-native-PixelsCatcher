@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /**
 * Copyright (c) Maksym Rusynyk 2018 - present
 *
@@ -5,10 +6,9 @@
 * LICENSE file in the root directory of this source tree.
 */
 import * as fs from 'fs';
-import { PNG } from 'pngjs';
-import * as pixelmatch from 'pixelmatch';
+import { compare } from 'odiff-bin';
 
-export default (actual: any, expected: any, diffFile: any): number => {
+export default async (actual: any, expected: any, diffFile: any): Promise<number> => {
   if (!actual || !fs.existsSync(actual)) {
     throw new Error(`Actual file is required, cannot get [${actual}] file`);
   }
@@ -16,31 +16,26 @@ export default (actual: any, expected: any, diffFile: any): number => {
     throw new Error(`Expected file is required, cannot get [${expected}] file`);
   }
 
-  const imageActual = PNG.sync.read(fs.readFileSync(actual));
-  const imageExpected = PNG.sync.read(fs.readFileSync(expected));
+  const options: any = {
+    diffColor: 'red',
+    outputDiffMask: true,
+    failOnLayoutDiff: false,
+  };
 
-  if (imageActual.width !== imageExpected.width) {
-    throw new Error(`Width mismatch: expected ${imageExpected.width}, actual: ${imageActual.width}`);
-  }
-
-  if (imageActual.height !== imageExpected.height) {
-    throw new Error(`Height mismatch: expected ${imageExpected.height}, actual: ${imageActual.height}`);
-  }
-
-  const diff = new PNG({ width: imageExpected.width, height: imageExpected.height });
-
-  const differentPixelsCount = pixelmatch(
-    imageActual.data,
-    imageExpected.data,
-    diff.data,
-    imageActual.width,
-    imageActual.height,
-    { threshold: 0.1 },
+  const result = await compare(
+    actual,
+    expected,
+    diffFile,
+    options,
   );
 
-  if (diffFile) {
-    diff.pack().pipe(fs.createWriteStream(diffFile));
+  if (result.match) {
+    return 0;
   }
 
-  return differentPixelsCount;
+  if (result.reason === 'layout-diff') {
+    return -1;
+  }
+
+  return result.diffCount;
 };

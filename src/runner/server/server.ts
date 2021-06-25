@@ -59,13 +59,13 @@ const postHandlers: any = {
     log.v(TAG, `Writing file (length is ${base64.length}) to ${snapshotFile}`);
     log.v(TAG, `and comparing to ${expectedFile}`);
 
-    fs.writeFile(snapshotFile, base64, { encoding: 'base64' }, (writeError: any) => {
+    fs.writeFile(snapshotFile, base64, { encoding: 'base64' }, async (writeError: any) => {
       if (!writeError) {
         log.v(TAG, 'File created');
         let differentPixelsCount = -1;
 
         try {
-          differentPixelsCount = compareImages(
+          differentPixelsCount = await compareImages(
             snapshotFile,
             expectedFile,
             diffFile,
