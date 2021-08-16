@@ -3,6 +3,8 @@ package-lock.json
 
 # generated
 /lib/
+demo/ios_logs.log
+demo/android_logs.log
 
 tmp/
 coverage/

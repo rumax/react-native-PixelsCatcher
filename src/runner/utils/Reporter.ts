@@ -2,6 +2,9 @@
 import * as fs from 'fs';
 
 import timeToSec from './timeToSec';
+import exec from './exec';
+
+const { spawn } = require('child_process');
 
 export type TestcaseType = {
   failure: string | void,
@@ -24,6 +27,10 @@ class TestReporter {
   _className: string;
 
   _tests: Array<TestcaseType> = [];
+
+  _deviceLogs: Array<string> = [];
+
+  _stopDeviceLogger: Function | undefined = undefined;
 
   _minRenderTime = {
     name: '-',
@@ -148,6 +155,38 @@ class TestReporter {
     xmlResult.push('</testsuites>');
     xmlResult.push('');
     fs.writeFileSync(jUnitFile, xmlResult.join('\n'));
+  }
+
+  collectDeviceLogs(platform: 'ios' | 'android', packageName: string) {
+    let spawnProcess: any;
+    if (platform === 'android') {
+      exec('adb logcat -c');
+      spawnProcess = spawn('adb', [
+        'logcat', `${packageName}:I`, '*:V',
+      ]);
+    } else if (platform === 'ios') {
+      spawnProcess = spawn('xcrun', [
+        'simctl', 'spawn', 'booted', 'log', 'stream',
+      ]);
+    }
+
+    spawnProcess.stdout.on('data', (data: any): any => {
+      const stringRepresentation = data.toString();
+      this._deviceLogs.push(stringRepresentation);
+    });
+
+    this._stopDeviceLogger = () => {
+      spawnProcess.stdin.pause();
+      spawnProcess.kill();
+    };
+  }
+
+  deviceLogsToFile(fileName: string) {
+    if (this._stopDeviceLogger) {
+      this._stopDeviceLogger();
+      this._stopDeviceLogger = undefined;
+    }
+    fs.writeFileSync(fileName, this._deviceLogs.join(''));
   }
 
   _getPassedTests() {

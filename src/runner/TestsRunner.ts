@@ -17,7 +17,7 @@ type TestsRunnerParamsType =
   isDevMode: boolean,
   locale: string,
   packageName: string,
-  platform: string,
+  platform: 'ios' | 'android',
   port: number,
   snapshotsPath: string,
   testRunName: string,
@@ -43,7 +43,7 @@ class TestsRunner {
 
   _packageName: string;
 
-  _platform: string;
+  _platform: 'ios' | 'android';
 
   _port: number;
 
@@ -109,10 +109,15 @@ class TestsRunner {
   };
 
 
-  _onTestsCompleted = async () => {
+  _onTestingCompleted = async () => {
     const jUnitFile = path.join(process.cwd(), 'junit.xml');
+    const deviceLogsFile = path.join(
+      process.cwd(),
+      `${this._platform}_logs.log`,
+    );
     this._reporter.toLog();
     this._reporter.tojUnit(jUnitFile);
+    this._reporter.deviceLogsToFile(deviceLogsFile);
     this._testingCompleted(this._reporter.isPassed());
   };
 
@@ -128,7 +133,7 @@ class TestsRunner {
     }
     this._stopByTimeoutID = setTimeout(() => {
       log.e(TAG, 'Stop tests by timeout');
-      this._testingCompleted();
+      this._onTestingCompleted();
     }, this._timeout);
   };
 
@@ -181,7 +186,7 @@ class TestsRunner {
     log.d(TAG, 'Starting server');
     await server.start(
       this._reporter,
-      this._onTestsCompleted,
+      this._onTestingCompleted,
       this._snapshotsPath,
       this._onAppActivity,
       this._port,
@@ -198,6 +203,8 @@ class TestsRunner {
     } else {
       this._startAndroid();
     }
+
+    this._reporter.collectDeviceLogs(this._platform, this._packageName);
   }
 }
 

@@ -43,6 +43,11 @@ stages:
               SYSTEM_ACCESSTOKEN: $(System.AccessToken)
             workingDirectory: '$(Build.SourcesDirectory)/demo'
             displayName: 'Upload screenshots'
+          - task: PublishBuildArtifacts@1
+            displayName: Publish Device Log Artifacts
+            inputs:
+              pathtoPublish: $(System.DefaultWorkingDirectory)/demo/ios_logs.log
+              artifactName: ios_logs
       - job: UiTestsAndroid
         pool:
           vmImage: '$(MAC_RUNNER_IMAGE)'
@@ -75,3 +80,8 @@ stages:
               SYSTEM_ACCESSTOKEN: $(System.AccessToken)
             workingDirectory: '$(Build.SourcesDirectory)/demo'
             displayName: 'Upload screenshots'
+          - task: PublishBuildArtifacts@1
+            displayName: Publish Device Log Artifacts
+            inputs:
+              pathtoPublish: $(System.DefaultWorkingDirectory)/demo/android_logs.log
+              artifactName: android_logs
