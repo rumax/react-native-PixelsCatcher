@@ -1,6 +1,6 @@
 {
   "name": "pixels-catcher",
-  "version": "0.12.2",
+  "version": "0.12.3",
   "description": "UI snapshot testing for React Native",
   "main": "lib/client/index.js",
   "scripts": {
