@@ -95,7 +95,7 @@ class TestsRunner {
     }
     if (!this._isDevMode) {
       log.i(TAG, 'Stopping the server and emulator');
-      await server.stop();
+      server.stop();
       await this._device.stop();
       log.i(TAG, 'Server and emulator are stopped');
 
@@ -109,7 +109,7 @@ class TestsRunner {
   };
 
 
-  _onTestingCompleted = async () => {
+  _onTestingCompleted = async (byTimeOut: boolean = false) => {
     const jUnitFile = path.join(process.cwd(), 'junit.xml');
     const deviceLogsFile = path.join(
       process.cwd(),
@@ -118,7 +118,7 @@ class TestsRunner {
     this._reporter.toLog();
     this._reporter.tojUnit(jUnitFile);
     this._reporter.deviceLogsToFile(deviceLogsFile);
-    this._testingCompleted(this._reporter.isPassed());
+    this._testingCompleted(byTimeOut ? false : this._reporter.isPassed());
   };
 
 
@@ -133,7 +133,7 @@ class TestsRunner {
     }
     this._stopByTimeoutID = setTimeout(() => {
       log.e(TAG, 'Stop tests by timeout');
-      this._onTestingCompleted();
+      this._onTestingCompleted(true);
     }, this._timeout);
   };
 
@@ -167,7 +167,7 @@ class TestsRunner {
     try {
       await this._device.start(this._deviceParams);
     } catch (err) {
-      log.e(TAG, `Failed to start device: [${err.mesage}]`);
+      log.e(TAG, `Failed to start device: [${err.message}]`);
       process.exit(-1);
     }
     log.d(TAG, 'Emulator started');
@@ -184,14 +184,13 @@ class TestsRunner {
 
   async start() {
     log.d(TAG, 'Starting server');
-    await server.start(
+    server.start(
       this._reporter,
       this._onTestingCompleted,
       this._snapshotsPath,
       this._onAppActivity,
       this._port,
     );
-    log.d(TAG, 'Server started');
 
     if (this._isDevMode) {
       log.d(TAG, 'Only server is used in DEV mode. Waiting for tests');
