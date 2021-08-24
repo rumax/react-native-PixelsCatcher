@@ -45,6 +45,11 @@ export default {
   },
 
 
+  registerTest: async (name: string): Promise<void> => {
+    await fetchRequest(`${baseUrl}/registerTest`, { name });
+  },
+
+
   postBase64: async (body: Object): Promise<unknown> => {
     const response = await fetchRequest(`${baseUrl}/base64`, body);
     return response;

@@ -5,6 +5,7 @@
 * LICENSE file in the root directory of this source tree.
 */
 import log from './utils/log';
+import network from './utils/network';
 
 const snapshots: any = [];
 const TAG = 'PIXELS_CATCHER::APP::SNAPSHOTS_MANAGER';
@@ -13,6 +14,7 @@ const TAG = 'PIXELS_CATCHER::APP::SNAPSHOTS_MANAGER';
 export function registerSnapshot(component: any) {
   log.i(TAG, `Registering snapshot [${component.snapshotName}]`);
   snapshots.push(component);
+  network.registerTest(component.snapshotName);
 }
 
 

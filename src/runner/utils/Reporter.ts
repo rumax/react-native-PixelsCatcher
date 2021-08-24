@@ -46,8 +46,29 @@ class TestReporter {
     this._className = className;
   }
 
+  registerTest(name: string) {
+    this._tests.push({
+      failure: undefined,
+      isSkipped: true,
+      name,
+      renderTime: 0,
+      time: 0,
+    });
+  }
+
+  _updateTestResult(testCase: TestcaseType) {
+    const ind = this._tests.findIndex((test) => test.name === testCase.name);
+
+    if (ind >= 0) {
+      this._tests[ind] = testCase;
+    } else {
+      this._tests.push(testCase);
+    }
+  }
+
   reportTest(testCase: TestcaseType) {
-    this._tests.push(testCase);
+    this._updateTestResult(testCase);
+
     if (testCase.renderTime === undefined) {
       return;
     }

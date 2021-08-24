@@ -128,19 +128,25 @@ export default class SnapshotsContainer extends Component<any, any> {
         log.e(TAG, failure);
       }
 
-      await network.reportTest({
-        name,
-        failure,
-        time: this._getTestExecutionTime(),
-        renderTime,
-      });
-
+      log.v(TAG, `Reporting [${name}], failure: [${failure}]`);
+      try {
+        await network.reportTest({
+          name,
+          failure,
+          time: this._getTestExecutionTime(),
+          renderTime,
+        });
+      } catch (err) {
+        log.e(TAG, 'Failed to report test', err);
+      }
       this._nextSnapshot();
     }, 50);
   };
 
   _getTestExecutionTime(): number {
-    return new Date().getTime() - this._testStartedAt;
+    const time = new Date().getTime() - this._testStartedAt;
+    log.v(TAG, `Execution time: ${time}`);
+    return time;
   }
 
   _nextSnapshot() {

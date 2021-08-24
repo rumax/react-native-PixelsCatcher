@@ -117,18 +117,23 @@ const postHandlers: any = {
     res.write(RESPONSE_OK);
     res.end();
   },
-  '/registerTest': ({ res }: any) => {
+  '/registerTest': ({ res, fields, reporter }: any) => {
+    reporter.registerTest(fields.name);
     res.write(RESPONSE_OK);
     res.end();
   },
   '/reportTest': ({ res, fields, reporter }: any) => {
-    reporter.reportTest({
-      name: fields.name,
-      failure: fields.failure,
-      time: fields.time,
-      renderTime: fields.renderTime,
-      isSkipped: fields.isSkipped,
-    });
+    try {
+      reporter.reportTest({
+        name: fields.name,
+        failure: fields.failure,
+        time: fields.time,
+        renderTime: fields.renderTime,
+        isSkipped: fields.isSkipped,
+      });
+    } catch (err) {
+      log.e(TAG, 'Failed to report test', err);
+    }
     res.write(RESPONSE_OK);
     res.end();
   },
@@ -151,7 +156,6 @@ const startServer = (
     throw new Error('Server already started');
   }
   server = http.createServer((req: any, res: any) => {
-    log.v(TAG, `Processing ${req.method} method to [${req.url}]`);
     if (req.method.toLowerCase() === 'post') {
       const handler = postHandlers[req.url];
 
