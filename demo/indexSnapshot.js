@@ -86,7 +86,7 @@ registerSnapshot(
           }}
           style={{ flex: 1, marginTop: 20 }}
           onLoad={() => {
-            this.props.onReady();
+            // this.props.onReady();
           }}
         />
       );
