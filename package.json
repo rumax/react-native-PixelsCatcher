@@ -8,7 +8,7 @@
     "lint": "eslint --ext .js --ext .ts --ext .tsx ./src/",
     "build": "./node_modules/.bin/tsc -p src/client && ./node_modules/.bin/tsc -p src/runner",
     "postbuild": "npm run assets",
-    "prepublish": "npm run build",
+    "prepare": "npm run build",
     "prepack": "npm run build",
     "assets": "cp ./src/runner/server/dummy.png ./lib/runner/server/"
   },
