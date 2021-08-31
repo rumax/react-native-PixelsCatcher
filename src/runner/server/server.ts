@@ -82,10 +82,10 @@ const postHandlers: any = {
             }));
           }
         } catch (err) {
-          log.e(TAG, `Failed to compare images: [${err.message}]`, err);
+          log.e(TAG, `Failed to compare images: [${err instanceof Error ? err.message : 'Unknown error'}]`, err);
           res.write(JSON.stringify({
             result: 'ERROR',
-            info: err.message,
+            info: err instanceof Error ? err.message : 'Unknown error',
           }));
         }
       } else {

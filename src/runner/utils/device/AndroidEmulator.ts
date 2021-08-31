@@ -132,7 +132,7 @@ class AndroidEmulator implements DeviceInterface {
     try {
       exec(`adb -s ${this._getActiveDevice()} emu kill;`);
     } catch (err) {
-      log.e(err.messsage);
+      log.e(err instanceof Error ? err.message : 'Unknown error');
     }
     await delay(5000);
     log.v(TAG, 'Active device stopped');

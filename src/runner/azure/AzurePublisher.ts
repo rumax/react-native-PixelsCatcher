@@ -78,7 +78,7 @@ class AzurePublisher {
         }
       });
     } catch (err) {
-      log.e(TAG, `Failed to upload results: ${err.message}`);
+      log.e(TAG, `Failed to upload results: ${err instanceof Error ? err.message : 'Unknown error'}`);
       process.exit(-1);
     }
   }

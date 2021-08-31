@@ -22,7 +22,7 @@ const serverLog = async (logLevel: LogLevelType, tag: string, ...args: any) => {
   } catch (err) {
     if (__DEV__) {
       // eslint-disable-next-line no-console
-      console.warn('ERROR:serverLog: ', err.message);
+      console.warn('ERROR:serverLog: ', err instanceof Error ? err.message : 'Unknown error', err);
     }
   }
 };

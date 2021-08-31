@@ -167,7 +167,7 @@ class TestsRunner {
     try {
       await this._device.start(this._deviceParams);
     } catch (err) {
-      log.e(TAG, `Failed to start device: [${err.message}]`);
+      log.e(TAG, `Failed to start device: [${err instanceof Error ? err.message : 'Unknown error'}]`);
       process.exit(-1);
     }
     log.d(TAG, 'Emulator started');

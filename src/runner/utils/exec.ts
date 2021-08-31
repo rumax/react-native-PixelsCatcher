@@ -16,7 +16,7 @@ export default function exec(cmd: string): string {
   try {
     result = childProcess.execSync(cmd).toString();
   } catch (err) {
-    log.e(TAG, `Failed to execute [${cmd}], error: [${err.message}]`, err);
+    log.e(TAG, `Failed to execute [${cmd}], error: [${err instanceof Error ? err.message : 'Unknown error'}]`, err);
   }
 
   return result;

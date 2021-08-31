@@ -123,8 +123,10 @@ export default class SnapshotsContainer extends Component<any, any> {
         } else {
           log.i(TAG, `Snapshot ${name} passed`);
         }
-      } catch (err) {
-        failure = `Failed to save view: ${err.message}`;
+      } catch (err: unknown) {
+        failure = `Failed to save view: ${
+          err instanceof Error ? err.message : 'Unknown error'
+        }`;
         log.e(TAG, failure);
       }
 
