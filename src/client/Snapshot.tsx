@@ -10,13 +10,13 @@ import { InteractionManager, ScrollView } from 'react-native';
 
 import log from './utils/log';
 
-type SnapshotPropsType = { onReady: Function };
+type Props = { onReady: () => void };
 
 const TAG = 'PIXELS_CATCHER::APP::SNAPSHOT';
 const ERROR_NO_IMPLEMENTED =
   'Not implemented. Should be implemented by actual snapshot';
 
-export default class Snapshot extends Component<SnapshotPropsType, void> {
+export default class Snapshot extends Component<Props> {
   // Should be implemented by actual snapshot
   static snapshotName: string = '';
 
@@ -26,19 +26,19 @@ export default class Snapshot extends Component<SnapshotPropsType, void> {
     InteractionManager.runAfterInteractions(() => {
       const time = new Date().getTime() - startTime;
       log.v(TAG, `Interaction completed in ${time} milliseconds`);
-      global.requestAnimationFrame(() => {
+      global.setTimeout(() => {
         this.props.onReady();
-      });
+      }, 50);
     });
   }
 
-  renderContent() {
+  renderContent(): React.ReactElement {
     log.e(TAG, ERROR_NO_IMPLEMENTED);
     throw new Error(ERROR_NO_IMPLEMENTED);
   }
 
   render() {
-    const content: any = this.renderContent();
+    const content = this.renderContent();
     return (
       <ScrollView collapsable={false} contentContainerStyle={{ flexGrow: 1 }}>
         {content}

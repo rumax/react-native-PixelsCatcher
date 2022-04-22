@@ -5,7 +5,6 @@
 * LICENSE file in the root directory of this source tree.
 */
 import { AppRegistry } from 'react-native';
-import { ComponentType } from 'react';
 
 import log from './utils/log';
 import network from './utils/network';
@@ -17,6 +16,9 @@ export const Snapshot = require('./Snapshot').default;
 export const { registerSnapshot } = require('./snapshotsManager');
 
 const TAG = 'PIXELS_CATCHER::APP::SNAPSHOT';
+
+export type GetRootElementType = (element: React.ComponentType<any>) =>
+  React.ComponentType<any>
 
 interface ConfigType {
   baseUrl?: string;
@@ -55,8 +57,7 @@ interface ConfigType {
    *
    * runSnapshots(appName, { baseUrl, getRootElement });
    */
-   // eslint-disable-next-line no-unused-vars
-   getRootElement?: (RootElement: ComponentType<any>) => ComponentType<any>;
+   getRootElement?: GetRootElementType;
 }
 
 export const runSnapshots = (appName: string, config: ConfigType = {}) => {

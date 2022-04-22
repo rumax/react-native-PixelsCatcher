@@ -15,16 +15,23 @@ import compareToReference from './utils/compareToReference';
 import log from './utils/log';
 import network from './utils/network';
 
+import Snapshot from './Snapshot';
+
 const TAG = 'PIXELS_CATCHER::APP::SNAPSHOTS_CONTAINER';
 
-export default class SnapshotsContainer extends Component<any, any> {
+type State = {
+  isReady: boolean,
+  ActiveSnapshot: typeof Snapshot | null,
+};
+
+export default class SnapshotsContainer extends Component<Record<never, never>, State> {
   _viewRef: any;
 
   _testStartedAt: number = new Date().getTime();
 
   _renderStartedAt: number = 0;
 
-  constructor(props: void) {
+  constructor(props: Record<never, never>) {
     super(props);
 
     this.state = {
@@ -92,16 +99,16 @@ export default class SnapshotsContainer extends Component<any, any> {
       }
 
       const { ActiveSnapshot } = this.state;
-      const name = ActiveSnapshot.snapshotName;
+      const name = ActiveSnapshot?.snapshotName;
 
-      log.v(TAG, `snapshotName: [${name}]`);
+      log.v(TAG, `snapshotName: [${name || '-'}]`);
 
       if (!name) {
         const errorMessage = 'Snapshot should has a proper name';
 
         log.w(TAG, errorMessage);
         network.reportTest({
-          name,
+          name: '-',
           failure: errorMessage,
           time: this._getTestExecutionTime(),
         });
