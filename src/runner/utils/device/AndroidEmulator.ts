@@ -15,6 +15,23 @@ import type { DeviceInterface } from './DeviceInterface';
 
 const TAG = 'PIXELS_CATCHER::UTIL_EMULATOR';
 
+const startupErrorsDataToIgnore = [
+  // Some data appears in stderr when running the emulator first time
+  '.avd/snapshots/default_boot/ram.img',
+  'qemu: unsupported keyboard',
+  'WARNING',
+];
+
+const canIgnoreErrorData = (data: string): boolean => {
+  for (let i = 0; i < startupErrorsDataToIgnore.length; ++i) {
+    if (data.indexOf(startupErrorsDataToIgnore[i]) !== -1) {
+      return true;
+    }
+  }
+
+  return false;
+};
+
 class AndroidEmulator implements DeviceInterface {
   _name: string;
 
@@ -82,6 +99,11 @@ class AndroidEmulator implements DeviceInterface {
     }
 
     log.d(TAG, `Starting emulator [${this._name}]`);
+    log.v(TAG, `cmd: ${emulatorCmd}`);
+    log.v(TAG, `params: ${[
+      '-avd', this._name,
+      ...params,
+    ].filter((value: any): any => Boolean(value))}`);
     const result = spawn(emulatorCmd, [
       '-avd', this._name,
       ...params,
@@ -99,7 +121,8 @@ class AndroidEmulator implements DeviceInterface {
     result.stderr.on('data', (data: any): any => {
       // Some data appears in stderr when running the emulator first time
       const stringRepresentation = data.toString();
-      if (stringRepresentation.indexOf('.avd/snapshots/default_boot/ram.img') !== -1) {
+      if (canIgnoreErrorData(stringRepresentation)) {
+        log.w(TAG, `Ignore: ${stringRepresentation}`);
         return;
       }
       log.e(TAG, `Failed to load emulator, stderr: ${data}`);
