@@ -7,8 +7,7 @@
 import network from './network';
 
 const consoleLog = global.console && global.console.log
-  // eslint-disable-next-line no-unused-vars
-  ? global.console.log : (...args: any) => {};
+  ? global.console.log : () => {};
 
 type LogLevelType = 'v' | 'd' | 'i' | 'w' | 'e';
 
