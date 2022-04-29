@@ -45,6 +45,7 @@
         "no-await-in-loop": 0,
         "max-classes-per-file": 0,
         "global-require": 0,
-        "react/jsx-filename-extension": 0
+        "react/jsx-filename-extension": 0,
+        "@typescript-eslint/no-unused-vars": "warn"
     }
 }
