@@ -4,28 +4,22 @@
 * This source code is licensed under the MIT license found in the
 * LICENSE file in the root directory of this source tree.
 */
+import Snapshot from './Snapshot';
 import log from './utils/log';
 import network from './utils/network';
 
-const snapshots: any = [];
+const snapshots: Array<typeof Snapshot> = [];
 const TAG = 'PIXELS_CATCHER::APP::SNAPSHOTS_MANAGER';
 
 
-export function registerSnapshot(component: any) {
-  log.i(TAG, `Registering snapshot [${component.snapshotName}]`);
-  snapshots.push(component);
-  network.registerTest(component.snapshotName);
+export function registerSnapshot(Component: typeof Snapshot) {
+  log.i(TAG, `Registering snapshot [${Component.snapshotName}]`);
+  snapshots.push(Component);
+  network.registerTest(Component.snapshotName);
 }
 
 
-export function getNextSnapshot(): any {
-  const nextSnapshot = snapshots.shift();
-
-  if (nextSnapshot) {
-    log.i(TAG, `Next snapshot is [${nextSnapshot.snapshotName}]`);
-  } else {
-    log.i(TAG, 'No more snapshots left');
-  }
-
-  return nextSnapshot;
+export function getNextSnapshot(): typeof Snapshot | undefined {
+  const NextSnapshot = snapshots.shift();
+  return NextSnapshot;
 }

@@ -41,7 +41,9 @@ export default class SnapshotsContainer extends Component<Record<never, never>, 
   }
 
   componentDidMount() {
-    this._startTesting();
+    requestAnimationFrame(() => {
+      this._startTesting();
+    });
   }
 
   render() {
@@ -73,8 +75,10 @@ export default class SnapshotsContainer extends Component<Record<never, never>, 
     if (!ActiveSnapshot) {
       this._endOfTest();
       log.e(TAG, 'No snapshots registered');
+      this._endOfTest();
+      return;
     }
-    log.v(TAG, `Starting testing with ${ActiveSnapshot.snapshotName}`);
+    log.v(TAG, 'Start testing');
     this.setState({
       ActiveSnapshot,
       isReady: true,
@@ -160,16 +164,17 @@ export default class SnapshotsContainer extends Component<Record<never, never>, 
 
   _nextSnapshot() {
     log.v(TAG, 'Trying to get next snapshot');
-    const nextSnapshot = getNextSnapshot();
+    const NextSnapshot = getNextSnapshot();
 
-    if (nextSnapshot) {
-      log.v('Switching to next snapshot');
-      this._testStartedAt = new Date().getTime();
-      this.setState({ ActiveSnapshot: nextSnapshot });
-    } else {
+    if (!NextSnapshot) {
       log.v('No more snapshots left, exit testing');
       this._endOfTest();
+      return;
     }
+
+    log.v(`Switching to next snapshot ${NextSnapshot.snapshotName}`);
+    this._testStartedAt = new Date().getTime();
+    this.setState({ ActiveSnapshot: NextSnapshot });
   }
 
   _endOfTest() {
