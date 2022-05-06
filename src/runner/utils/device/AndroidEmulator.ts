@@ -79,7 +79,7 @@ class AndroidEmulator implements DeviceInterface {
     return name;
   }
 
-  async start(params: any = []) {
+  async start(params: any = []): Promise<void> {
     if (!this._isDeviceAvailable(this._name)) {
       log.e(TAG, `Invalid name provided [${this._name}], check that the name is \
   correct and device is available. Available devices:
@@ -146,7 +146,7 @@ class AndroidEmulator implements DeviceInterface {
     }
   }
 
-  async stop() {
+  async stop(): Promise<void> {
     if (!this._canStopDevice) {
       log.v(TAG, 'Stopping device is restricted in config');
       return;
@@ -174,7 +174,7 @@ class AndroidEmulator implements DeviceInterface {
     return isInstalled;
   }
 
-  async uninstallApp(name: string) {
+  async uninstallApp(name: string): Promise<void> {
     log.v(TAG, `Uninstalling ${name}`);
     const isInstalled = await this.isAppInstalled(name);
     if (isInstalled) {
@@ -184,7 +184,7 @@ class AndroidEmulator implements DeviceInterface {
     log.v(TAG, 'Uninstalling completed');
   }
 
-  async installApp(name: string, apkFile: string) {
+  async installApp(name: string, apkFile: string): Promise<void> {
     let tryCnt = 3;
 
     log.v(TAG, `Installing apk [${apkFile}]`);
@@ -210,7 +210,7 @@ class AndroidEmulator implements DeviceInterface {
     }
   }
 
-  startApp(packageName: string, activityName: string) {
+  startApp(packageName: string, activityName: string): void {
     log.v(TAG, `Starting application [${packageName}]`);
 
     const cmd = `adb shell am start -n ${packageName}/${activityName}`;

@@ -89,7 +89,7 @@ class TestsRunner {
   }
 
 
-  _testingCompleted = async (isPassed: boolean = false) => {
+  _testingCompleted = async (isPassed: boolean = false): Promise<void> => {
     if (this._stopByTimeoutID) {
       clearTimeout(this._stopByTimeoutID);
     }
@@ -109,7 +109,7 @@ class TestsRunner {
   };
 
 
-  _onTestingCompleted = async (byTimeOut: boolean = false) => {
+  _onTestingCompleted = async (byTimeOut: boolean = false): Promise<void> => {
     const jUnitFile = path.join(process.cwd(), 'junit.xml');
     const deviceLogsFile = path.join(
       process.cwd(),
@@ -122,12 +122,12 @@ class TestsRunner {
   };
 
 
-  _onAppActivity = () => {
+  _onAppActivity = (): void => {
     this._stopByTimeout();
   }
 
 
-  _stopByTimeout = () => {
+  _stopByTimeout = (): void => {
     if (this._stopByTimeoutID) {
       clearTimeout(this._stopByTimeoutID);
     }
@@ -138,7 +138,7 @@ class TestsRunner {
   };
 
 
-  async _startAndroid() {
+  async _startAndroid(): Promise<void> {
     log.d(TAG, `Start emulator [${this._deviceName}]`);
     try {
       await this._device.start(this._deviceParams);
@@ -162,7 +162,7 @@ class TestsRunner {
   }
 
 
-  async _startIOS() {
+  async _startIOS(): Promise<void> {
     log.d(TAG, `Start emulator [${this._deviceName}]`);
     try {
       await this._device.start(this._deviceParams);
@@ -182,7 +182,7 @@ class TestsRunner {
   }
 
 
-  async start() {
+  async start(): Promise<void> {
     log.d(TAG, 'Starting server');
     server.start(
       this._reporter,

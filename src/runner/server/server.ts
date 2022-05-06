@@ -22,7 +22,7 @@ let server: any;
 let sockets: any = {};
 let nextSocketId = 0;
 
-const mkDir = (directory: string, clean: boolean = false) => {
+const mkDir = (directory: string, clean: boolean = false): void => {
   if (clean && fs.existsSync(directory)) {
     log.i(TAG, `Cleaning [${directory}]`);
     // @ts-ignore: https://nodejs.org/api/fs.html#fs_fspromises_rmdir_path_options
@@ -35,7 +35,7 @@ const mkDir = (directory: string, clean: boolean = false) => {
   }
 };
 
-const getSnapshotPath = (basePath: string, type: 'uploads' | 'refImages' | 'diffs') => {
+const getSnapshotPath = (basePath: string, type: 'uploads' | 'refImages' | 'diffs'): string => {
   const snapshotsPathAbs = path.isAbsolute(basePath)
     ? basePath : path.join(process.cwd(), basePath);
   return path.join(snapshotsPathAbs, type);
@@ -151,7 +151,7 @@ const startServer = (
   snapshotsPath: string,
   onAppActivity: Function,
   port: number = DEFAULT_PORT,
-) => {
+): void => {
   if (server) {
     throw new Error('Server already started');
   }
@@ -214,7 +214,7 @@ const startServer = (
 };
 
 
-const stopServer = () => {
+const stopServer = (): void => {
   if (!server) {
     log.d(TAG, 'Server is not started');
     return;

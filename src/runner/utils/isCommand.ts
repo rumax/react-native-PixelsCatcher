@@ -6,7 +6,7 @@
 */
 import exec from './exec';
 
-function isCommand(cmd: string) {
+function isCommand(cmd: string): boolean {
   const out = exec(`whereis ${cmd}`);
 
   return Boolean(out.trim());

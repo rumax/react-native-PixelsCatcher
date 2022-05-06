@@ -7,11 +7,11 @@
 import network from './network';
 
 const consoleLog = global.console && global.console.log
-  ? global.console.log : () => {};
+  ? global.console.log : (): void => {};
 
 type LogLevelType = 'v' | 'd' | 'i' | 'w' | 'e';
 
-const serverLog = async (logLevel: LogLevelType, tag: string, ...args: any) => {
+const serverLog = async (logLevel: LogLevelType, tag: string, ...args: any): Promise<void> => {
   try {
     network.serverLog({
       logLevel,
@@ -27,27 +27,27 @@ const serverLog = async (logLevel: LogLevelType, tag: string, ...args: any) => {
 };
 
 const log = {
-  v: (tag: string, ...args: any) => {
+  v: (tag: string, ...args: any): void => {
     consoleLog(tag, ...args);
     serverLog('v', tag, ...args);
   },
 
-  d: (tag: string, ...args: any) => {
+  d: (tag: string, ...args: any): void => {
     consoleLog(tag, ...args);
     serverLog('d', tag, ...args);
   },
 
-  i: (tag: string, ...args: any) => {
+  i: (tag: string, ...args: any): void => {
     consoleLog(tag, ...args);
     serverLog('i', tag, ...args);
   },
 
-  w: (tag: string, ...args: any) => {
+  w: (tag: string, ...args: any): void => {
     consoleLog(`${tag} WARNING:`, ...args);
     serverLog('w', `${tag} WARNING:`, ...args);
   },
 
-  e: (tag: string, ...args: any) => {
+  e: (tag: string, ...args: any): void => {
     consoleLog(`${tag} ERROR:`, ...args);
     serverLog('e', `${tag} ERROR:`, ...args);
   },

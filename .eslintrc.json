@@ -45,7 +45,21 @@
         "no-await-in-loop": 0,
         "max-classes-per-file": 0,
         "global-require": 0,
-        "react/jsx-filename-extension": 0,
-        "@typescript-eslint/no-unused-vars": "warn"
-    }
+        "react/jsx-filename-extension": 0
+    },
+    "overrides": [
+        {
+          "files": ["*.ts", "*.tsx"],
+          "parser": "@typescript-eslint/parser",
+          "rules": {
+            "@typescript-eslint/no-unused-vars": "warn",
+            "@typescript-eslint/explicit-function-return-type": "error",
+            "@typescript-eslint/consistent-type-imports": [
+                2,
+                { "prefer": "type-imports" }
+              ]
+          }
+        }
+      ]
+
 }

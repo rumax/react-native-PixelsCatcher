@@ -15,7 +15,7 @@ import compareToReference from './utils/compareToReference';
 import log from './utils/log';
 import network from './utils/network';
 
-import Snapshot from './Snapshot';
+import type Snapshot from './Snapshot';
 
 const TAG = 'PIXELS_CATCHER::APP::SNAPSHOTS_CONTAINER';
 
@@ -40,13 +40,13 @@ export default class SnapshotsContainer extends Component<Record<never, never>, 
     };
   }
 
-  componentDidMount() {
+  componentDidMount(): void {
     requestAnimationFrame(() => {
       this._startTesting();
     });
   }
 
-  render() {
+  render(): React.ReactNode {
     const { isReady, ActiveSnapshot } = this.state;
 
     if (!isReady) {
@@ -69,7 +69,7 @@ export default class SnapshotsContainer extends Component<Record<never, never>, 
     return <ActiveSnapshot ref={this._onRef} onReady={this._onSnapshotReady} />;
   }
 
-  _startTesting = async () => {
+  _startTesting = async (): Promise<void> => {
     await network.initTests();
     const ActiveSnapshot = getNextSnapshot();
     if (!ActiveSnapshot) {
@@ -85,11 +85,11 @@ export default class SnapshotsContainer extends Component<Record<never, never>, 
     });
   };
 
-  _onRef = (ref: any) => {
+  _onRef = (ref: any): void => {
     this._viewRef = ref;
   };
 
-  _onSnapshotReady = () => {
+  _onSnapshotReady = (): void => {
     const renderTime = new Date().getTime() - this._renderStartedAt;
     log.v(TAG, 'Snapshot ready');
 
@@ -162,7 +162,7 @@ export default class SnapshotsContainer extends Component<Record<never, never>, 
     return time;
   }
 
-  _nextSnapshot() {
+  _nextSnapshot(): void {
     log.v(TAG, 'Trying to get next snapshot');
     const NextSnapshot = getNextSnapshot();
 
@@ -177,7 +177,7 @@ export default class SnapshotsContainer extends Component<Record<never, never>, 
     this.setState({ ActiveSnapshot: NextSnapshot });
   }
 
-  _endOfTest() {
+  _endOfTest(): void {
     network.endOfTests({ message: 'All tests completed' });
   }
 }

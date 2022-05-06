@@ -46,7 +46,7 @@ class TestReporter {
     this._className = className;
   }
 
-  registerTest(name: string) {
+  registerTest(name: string): void {
     this._tests.push({
       failure: undefined,
       isSkipped: true,
@@ -56,7 +56,7 @@ class TestReporter {
     });
   }
 
-  _updateTestResult(testCase: TestcaseType) {
+  _updateTestResult(testCase: TestcaseType): void {
     const ind = this._tests.findIndex((test) => test.name === testCase.name);
 
     if (ind >= 0) {
@@ -66,7 +66,7 @@ class TestReporter {
     }
   }
 
-  reportTest(testCase: TestcaseType) {
+  reportTest(testCase: TestcaseType): void {
     this._updateTestResult(testCase);
 
     if (testCase.renderTime === undefined) {
@@ -82,11 +82,11 @@ class TestReporter {
     }
   }
 
-  isPassed() {
+  isPassed(): boolean {
     return this._getFailedTests().length === 0;
   }
 
-  toLog() {
+  toLog(): void {
     global.console.log('');
     global.console.log('==> All tests completed: <==');
 
@@ -133,7 +133,7 @@ class TestReporter {
     }
   }
 
-  tojUnit(jUnitFile: string) {
+  tojUnit(jUnitFile: string): void {
     const xmlResult = ['<?xml version="1.0" encoding="UTF-8"?>'];
     xmlResult.push('<testsuites'
                    + ` name="${this._name}"`
@@ -167,7 +167,7 @@ class TestReporter {
     fs.writeFileSync(jUnitFile, xmlResult.join('\n'));
   }
 
-  collectDeviceLogs(platform: 'ios' | 'android', packageName: string) {
+  collectDeviceLogs(platform: 'ios' | 'android', packageName: string): void {
     let spawnProcess: any;
     if (platform === 'android') {
       exec('adb logcat -c');
@@ -185,13 +185,13 @@ class TestReporter {
       this._deviceLogs.push(stringRepresentation);
     });
 
-    this._stopDeviceLogger = () => {
+    this._stopDeviceLogger = (): void => {
       spawnProcess.stdin.pause();
       spawnProcess.kill();
     };
   }
 
-  deviceLogsToFile(fileName: string) {
+  deviceLogsToFile(fileName: string): void {
     if (this._stopDeviceLogger) {
       this._stopDeviceLogger();
       this._stopDeviceLogger = undefined;
@@ -199,24 +199,24 @@ class TestReporter {
     fs.writeFileSync(fileName, this._deviceLogs.join(''));
   }
 
-  _getPassedTests() {
+  _getPassedTests(): Array<TestcaseType> {
     return this._tests
       .filter(filterSkipped)
       .filter(filterFailed);
   }
 
-  _getSkippedTests() {
+  _getSkippedTests(): Array<TestcaseType> {
     return this._tests
       .filter((testcase: TestcaseType): boolean => Boolean(testcase.isSkipped));
   }
 
-  _getFailedTests() {
+  _getFailedTests(): Array<TestcaseType> {
     return this._tests
       .filter(filterSkipped)
       .filter((test: TestcaseType) => Boolean(test.failure));
   }
 
-  _getTotalTime() {
+  _getTotalTime(): number {
     return this._tests
       .filter(filterSkipped)
       .reduce(timeReducer, 0);

@@ -40,7 +40,7 @@ const readConfigFromFile = (): any => {
   return JSON.parse(fileContent);
 };
 
-export default () => {
+export default (): any => {
   const pixelsCatcherConfig = readConfigFromPackageJSON()
     || readConfigFromFile();
 

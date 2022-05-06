@@ -10,6 +10,9 @@
     "postbuild": "npm run assets",
     "prepare": "npm run build",
     "prepack": "npm run build",
+    "check-types-client": "./node_modules/.bin/tsc --noEmit -p src/client",
+    "check-types-runner": "./node_modules/.bin/tsc --noEmit -p src/runner",
+    "check-types": "npm run check-types-client && npm run check-types-runner",
     "assets": "cp ./src/runner/server/dummy.png ./lib/runner/server/"
   },
   "bin": "./lib/runner/cli.js",

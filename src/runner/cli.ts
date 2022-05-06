@@ -67,7 +67,7 @@ log.setLevel(fullConfig.logLevel);
 log.i(TAG, `Starting with [${configuration}] configuration for [${platform}]`);
 log.v(TAG, `Config\n${JSON.stringify(config, null, 2)}`);
 
-const getParamFromConfig = (paramName: string) => {
+const getParamFromConfig = (paramName: string): any => {
   const value = (config[configuration] || {})[paramName];
   return value !== undefined ? value : config[paramName];
 };

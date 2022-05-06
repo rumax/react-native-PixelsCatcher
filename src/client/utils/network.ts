@@ -35,7 +35,7 @@ const fetchRequest = async (url: string, body: Object): Promise<unknown> => {
 
 export default {
 
-  setBaseUrl(url: string) {
+  setBaseUrl(url: string): void {
     baseUrl = url;
   },
 

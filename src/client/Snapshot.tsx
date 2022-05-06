@@ -20,7 +20,7 @@ export default class Snapshot extends Component<Props> {
   // Should be implemented by actual snapshot
   static snapshotName: string = '';
 
-  componentDidMount() {
+  componentDidMount(): void {
     log.v(TAG, 'Awaiting interaction');
     const startTime = new Date().getTime();
     InteractionManager.runAfterInteractions(() => {
@@ -32,12 +32,12 @@ export default class Snapshot extends Component<Props> {
     });
   }
 
-  renderContent(): React.ReactElement {
+  renderContent(): React.ReactNode {
     log.e(TAG, ERROR_NO_IMPLEMENTED);
     throw new Error(ERROR_NO_IMPLEMENTED);
   }
 
-  render() {
+  render(): React.ReactNode {
     const content = this.renderContent();
     return (
       <ScrollView collapsable={false} contentContainerStyle={{ flexGrow: 1 }}>

@@ -103,7 +103,7 @@ class IOSSimulator implements DeviceInterface {
   }
 
 
-  async _boot(uid: string) {
+  async _boot(uid: string): Promise<void> {
     const device = this._getDeviceByUid(uid);
     if (!device) {
       throw new Error(`Invalid device uid [${uid}], cannot find it`);
@@ -119,7 +119,7 @@ class IOSSimulator implements DeviceInterface {
   }
 
 
-  async _open(uid: string) {
+  async _open(uid: string): Promise<void> {
     const activeXcode = exec('xcode-select -p').trim();
     log.v(TAG, `Active Xcode: ${activeXcode}`);
     const simulatorApp = `${activeXcode}/Applications/Simulator.app`;
@@ -129,7 +129,7 @@ class IOSSimulator implements DeviceInterface {
   }
 
 
-  async start(params: StartParamsType) {
+  async start(params: StartParamsType): Promise<void> {
     log.v(TAG, 'Starting device with params:', params);
 
     this.stop();
@@ -148,33 +148,33 @@ class IOSSimulator implements DeviceInterface {
   }
 
 
-  isAppInstalled(appName: string) {
+  isAppInstalled(appName: string): boolean {
     log.v(`isAppInstalled: appName [${appName}]`);
     return false;
   }
 
 
-  async installApp(appName: string, appFile: string) {
+  async installApp(appName: string, appFile: string): Promise<void> {
     this.uninstallApp(appName);
     log.v(TAG, `Installing application [${appName}], appFile [${appFile}]`);
     exec(`xcrun simctl install booted ${appFile}`);
   }
 
 
-  startApp(appName: string, activityName: string, locale?: string) {
+  startApp(appName: string, activityName: string, locale?: string): void {
     const withLocale = locale ? `-AppleLanguages "(${locale})"` : '';
     log.v(TAG, `startApp: appName [${appName}], activityName [${activityName}], locale [${locale || '-'}]`);
     exec(`xcrun simctl launch booted ${appName} ${withLocale}`);
   }
 
 
-  async uninstallApp(appName: string) {
+  async uninstallApp(appName: string): Promise<void> {
     log.v(TAG, `Uninstalling application [${appName}]`);
     exec(`xcrun simctl uninstall booted ${appName}`);
   }
 
 
-  async stop() {
+  async stop(): Promise<void> {
     if (!this._canStopDevice) {
       log.v(TAG, 'Stopping device is restricted in config');
       return;

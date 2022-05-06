@@ -20,7 +20,7 @@ class AndroidDevice implements DeviceInterface {
   }
 
 
-  _getDevices() {
+  _getDevices(): Array<string> {
     const cmd = 'adb devices';
     const devices = exec(cmd).split('\n').slice(1)
       .filter((line: string): boolean => Boolean(line))
@@ -45,7 +45,7 @@ class AndroidDevice implements DeviceInterface {
   }
 
 
-  async start(params: any = []) {
+  async start(params: any = []): Promise<void> {
     if (params.length !== 0) {
       log.e(TAG, 'There are currently no supported device parameters for physical devices, yet you tried to pass some im');
       process.exit(-1);
@@ -59,7 +59,7 @@ class AndroidDevice implements DeviceInterface {
   }
 
 
-  async stop() {
+  async stop(): Promise<void> {
     log.v(TAG, 'Not stopping anything as it is assumed to be a physical device. Your responsibility!');
   }
 
@@ -78,7 +78,7 @@ class AndroidDevice implements DeviceInterface {
   }
 
 
-  async uninstallApp(name: string) {
+  async uninstallApp(name: string): Promise<void> {
     log.v(TAG, `Uninstalling ${name}`);
     const isInstalled = await this.isAppInstalled(name);
     if (isInstalled) {
@@ -89,7 +89,7 @@ class AndroidDevice implements DeviceInterface {
   }
 
 
-  async installApp(name: string, apkFile: string) {
+  async installApp(name: string, apkFile: string): Promise<void> {
     log.v(TAG, `Installing apk [${apkFile}]`);
 
     await this.uninstallApp(name);
@@ -117,7 +117,7 @@ class AndroidDevice implements DeviceInterface {
   }
 
 
-  startApp(packageName: string, activityName: string) {
+  startApp(packageName: string, activityName: string): void {
     log.v(TAG, `Starting application [${packageName}]`);
 
     const cmd = `adb -s ${this._name} shell am start -n ${packageName}/${activityName}`;

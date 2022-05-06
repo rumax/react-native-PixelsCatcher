@@ -3,6 +3,7 @@ import * as https from 'https';
 import * as path from 'path';
 
 import log from '../utils/log';
+import type { TestcaseType } from '../utils/Reporter';
 
 const TAG = 'PIXELS_CATCHER::AZURE_PUBLISHER';
 
@@ -36,7 +37,7 @@ const uploadImageSuffix = {
 
 const imageTypes = Object.keys(uploadImageSuffix);
 
-function base64Encode(file: string) {
+function base64Encode(file: string): string {
   return Buffer.from(fs.readFileSync(file)).toString('base64');
 }
 
@@ -57,7 +58,7 @@ class AzurePublisher {
     this._urlBasePath = `/${organization}/${SYSTEM_TEAMPROJECT}/_apis/test`;
   }
 
-  async publish() {
+  async publish(): Promise<void> {
     try {
       const buildRunId = await this._getBuildRunId(BUILD_BUILDURI);
       log.i(TAG, `buildRunId [${buildRunId}]`);
@@ -109,7 +110,7 @@ class AzurePublisher {
     return id;
   }
 
-  async _getTestFailures(runId: string) {
+  async _getTestFailures(runId: string): Promise<Array<TestcaseType>> {
     const data: any = await this._httpsRequest({
       method: 'GET',
       path: `${this._urlBasePath}/Runs/${runId}/results?outcomes=3&api-version=5.1&outcomes=3`,
@@ -118,7 +119,12 @@ class AzurePublisher {
     return data.value;
   }
 
-  async _upload(buildRunId: string, id: string, fileToUpload: string, fileNameToShow: string) {
+  async _upload(
+    buildRunId: string,
+    id: string,
+    fileToUpload: string,
+    fileNameToShow: string,
+  ): Promise<string> {
     const postData = {
       stream: base64Encode(fileToUpload),
       fileName: fileNameToShow,
@@ -140,7 +146,7 @@ class AzurePublisher {
     testCaseTitle: string,
     className: string,
     type: ImageType,
-  ) {
+  ): Promise<void> {
     const suffix = uploadImageSuffix[type];
     log.v(TAG, `Uploading ${suffix}`);
     await this._upload(
@@ -152,7 +158,7 @@ class AzurePublisher {
     log.v(TAG, `${suffix} uploaded`);
   }
 
-  async _httpsRequest(options: any, postData: any = undefined) {
+  async _httpsRequest(options: any, postData: any = undefined): Promise<void> {
     let _options = {
       ...DEFAULT_OPTIONS,
       ...options,
