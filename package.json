@@ -38,7 +38,7 @@
   },
   "homepage": "https://github.com/rumax/react-native-PixelsCatcher#readme",
   "dependencies": {
-    "formidable": "^1.2.2",
+    "formidable": "^3.2.4",
     "pixelmatch": "^5.2.1",
     "pngjs": "^6.0.0",
     "react-native-save-view": "^0.2.3"
