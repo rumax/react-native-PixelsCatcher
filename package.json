@@ -45,6 +45,7 @@
   },
   "devDependencies": {
     "@types/formidable": "^1.2.2",
+    "@types/node": "^18.7.16",
     "@types/pixelmatch": "^5.2.3",
     "@types/pngjs": "^6.0.0",
     "@types/react-native": "^0.64.6",
