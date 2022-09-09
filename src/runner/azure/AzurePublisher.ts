@@ -38,6 +38,9 @@ const uploadImageSuffix = {
 const imageTypes = Object.keys(uploadImageSuffix);
 
 function base64Encode(file: string): string {
+  if (!fs.existsSync(file)) {
+    return '';
+  }
   return Buffer.from(fs.readFileSync(file)).toString('base64');
 }
 
