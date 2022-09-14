@@ -5,6 +5,7 @@ package-lock.json
 /lib/
 demo/ios_logs.log
 demo/android_logs.log
+yarn.lock
 
 tmp/
 coverage/

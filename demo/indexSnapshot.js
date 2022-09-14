@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform, Text, View, YellowBox } from 'react-native';
+import { Platform, Text, View } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { registerSnapshot, runSnapshots, Snapshot } from 'pixels-catcher';
 import { NavigationContainer } from '@react-navigation/native';
@@ -86,7 +86,9 @@ registerSnapshot(
           }}
           style={{ flex: 1, marginTop: 20 }}
           onLoad={() => {
-            this.props.onReady();
+            setTimeout(() => {
+              this.props.onReady();
+            }, 50);
           }}
         />
       );
@@ -115,7 +117,7 @@ registerSnapshot(
 const Stack = createStackNavigator();
 
 function getRootElement(SnapshotsContainer) {
-  const RootElement = ({children}) => (
+  const RootElement = ({ children }) => (
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
@@ -124,12 +126,12 @@ function getRootElement(SnapshotsContainer) {
             headerShown: false,
             title: '',
           }}
-          component={SnapshotsContainer} />
+          component={SnapshotsContainer}
+        />
       </Stack.Navigator>
     </NavigationContainer>
-  )
+  );
   return RootElement;
 }
-
 
 runSnapshots(appName, { baseUrl, getRootElement });

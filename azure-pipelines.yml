@@ -1,7 +1,7 @@
 variables:
-  MAC_RUNNER_IMAGE: 'macOS-10.15'
-  NODE_VERSION: '12.x'
-  XCODE_VERSION: '12.4'
+  MAC_RUNNER_IMAGE: 'macos-12'
+  NODE_VERSION: '16.x'
+  XCODE_VERSION: '14.0'
 
 trigger:
   branches:
@@ -19,6 +19,9 @@ stages:
             displayName: 'Set Node version $(NODE_VERSION)'
             inputs:
               versionSpec: $(NODE_VERSION)
+          - script: npm run preinstall
+            displayName: 'NPM PreInstall'
+            workingDirectory: '$(Build.SourcesDirectory)/demo'
           - script: npm install
             displayName: 'NPM Install'
             workingDirectory: '$(Build.SourcesDirectory)/demo'
@@ -56,11 +59,19 @@ stages:
             displayName: 'Set Node version $(NODE_VERSION)'
             inputs:
               versionSpec: $(NODE_VERSION)
+          - script: ./scripts/create_android_emulator.sh
+            displayName: 'Create and start Android Emulator'
+          - script: npm run preinstall
+            displayName: 'NPM PreInstall'
+            workingDirectory: '$(Build.SourcesDirectory)/demo'
           - script: npm install
             displayName: 'NPM Install'
             workingDirectory: '$(Build.SourcesDirectory)/demo'
-          - script: ./scripts/create_android_emulator.sh
-            displayName: 'Create and start Android Emulator'
+          - task: JavaToolInstaller@0
+            inputs:
+              versionSpec: '11'
+              jdkArchitectureOption: 'x64'
+              jdkSourceOption: 'PreInstalled'
           - script: ./run_android_debug.sh
             displayName: 'Run tests'
             workingDirectory: '$(Build.SourcesDirectory)/demo'

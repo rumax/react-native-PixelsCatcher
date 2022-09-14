@@ -14,7 +14,7 @@ xcrun xcodebuild \
   -scheme demo \
   -workspace demo.xcworkspace \
   -configuration Debug \
-  -destination 'platform=iOS Simulator,name=iPhone 8 Plus,OS=14.4' \
+  -destination 'platform=iOS Simulator,name=iPhone 14,OS=16.0' \
   -derivedDataPath $BUILD_PATH \
   ENTRY_FILE="indexSnapshot.js" \
   build

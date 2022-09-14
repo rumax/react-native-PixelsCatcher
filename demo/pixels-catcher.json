@@ -37,7 +37,7 @@
     }
   },
   "ios": {
-    "deviceName": "iPhone 8 Plus",
+    "deviceName": "iPhone 14 Plus",
     "packageName": "org.reactjs.native.example.demo",
     "snapshotsPath": "./snapshots/ios",
     "dev": {},
