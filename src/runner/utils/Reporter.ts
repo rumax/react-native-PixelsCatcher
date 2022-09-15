@@ -3,6 +3,7 @@ import * as fs from 'fs';
 
 import timeToSec from './timeToSec';
 import exec from './exec';
+import delay from './delay';
 
 const { spawn } = require('child_process');
 
@@ -86,7 +87,7 @@ class TestReporter {
     return this._getFailedTests().length === 0;
   }
 
-  toLog(): void {
+  async toLog(): Promise<void> {
     global.console.log('');
     global.console.log('==> All tests completed: <==');
 
@@ -131,6 +132,9 @@ class TestReporter {
       global.console.log('==> Failed tests: <==');
       global.console.table(failedTests.map((testCase: TestcaseType) => testCase.name));
     }
+
+    // on CI some logs are not available, adding a delay to fix it
+    await delay(300);
   }
 
   tojUnit(jUnitFile: string): void {

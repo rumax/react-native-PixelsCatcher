@@ -115,7 +115,7 @@ class TestsRunner {
       process.cwd(),
       `${this._platform}_logs.log`,
     );
-    this._reporter.toLog();
+    await this._reporter.toLog();
     this._reporter.tojUnit(jUnitFile);
     this._reporter.deviceLogsToFile(deviceLogsFile);
     this._testingCompleted(byTimeOut ? false : this._reporter.isPassed());
