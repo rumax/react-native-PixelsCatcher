@@ -69,32 +69,36 @@ registerSnapshot(
   },
 );
 
-registerSnapshot(
-  class SnapshotClass extends Snapshot {
-    static snapshotName = 'WebViewTest';
+const useWebView = false;
 
-    componentDidMount() {
-      // override default componentDidMount from Snapshot to delay it
-      // until WebView is loaded. onLoad from WebView is used
-    }
+if (useWebView) {
+  registerSnapshot(
+    class SnapshotClass extends Snapshot {
+      static snapshotName = 'WebViewTest';
 
-    renderContent() {
-      return (
-        <WebView
-          source={{
-            uri: 'https://raw.githubusercontent.com/rumax/react-native-PixelsCatcher/master/CONTRIBUTING.md',
-          }}
-          style={{ flex: 1, marginTop: 20 }}
-          onLoad={() => {
-            setTimeout(() => {
-              this.props.onReady();
-            }, 50);
-          }}
-        />
-      );
-    }
-  },
-);
+      componentDidMount() {
+        // override default componentDidMount from Snapshot to delay it
+        // until WebView is loaded. onLoad from WebView is used
+      }
+
+      renderContent() {
+        return (
+          <WebView
+            source={{
+              uri: 'https://raw.githubusercontent.com/rumax/react-native-PixelsCatcher/master/CONTRIBUTING.md',
+            }}
+            style={{ flex: 1, marginTop: 20 }}
+            onLoad={() => {
+              setTimeout(() => {
+                this.props.onReady();
+              }, 50);
+            }}
+          />
+        );
+      }
+    },
+  );
+}
 
 registerSnapshot(
   class SnapshotClass extends Snapshot {
