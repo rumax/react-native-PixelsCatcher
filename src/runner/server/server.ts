@@ -25,8 +25,7 @@ let nextSocketId = 0;
 const mkDir = (directory: string, clean: boolean = false): void => {
   if (clean && fs.existsSync(directory)) {
     log.i(TAG, `Cleaning [${directory}]`);
-    // @ts-ignore: https://nodejs.org/api/fs.html#fs_fspromises_rmdir_path_options
-    fs.rmdirSync(directory, { recursive: true });
+    fs.rmSync(directory, { recursive: true });
   }
 
   if (!fs.existsSync(directory)) {
