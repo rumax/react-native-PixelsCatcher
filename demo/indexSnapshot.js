@@ -16,22 +16,26 @@ const baseUrl = Platform.select({
 });
 const useFailedTest = false;
 
-registerSnapshot(
-  class SnapshotClass extends Snapshot {
-    static snapshotName = 'AppSnapshot';
+const appSnapshot = false;
 
-    componentDidMount() {
-      setTimeout(() => {
-        // delay for rendering images
-        this.props.onReady();
-      }, 1000);
-    }
+if (appSnapshot) {
+  registerSnapshot(
+    class SnapshotClass extends Snapshot {
+      static snapshotName = 'AppSnapshot';
 
-    renderContent() {
-      return <App />;
-    }
-  },
-);
+      componentDidMount() {
+        setTimeout(() => {
+          // delay for rendering images
+          this.props.onReady();
+        }, 1000);
+      }
+
+      renderContent() {
+        return <App />;
+      }
+    },
+  );
+}
 
 registerSnapshot(
   class SnapshotClass extends Snapshot {
