@@ -19,12 +19,14 @@ import type Snapshot from './Snapshot';
 
 const TAG = 'PIXELS_CATCHER::APP::SNAPSHOTS_CONTAINER';
 
+type NoProps = Record<never, never>;
+
 type State = {
   isReady: boolean,
   ActiveSnapshot: typeof Snapshot | null,
 };
 
-export default class SnapshotsContainer extends Component<Record<never, never>, State> {
+export default class SnapshotsContainer extends Component<NoProps, State> {
   _viewRef: any;
 
   _testStartedAt: number = new Date().getTime();
@@ -38,6 +40,14 @@ export default class SnapshotsContainer extends Component<Record<never, never>, 
       ActiveSnapshot: null,
       isReady: false,
     };
+  }
+
+  shouldComponentUpdate(
+    nextProps: NoProps,
+    nextState: Readonly<State>,
+  ): boolean {
+    return this.state.ActiveSnapshot !== nextState.ActiveSnapshot
+      || this.state.isReady !== nextState.isReady;
   }
 
   componentDidMount(): void {
