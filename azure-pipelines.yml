@@ -1,7 +1,7 @@
 variables:
   MAC_RUNNER_IMAGE: 'macos-12'
   NODE_VERSION: '16.x'
-  XCODE_VERSION: '14.0'
+  XCODE_VERSION: '14.2'
 
 trigger:
   branches:
