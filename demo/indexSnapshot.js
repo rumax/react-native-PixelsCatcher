@@ -24,7 +24,7 @@ registerSnapshot(
       setTimeout(() => {
         // delay for rendering images
         this.props.onReady();
-      }, 500);
+      }, 1000);
     }
 
     renderContent() {
