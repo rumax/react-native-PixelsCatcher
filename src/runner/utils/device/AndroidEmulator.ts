@@ -113,7 +113,7 @@ class AndroidEmulator implements DeviceInterface {
 
     result.stdout.on('data', (data: any): any => {
       log.d(TAG, `stdout: ${data}`);
-      if (data.indexOf('boot completed') >= 0) {
+      if (data.toString().toLowerCase().includes('boot completed')) {
         deviceBooted = true;
       }
     });
